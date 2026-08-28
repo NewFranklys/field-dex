@@ -1,0 +1,37 @@
+/*
+  Aplica box-sizing em todos
+  os elementos da página.
+
+  Isso facilita muito controlar
+  tamanhos, padding e bordas.
+*/
+* {
+  box-sizing: border-box;
+}
+
+
+/*
+  Remove a margem padrão
+  do navegador.
+*/
+body {
+  margin: 0;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  background: #f4f2ec;
+
+  color: #191919;
+}
+
+
+/*
+  Garante que nossa aplicação
+  possa ocupar toda a tela.
+*/
+#root {
+  min-height: 100vh;
+}

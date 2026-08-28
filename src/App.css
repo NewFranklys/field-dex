@@ -1,0 +1,736 @@
+/*
+  ================================
+  HOME
+  ================================
+*/
+
+.home {
+  min-height: 100vh;
+
+  padding: 40px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  /*
+    Importante para elementos
+    posicionados dentro da Home.
+  */
+  position: relative;
+
+  /*
+    Fundo baseado no tipo
+    do Pokémon.
+  */
+  background: var(--soft-color);
+
+  /*
+    Troca suave entre as cores.
+  */
+  transition: background 0.4s ease;
+}
+
+
+/*
+  ================================
+  HEADER
+  ================================
+*/
+
+.header {
+  position: relative;
+
+  z-index: 2;
+}
+
+
+.logo {
+  margin: 0;
+
+  font-size: 64px;
+
+  letter-spacing: -3px;
+}
+
+
+.database-name {
+  margin-top: 12px;
+
+  font-size: 12px;
+
+  letter-spacing: 3px;
+
+  text-transform: uppercase;
+}
+
+
+/*
+  ================================
+  HERO
+  ================================
+*/
+
+.pokemon-hero {
+  /*
+    Ocupa todo o restante
+    da altura disponível.
+  */
+  flex: 1;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 40px;
+}
+
+
+/*
+  ================================
+  INFORMAÇÕES
+  ================================
+*/
+
+.pokemon-info {
+  width: 50%;
+}
+
+
+.pokemon-number {
+  display: block;
+
+  font-size: 18px;
+
+  font-weight: bold;
+
+  letter-spacing: 2px;
+
+  margin-bottom: 10px;
+}
+
+
+.pokemon-name {
+  margin: 0;
+
+  /*
+    O tamanho se adapta à tela.
+  */
+  font-size: clamp(70px, 9vw, 150px);
+
+  letter-spacing: -7px;
+
+  line-height: 0.9;
+}
+
+
+.pokemon-category {
+  margin-top: 22px;
+
+  font-size: 14px;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+}
+
+
+/*
+  Descrição da Pokédex.
+*/
+.pokemon-description {
+  max-width: 460px;
+
+  line-height: 1.6;
+
+  opacity: 0.7;
+
+  text-transform: none;
+
+  letter-spacing: normal;
+
+  font-size: 15px;
+
+  margin-top: 16px;
+}
+
+
+/*
+  ================================
+  ALTURA E PESO
+  ================================
+*/
+
+/*
+  Dados gerais:
+
+  Height
+  Weight
+  Habitat
+  Generation
+*/
+.pokemon-measurements {
+  /*
+    Agora usamos Grid em vez de Flex.
+  */
+  display: grid;
+
+  /*
+    Criamos quatro colunas.
+  */
+  grid-template-columns:
+    repeat(4, max-content);
+
+  /*
+    Espaço entre os itens.
+  */
+  gap: 32px;
+
+  margin-top: 24px;
+}
+
+
+.measurement {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+
+.measurement-label {
+  font-size: 10px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.55;
+}
+
+
+.measurement-value {
+  font-size: 20px;
+
+  font-weight: 600;
+}
+
+
+/*
+  ================================
+  TIPOS
+  ================================
+*/
+
+.pokemon-types {
+  display: flex;
+
+  gap: 10px;
+
+  margin-top: 20px;
+}
+
+
+.type {
+  /*
+    Cor baseada no tipo principal.
+  */
+  border: 1px solid var(--accent-color);
+
+  color: var(--accent-color);
+
+  padding: 8px 14px;
+
+  border-radius: 100px;
+
+  font-size: 12px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+  transition:
+    color 0.4s ease,
+    border-color 0.4s ease;
+}
+
+
+/*
+  ================================
+  BOTÃO NEXT
+  ================================
+*/
+
+.explore-button {
+  margin-top: 40px;
+
+  border: none;
+
+  background: none;
+
+  padding: 0;
+
+  font-size: 16px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  color: var(--accent-color);
+
+  transition: color 0.4s ease;
+}
+
+
+/*
+  ================================
+  IMAGEM
+  ================================
+*/
+
+.pokemon-image-area {
+  width: 50%;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  /*
+    Permite colocar o círculo
+    atrás do Pokémon.
+  */
+  position: relative;
+}
+
+
+/*
+  Círculo decorativo criado
+  somente com CSS.
+*/
+.pokemon-image-area::before {
+  content: '';
+
+  position: absolute;
+
+  width: min(38vw, 560px);
+
+  /*
+    Largura e altura iguais.
+  */
+  aspect-ratio: 1;
+
+  border-radius: 50%;
+
+  background: var(--accent-color);
+
+  opacity: 0.12;
+
+  transition: background 0.4s ease;
+}
+
+
+.pokemon-image {
+  width: min(100%, 650px);
+
+  height: auto;
+
+  /*
+    Mantém o Pokémon
+    na frente do círculo.
+  */
+  position: relative;
+
+  z-index: 1;
+}
+
+
+/*
+  ================================
+  PESQUISA
+  ================================
+*/
+
+.pokemon-search {
+  display: flex;
+
+  position: absolute;
+
+  top: 40px;
+
+  right: 40px;
+
+  z-index: 10;
+}
+
+
+.pokemon-search input {
+  width: 220px;
+
+  padding: 12px 16px;
+
+  border: 1px solid #191919;
+
+  border-right: none;
+
+  background: transparent;
+
+  font-size: 14px;
+
+  outline: none;
+}
+
+
+.pokemon-search button {
+  padding: 12px 18px;
+
+  border: 1px solid #191919;
+
+  background: #191919;
+
+  color: #f4f2ec;
+
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+
+/*
+  ================================
+  LOADING / ERRO
+  ================================
+*/
+
+.status-message {
+  margin-top: 200px;
+
+  font-size: 14px;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+}
+
+/*
+  ================================
+  HABILIDADES
+  ================================
+*/
+
+.pokemon-abilities {
+  /*
+    Espaço entre altura/peso
+    e habilidades.
+  */
+  margin-top: 24px;
+}
+
+
+/*
+  Título "ABILITIES".
+*/
+.abilities-label {
+  display: block;
+
+  font-size: 10px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.55;
+
+  margin-bottom: 8px;
+}
+
+
+/*
+  Área que contém todas
+  as habilidades.
+*/
+.abilities-list {
+  display: flex;
+
+  /*
+    Se houver muitas habilidades,
+    elas podem quebrar para baixo.
+  */
+  flex-wrap: wrap;
+
+  gap: 10px;
+}
+
+
+/*
+  Cada habilidade.
+*/
+.ability {
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+/*
+  ================================
+  BASE STATS
+  ================================
+*/
+
+.pokemon-stats {
+  /*
+    Espaço em relação
+    às habilidades.
+  */
+  margin-top: 24px;
+
+  /*
+    Limitamos a largura para os stats
+    não ocuparem toda a tela.
+  */
+  max-width: 500px;
+}
+
+
+/*
+  Título "BASE STATS".
+*/
+.stats-title {
+  display: block;
+
+  font-size: 10px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.55;
+
+  margin-bottom: 12px;
+}
+
+
+/*
+  Organizamos os 6 stats
+  em duas colunas.
+*/
+.stats-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 12px 24px;
+}
+
+
+/*
+  Cada stat individual.
+*/
+.stat {
+  min-width: 0;
+}
+
+
+/*
+  Nome e número ficam
+  um de cada lado.
+*/
+.stat-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 5px;
+}
+
+
+.stat-label {
+  font-size: 11px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+  opacity: 0.7;
+}
+
+
+.stat-value {
+  font-size: 13px;
+}
+
+
+/*
+  Fundo da barra.
+*/
+.stat-bar {
+  width: 100%;
+
+  height: 4px;
+
+  /*
+    Usamos uma cor preta
+    bem transparente.
+  */
+  background:
+    rgba(0, 0, 0, 0.1);
+
+  overflow: hidden;
+}
+
+
+/*
+  Parte preenchida da barra.
+*/
+.stat-bar-fill {
+  height: 100%;
+
+  /*
+    Usa a cor principal
+    do tipo atual.
+  */
+  background:
+    var(--accent-color);
+
+  /*
+    Quando mudarmos de Pokémon,
+    a barra cresce ou diminui
+    suavemente.
+  */
+  transition:
+    width 0.35s ease,
+    background 0.4s ease;
+}
+
+/*
+  ================================
+  EVOLUTION FAMILY
+  ================================
+*/
+
+.pokemon-evolutions {
+  margin-top: 28px;
+
+  max-width: 620px;
+}
+
+
+.evolution-title {
+  display: block;
+
+  font-size: 10px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.55;
+
+  margin-bottom: 12px;
+}
+
+
+/*
+  Os Pokémon ficam lado a lado.
+*/
+.evolution-list {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+}
+
+
+/*
+  Cada Pokémon da família.
+*/
+.evolution-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  min-width: 170px;
+
+  padding: 10px;
+
+  border:
+    1px solid
+    rgba(0, 0, 0, 0.12);
+
+  background:
+    rgba(255, 255, 255, 0.16);
+
+  /*
+  Remove o estilo padrão de botão.
+  */
+  font-family: inherit;
+
+  color: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  /*
+  Pequeno feedback quando
+  passamos o mouse.
+  */
+  .evolution-card:hover {
+  border-color: var(--accent-color);
+}
+
+
+/*
+  Sprite pequeno da evolução.
+*/
+.evolution-image {
+  width: 58px;
+
+  height: 58px;
+
+  object-fit: contain;
+}
+
+
+.evolution-info {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+
+.evolution-number {
+  font-size: 9px;
+
+  letter-spacing: 1px;
+
+  opacity: 0.5;
+}
+
+
+.evolution-name {
+  font-size: 13px;
+}
+
+
+.evolution-method {
+  font-size: 10px;
+
+  color: var(--accent-color);
+
+  font-weight: 600;
+}

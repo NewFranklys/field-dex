@@ -2956,3 +2956,1940 @@ and (
   }
 
 }
+
+/*
+  ============================================================
+  HOME V2 — FEATURED SPECIMEN
+  ============================================================
+
+  Nova direção visual:
+
+  arquivo científico
+  +
+  Pokémon em destaque
+  +
+  movimento
+*/
+
+
+/*
+  ========================================
+  NOVO HERO
+  ========================================
+*/
+
+.home-stage {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 0.95fr)
+    minmax(420px, 1.05fr);
+
+  gap: clamp(
+    40px,
+    6vw,
+    110px
+  );
+
+  align-items: center;
+
+  margin-top: 52px;
+}
+
+
+/*
+  O home-intro já tinha margin-top
+  anteriormente.
+
+  Como agora ele está dentro do grid,
+  removemos essa margem.
+*/
+.home-stage .home-intro {
+  margin-top: 0;
+
+  max-width: 760px;
+}
+
+
+.home-stage .home-title {
+  font-size:
+    clamp(
+      54px,
+      5.2vw,
+      86px
+    );
+
+  max-width: 760px;
+}
+
+
+
+/*
+  ============================================================
+  FEATURED SPECIMEN
+  ============================================================
+*/
+
+.featured-specimen {
+  /*
+    Essas variáveis serão atualizadas
+    pelo movimento do mouse.
+  */
+  --mouse-x: 0;
+  --mouse-y: 0;
+
+
+  position: relative;
+
+  min-width: 0;
+
+  min-height: 540px;
+
+  padding:
+    0 0 18px;
+
+  overflow: hidden;
+
+  border-bottom:
+    1px solid
+    rgba(0, 0, 0, 0.18);
+}
+
+
+
+/*
+  ========================================
+  TOPO
+  ========================================
+*/
+
+.specimen-topline {
+  position: relative;
+
+  z-index: 20;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding-bottom: 12px;
+
+  border-bottom:
+    1px solid
+    rgba(0, 0, 0, 0.14);
+}
+
+
+.specimen-topline span,
+.specimen-topline button {
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+}
+
+
+.specimen-topline span {
+  opacity: 0.5;
+}
+
+
+.specimen-topline button {
+  border: 0;
+
+  background: transparent;
+
+  padding: 6px 0;
+
+  font-family: inherit;
+
+  color: inherit;
+
+  cursor: pointer;
+
+  opacity: 0.6;
+
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+
+.specimen-topline button:hover {
+  opacity: 1;
+
+  transform:
+    translateX(-3px);
+}
+
+
+
+/*
+  ========================================
+  NÚMERO GIGANTE
+  ========================================
+*/
+
+.specimen-background-number {
+  position: absolute;
+
+  top: 32px;
+
+  right: -10px;
+
+  z-index: 0;
+
+  font-size:
+    clamp(
+      120px,
+      15vw,
+      240px
+    );
+
+  font-weight: 800;
+
+  line-height: 1;
+
+  letter-spacing: -12px;
+
+  opacity: 0.035;
+
+  pointer-events: none;
+
+  transform:
+    translate3d(
+      calc(
+        var(--mouse-x) * -4px
+      ),
+      calc(
+        var(--mouse-y) * -4px
+      ),
+      0
+    );
+
+  transition:
+    transform 120ms ease-out;
+}
+
+
+
+/*
+  ========================================
+  ÁREA VISUAL
+  ========================================
+*/
+
+.specimen-visual {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 100%;
+
+  height: 380px;
+
+  margin-top: 10px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: inherit;
+
+  font-family: inherit;
+
+  cursor: pointer;
+
+  overflow: hidden;
+}
+
+
+
+/*
+  Círculo de pesquisa atrás
+  do Pokémon.
+*/
+.specimen-orbit {
+  position: absolute;
+
+  z-index: 1;
+
+  width:
+    min(
+      29vw,
+      370px
+    );
+
+  aspect-ratio: 1;
+
+  border:
+    1px solid
+    rgba(0, 0, 0, 0.13);
+
+  border-radius: 50%;
+
+  transform:
+    translate3d(
+      calc(
+        var(--mouse-x) * -8px
+      ),
+      calc(
+        var(--mouse-y) * -8px
+      ),
+      0
+    );
+
+  transition:
+    transform 120ms ease-out;
+}
+
+
+
+/*
+  Segundo círculo interno.
+*/
+.specimen-orbit::after {
+  content: '';
+
+  position: absolute;
+
+  inset: 18%;
+
+  border:
+    1px dashed
+    rgba(0, 0, 0, 0.09);
+
+  border-radius: 50%;
+}
+
+
+
+/*
+  ========================================
+  EIXOS TÉCNICOS
+  ========================================
+*/
+
+.specimen-axis {
+  position: absolute;
+
+  z-index: 1;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.08
+    );
+
+  pointer-events: none;
+}
+
+
+.specimen-axis.horizontal {
+  width: 74%;
+
+  height: 1px;
+
+  left: 13%;
+
+  top: 50%;
+}
+
+
+.specimen-axis.vertical {
+  width: 1px;
+
+  height: 78%;
+
+  left: 50%;
+
+  top: 11%;
+}
+
+
+
+/*
+  ========================================
+  POKÉMON
+  ========================================
+*/
+
+.specimen-image {
+  position: relative;
+
+  z-index: 5;
+
+  width:
+    min(
+      78%,
+      390px
+    );
+
+  max-height: 360px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 24px 20px
+      rgba(0, 0, 0, 0.08)
+    );
+
+  /*
+    Pokémon se move MAIS
+    que os elementos de fundo.
+
+    Isso cria a profundidade.
+  */
+  transform:
+    translate3d(
+      calc(
+        var(--mouse-x) * 18px
+      ),
+      calc(
+        var(--mouse-y) * 14px
+      ),
+      0
+    );
+
+  transition:
+    transform 120ms ease-out;
+
+  animation:
+    specimen-enter
+    700ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    both;
+}
+
+
+
+/*
+  Hover do Pokémon.
+
+  Movimento pequeno.
+*/
+.specimen-visual:hover
+.specimen-image {
+  scale: 1.035;
+}
+
+
+
+/*
+  ========================================
+  SCANNER
+  ========================================
+*/
+
+.specimen-scanner {
+  position: absolute;
+
+  z-index: 8;
+
+  top: 7%;
+
+  bottom: 7%;
+
+  width: 1px;
+
+  left: 0;
+
+  background:
+    linear-gradient(
+      to bottom,
+      transparent,
+      rgba(
+        0,
+        0,
+        0,
+        0.35
+      ),
+      transparent
+    );
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  animation:
+    specimen-scan
+    1100ms
+    300ms
+    ease
+    both;
+}
+
+
+
+/*
+  ========================================
+  VIEW RECORD
+  ========================================
+*/
+
+.specimen-view {
+  position: absolute;
+
+  right: 15px;
+
+  bottom: 14px;
+
+  z-index: 12;
+
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.8px;
+
+  opacity: 0;
+
+  transform:
+    translateY(6px);
+
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease;
+}
+
+
+.specimen-visual:hover
+.specimen-view {
+  opacity: 0.65;
+
+  transform:
+    translateY(0);
+}
+
+
+
+/*
+  ========================================
+  IDENTIFICAÇÃO
+  ========================================
+*/
+
+.specimen-identification {
+  position: relative;
+
+  z-index: 15;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 30px;
+
+  align-items: flex-end;
+
+  margin-top: -4px;
+}
+
+
+.specimen-id {
+  display: block;
+
+  margin-bottom: 4px;
+
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.42;
+}
+
+
+.specimen-name {
+  display: block;
+
+  font-size:
+    clamp(
+      28px,
+      3vw,
+      44px
+    );
+
+  line-height: 1;
+
+  letter-spacing: -2px;
+
+  animation:
+    specimen-data-enter
+    550ms
+    160ms
+    ease
+    both;
+}
+
+
+.specimen-category {
+  display: block;
+
+  margin-top: 7px;
+
+  font-size: 10px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.5px;
+
+  opacity: 0.45;
+}
+
+
+
+/*
+  ========================================
+  DADOS
+  ========================================
+*/
+
+.specimen-data {
+  display: flex;
+
+  gap: 24px;
+
+  flex-shrink: 0;
+
+  animation:
+    specimen-data-enter
+    600ms
+    240ms
+    ease
+    both;
+}
+
+
+.specimen-data div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+
+.specimen-data span {
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.5px;
+
+  opacity: 0.4;
+}
+
+
+.specimen-data strong {
+  max-width: 110px;
+
+  font-size: 9px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.8px;
+}
+
+
+
+/*
+  ========================================
+  LOADING
+  ========================================
+*/
+
+.specimen-loading {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  min-height: 470px;
+
+  font-size: 9px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.5;
+}
+
+
+.scan-pulse {
+  width: 7px;
+
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: currentColor;
+
+  animation:
+    scan-pulse
+    900ms
+    ease-in-out
+    infinite;
+}
+
+
+
+/*
+  ============================================================
+  ANIMAÇÕES
+  ============================================================
+*/
+
+
+/*
+  Pokémon entrando.
+
+  Começa:
+  - um pouco para a direita
+  - um pouco menor
+  - transparente
+
+  Termina na posição normal.
+*/
+@keyframes specimen-enter {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        35px,
+        8px,
+        0
+      )
+      scale(0.94);
+  }
+
+
+  to {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        calc(
+          var(--mouse-x) * 18px
+        ),
+        calc(
+          var(--mouse-y) * 14px
+        ),
+        0
+      )
+      scale(1);
+  }
+
+}
+
+
+
+/*
+  Scanner atravessando
+  a imagem.
+*/
+@keyframes specimen-scan {
+
+  0% {
+    left: 8%;
+
+    opacity: 0;
+  }
+
+
+  15% {
+    opacity: 0.6;
+  }
+
+
+  80% {
+    opacity: 0.35;
+  }
+
+
+  100% {
+    left: 92%;
+
+    opacity: 0;
+  }
+
+}
+
+
+
+/*
+  Informações entrando
+  um pouco depois da imagem.
+*/
+@keyframes specimen-data-enter {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(
+        10px
+      );
+  }
+
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(
+        0
+      );
+  }
+
+}
+
+
+
+@keyframes scan-pulse {
+
+  0%,
+  100% {
+    opacity: 0.25;
+
+    transform:
+      scale(0.8);
+  }
+
+
+  50% {
+    opacity: 1;
+
+    transform:
+      scale(1.25);
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  AJUSTE DAS AÇÕES
+  ============================================================
+*/
+
+.home-actions {
+  margin-top: 54px;
+}
+
+
+
+/*
+  ============================================================
+  TELAS MENORES
+  ============================================================
+
+  Isso ainda NÃO é nossa responsividade
+  definitiva.
+
+  Só evita quebrar enquanto
+  desenvolvemos a nova identidade.
+*/
+
+@media (max-width: 1100px) {
+
+  .home-stage {
+    grid-template-columns:
+      1fr
+      minmax(
+        360px,
+        0.9fr
+      );
+
+    gap: 30px;
+  }
+
+
+  .specimen-data {
+    gap: 14px;
+  }
+
+}
+
+
+
+@media (max-width: 850px) {
+
+  .home-stage {
+    grid-template-columns:
+      1fr;
+
+    margin-top: 50px;
+  }
+
+
+  .featured-specimen {
+    margin-top: 25px;
+  }
+
+
+  .specimen-orbit {
+    width: 320px;
+  }
+
+}
+
+
+
+/*
+  ========================================
+  REDUCED MOTION
+  ========================================
+
+  Pessoas que desativam animações
+  no sistema operacional não recebem
+  movimentos desnecessários.
+*/
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .specimen-image,
+  .specimen-scanner,
+  .specimen-name,
+  .specimen-data,
+  .scan-pulse {
+    animation: none;
+  }
+
+
+  .specimen-image,
+  .specimen-orbit,
+  .specimen-background-number {
+    transform: none;
+  }
+
+}
+
+/*
+  ============================================================
+  HOME V2.1
+  FEATURED SPECIMEN + RESEARCH MODULES
+  ============================================================
+*/
+
+
+/*
+  ============================================================
+  FEATURED SPECIMEN — MAIS PRESENÇA
+  ============================================================
+*/
+
+.featured-specimen {
+  min-height: 560px;
+
+  padding-right: 4px;
+
+  isolation: isolate;
+}
+
+
+/*
+  Campo de cor baseado no
+  tipo principal do Pokémon.
+*/
+.specimen-type-field {
+  position: absolute;
+
+  z-index: -1;
+
+  width: 65%;
+
+  aspect-ratio: 1;
+
+  right: -8%;
+
+  top: 13%;
+
+  border-radius: 50%;
+
+  background:
+    var(--specimen-soft);
+
+  opacity: 0.52;
+
+  filter:
+    blur(18px);
+
+  transform:
+    translate3d(
+      calc(
+        var(--mouse-x) * -5px
+      ),
+      calc(
+        var(--mouse-y) * -5px
+      ),
+      0
+    );
+
+  transition:
+    background 500ms ease,
+    transform 150ms ease-out;
+}
+
+
+
+/*
+  Novo wrapper do registro.
+*/
+.specimen-record {
+  position: relative;
+
+  animation:
+    specimen-record-enter
+    600ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    both;
+}
+
+
+
+.specimen-visual {
+  height: 415px;
+}
+
+
+
+/*
+  Pokémon maior.
+*/
+.specimen-image {
+  width:
+    min(
+      88%,
+      470px
+    );
+
+  max-height: 405px;
+}
+
+
+
+/*
+  Número ganha um pouco
+  mais de presença.
+*/
+.specimen-background-number {
+  top: 22px;
+
+  right: 0;
+
+  font-size:
+    clamp(
+      150px,
+      17vw,
+      270px
+    );
+
+  opacity: 0.045;
+}
+
+
+
+/*
+  Círculo técnico maior.
+*/
+.specimen-orbit {
+  width:
+    min(
+      31vw,
+      420px
+    );
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--specimen-accent) 30%,
+      transparent
+    );
+}
+
+
+
+/*
+  Nome maior.
+*/
+.specimen-name {
+  font-size:
+    clamp(
+      34px,
+      3.3vw,
+      50px
+    );
+}
+
+
+
+/*
+  Categoria um pouco mais visível.
+*/
+.specimen-category {
+  font-size: 10px;
+
+  opacity: 0.55;
+}
+
+
+
+/*
+  Mais espaço para os dados.
+*/
+.specimen-identification {
+  gap: 34px;
+
+  padding-top: 5px;
+}
+
+
+.specimen-main-data {
+  min-width: 0;
+}
+
+
+.specimen-data {
+  gap: 22px;
+
+  flex-wrap: wrap;
+
+  justify-content: flex-end;
+}
+
+
+.specimen-data span {
+  font-size: 8px;
+
+  opacity: 0.48;
+}
+
+
+.specimen-data strong {
+  font-size: 10px;
+}
+
+
+
+/*
+  Cor principal do tipo também
+  aparece em detalhes pequenos.
+*/
+.specimen-id,
+.specimen-view {
+  color:
+    var(--specimen-accent);
+}
+
+
+
+/*
+  ============================================================
+  RESCAN
+  ============================================================
+*/
+
+.featured-specimen.is-scanning
+.specimen-record {
+  opacity: 0.28;
+
+  transform:
+    translateX(-12px)
+    scale(0.985);
+
+  filter:
+    blur(2px);
+
+  transition:
+    opacity 200ms ease,
+    transform 300ms ease,
+    filter 300ms ease;
+}
+
+
+
+.specimen-scan-overlay {
+  position: absolute;
+
+  z-index: 50;
+
+  inset:
+    45px 0 18px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  pointer-events: none;
+}
+
+
+.specimen-scan-overlay span {
+  width: 38px;
+
+  height: 1px;
+
+  background:
+    var(--specimen-accent);
+
+  animation:
+    archive-search-line
+    700ms
+    ease-in-out
+    infinite alternate;
+}
+
+
+.specimen-scan-overlay strong {
+  font-size: 8px;
+
+  font-weight: 500;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+}
+
+
+
+/*
+  Pequena pulsação da cor
+  durante o scan.
+*/
+.featured-specimen.is-scanning
+.specimen-type-field {
+  opacity: 0.26;
+
+  transform:
+    scale(1.08);
+}
+
+
+
+@keyframes archive-search-line {
+
+  from {
+    transform:
+      scaleX(0.35);
+
+    opacity: 0.3;
+  }
+
+
+  to {
+    transform:
+      scaleX(1);
+
+    opacity: 1;
+  }
+
+}
+
+
+
+@keyframes specimen-record-enter {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateX(24px);
+  }
+
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateX(0);
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  RESEARCH MODULES
+  ============================================================
+*/
+
+.home-research-modules {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  margin-top: 58px;
+
+  border-top:
+    1px solid
+    rgba(0, 0, 0, 0.16);
+
+  border-left:
+    1px solid
+    rgba(0, 0, 0, 0.16);
+}
+
+
+
+/*
+  ========================================
+  BASE DO MÓDULO
+  ========================================
+*/
+
+.research-module {
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  min-width: 0;
+
+  min-height: 330px;
+
+  padding: 20px;
+
+  overflow: hidden;
+
+  border: 0;
+
+  border-right:
+    1px solid
+    rgba(0, 0, 0, 0.16);
+
+  border-bottom:
+    1px solid
+    rgba(0, 0, 0, 0.16);
+
+  background: transparent;
+
+  color: inherit;
+
+  font-family: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 300ms ease;
+}
+
+
+
+/*
+  Linha superior.
+*/
+.module-topline {
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.8px;
+
+  opacity: 0.45;
+}
+
+
+
+/*
+  Conteúdo principal.
+*/
+.module-content {
+  position: relative;
+
+  z-index: 5;
+
+  margin-top: 54px;
+}
+
+
+.module-kicker {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.7px;
+
+  opacity: 0.42;
+}
+
+
+.module-title {
+  display: block;
+
+  font-size:
+    clamp(
+      27px,
+      2.4vw,
+      39px
+    );
+
+  line-height: 0.95;
+
+  letter-spacing: -2px;
+
+  transition:
+    transform 300ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+.module-content p {
+  max-width: 250px;
+
+  margin-top: 13px;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+
+  opacity: 0.55;
+}
+
+
+
+/*
+  Link inferior.
+*/
+.module-action {
+  position: relative;
+
+  z-index: 6;
+
+  margin-top: auto;
+
+  padding-top: 22px;
+
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.6px;
+
+  transition:
+    transform 250ms ease;
+}
+
+
+
+/*
+  Hover geral.
+*/
+.research-module:hover
+.module-title {
+  transform:
+    translateY(-6px);
+}
+
+
+.research-module:hover
+.module-action {
+  transform:
+    translateX(6px);
+}
+
+
+
+/*
+  ============================================================
+  01 — RANDOM ENCOUNTER
+  ============================================================
+*/
+
+.encounter-module:hover {
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.035
+    );
+}
+
+
+.encounter-visual {
+  position: absolute;
+
+  right: 20px;
+
+  bottom: 70px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  font-size: 8px;
+
+  letter-spacing: 1px;
+
+  opacity: 0.28;
+}
+
+
+.encounter-visual strong {
+  font-size: 21px;
+
+  letter-spacing: 3px;
+
+  transition:
+    opacity 150ms ease,
+    transform 300ms ease;
+}
+
+
+.encounter-line {
+  display: block;
+
+  width: 18px;
+
+  height: 1px;
+
+  background:
+    currentColor;
+}
+
+
+.encounter-module:hover
+.encounter-visual strong {
+  opacity: 0;
+
+  transform:
+    rotateX(90deg);
+}
+
+
+
+/*
+  Criamos "números passando"
+  atrás do módulo.
+*/
+.encounter-module::after {
+  content:
+    '017   094   132   025   006   151';
+
+  position: absolute;
+
+  right: -30px;
+
+  bottom: 30px;
+
+  white-space: nowrap;
+
+  font-size: 52px;
+
+  font-weight: 800;
+
+  letter-spacing: -3px;
+
+  opacity: 0;
+
+  transform:
+    translateX(40px);
+
+  transition:
+    opacity 250ms ease,
+    transform 550ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+
+  pointer-events: none;
+}
+
+
+.encounter-module:hover::after {
+  opacity: 0.025;
+
+  transform:
+    translateX(0);
+}
+
+
+
+/*
+  ============================================================
+  02 — ARCHIVE
+  ============================================================
+*/
+
+.archive-module:hover {
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.025
+    );
+}
+
+
+.archive-visual {
+  position: absolute;
+
+  right: 20px;
+
+  bottom: 68px;
+
+  width: 43%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      7,
+      1fr
+    );
+
+  gap: 3px;
+
+  align-items: end;
+}
+
+
+.archive-visual span {
+  font-size: 6px;
+
+  letter-spacing: 0.7px;
+
+  opacity: 0.28;
+
+  transform:
+    translateY(
+      calc(
+        var(--archive-offset, 0)
+        * 1px
+      )
+    );
+}
+
+
+.archive-visual i {
+  position: absolute;
+
+  left: 0;
+
+  right: 0;
+
+  bottom: -9px;
+
+  height: 1px;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.16
+    );
+}
+
+
+.archive-visual i::after {
+  content: '';
+
+  position: absolute;
+
+  left: 0;
+
+  top: -1px;
+
+  width: 18%;
+
+  height: 3px;
+
+  background:
+    currentColor;
+
+  transition:
+    width 500ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+.archive-module:hover
+.archive-visual i::after {
+  width: 100%;
+}
+
+
+
+/*
+  ============================================================
+  03 — TYPES
+  ============================================================
+*/
+
+.type-module {
+  --types-soft:
+    rgba(
+      101,
+      87,
+      126,
+      0.05
+    );
+}
+
+
+.type-module:hover {
+  background:
+    var(--types-soft);
+}
+
+
+.type-module-visual {
+  position: absolute;
+
+  right: 18px;
+
+  bottom: 66px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      30px
+    );
+
+  gap: 5px;
+}
+
+
+.mini-type {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 30px;
+
+  height: 30px;
+
+  border:
+    1px solid
+    currentColor;
+
+  border-radius: 50%;
+
+  font-size: 7px;
+
+  opacity: 0.42;
+
+  transition:
+    transform 300ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    ),
+    background 300ms ease;
+}
+
+
+.mini-type.grass {
+  color: #5f8f66;
+}
+
+
+.mini-type.fire {
+  color: #c56545;
+}
+
+
+.mini-type.water {
+  color: #4f7fa3;
+}
+
+
+.mini-type.electric {
+  color: #c49b28;
+}
+
+
+.mini-type.psychic {
+  color: #aa6075;
+}
+
+
+.mini-type.ghost {
+  color: #65577e;
+}
+
+
+
+/*
+  Cada círculo se move
+  em timing diferente.
+*/
+.type-module:hover
+.mini-type:nth-child(1) {
+  transform:
+    translateY(-6px);
+}
+
+
+.type-module:hover
+.mini-type:nth-child(2) {
+  transform:
+    translateY(5px);
+}
+
+
+.type-module:hover
+.mini-type:nth-child(3) {
+  transform:
+    translateY(-3px);
+}
+
+
+.type-module:hover
+.mini-type:nth-child(4) {
+  transform:
+    translateY(4px);
+}
+
+
+.type-module:hover
+.mini-type:nth-child(5) {
+  transform:
+    translateY(-5px);
+}
+
+
+.type-module:hover
+.mini-type:nth-child(6) {
+  transform:
+    translateY(2px);
+}
+
+
+
+/*
+  ============================================================
+  FOOTER
+  ============================================================
+*/
+
+.home-footer {
+  margin-top: 0;
+
+  padding-top: 38px;
+}
+
+
+
+/*
+  ============================================================
+  RESPONSIVIDADE TEMPORÁRIA
+  ============================================================
+*/
+
+@media (max-width: 1000px) {
+
+  .home-research-modules {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .research-module {
+    min-height: 260px;
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  REDUCED MOTION
+  ============================================================
+*/
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .specimen-record,
+  .specimen-scan-overlay span,
+  .module-title,
+  .module-action,
+  .mini-type,
+  .archive-visual i::after {
+    animation: none;
+
+    transition: none;
+  }
+
+}

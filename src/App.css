@@ -3,10 +3,11 @@
   FIELD DEX — STYLE ENTRY POINT
   ============================================================
 
-  App.css used to contain every historical version of every page.
-  It now acts only as the central style entry point.
+  App.css acts only as the central style entry point.
 
-  Each page owns its current styles in src/styles/.
+  Each page owns its desktop styles in src/styles/.
+  responsive.css is imported LAST so it can adapt those layouts
+  without changing the desktop design.
 */
 
 @import './styles/base.css';
@@ -14,3 +15,4 @@
 @import './styles/pokedex.css';
 @import './styles/types.css';
 @import './styles/pokemon-record.css';
+@import './styles/responsive.css';

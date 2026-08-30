@@ -142,3 +142,158 @@
 @media (prefers-reduced-motion:reduce) {
   .field-record *, .field-record *::before, .field-record *::after { animation:none!important; transition:none!important; }
 }
+
+/*
+  ============================================================
+  LEGIBILITY PASS
+  ============================================================
+
+  Os textos técnicos continuam pequenos,
+  porque isso faz parte da identidade visual.
+
+  Mas informação importante não pode
+  parecer decoração.
+*/
+
+
+/*
+  ------------------------------------------------------------
+  EVOLUTION RECORD
+  ------------------------------------------------------------
+*/
+
+/* #007 / #008 / #009 */
+.record-evolution-step
+.evolution-id {
+  font-size: 8px;
+
+  font-weight: 500;
+
+  letter-spacing: 1.2px;
+
+  opacity: 0.58;
+}
+
+
+/* Nome do Pokémon */
+.record-evolution-step
+button > strong {
+  font-size: 18px;
+
+  font-weight: 650;
+}
+
+
+/*
+  BASE FORM
+  LV. 16
+  LV. 36
+
+  Essa é a principal mudança.
+*/
+.record-evolution-step
+button > small {
+  margin-top: 7px;
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+  letter-spacing: 1.15px;
+
+  color:
+    rgba(
+      0,
+      0,
+      0,
+      0.58
+    );
+
+  opacity: 1;
+}
+
+
+/*
+  ------------------------------------------------------------
+  CABEÇALHOS DAS SEÇÕES
+  ------------------------------------------------------------
+*/
+
+/*
+  SPECIES BASELINE VALUES
+  RECORDED SPECIES CRY
+  DEFENSIVE INTERACTION ANALYSIS
+  etc.
+*/
+.record-section-heading small {
+  font-size: 8px;
+
+  line-height: 1.3;
+
+  letter-spacing: 1.25px;
+
+  opacity: 0.5;
+}
+
+
+/* 01 / 02 / 03 / 04 */
+.record-section-heading > span {
+  font-size: 8px;
+
+  opacity: 0.48;
+}
+
+
+/*
+  ------------------------------------------------------------
+  FIELD DATA
+  ------------------------------------------------------------
+
+  HEIGHT
+  WEIGHT
+  HABITAT
+  GENERATION
+  ABILITIES
+*/
+
+.record-field-data span,
+.record-abilities > span {
+  font-size: 8px;
+
+  opacity: 0.52;
+}
+
+
+/*
+  ------------------------------------------------------------
+  TYPE RESPONSE
+  ------------------------------------------------------------
+
+  WEAK TO
+  RESISTS
+  IMMUNE TO
+*/
+
+.record-type-analysis
+.record-matchup-column
+> span {
+  font-size: 9px;
+
+  font-weight: 500;
+
+  opacity: 0.55;
+}
+
+
+/*
+  ------------------------------------------------------------
+  EVOLUTION HEADER
+  ------------------------------------------------------------
+*/
+
+.record-evolution-heading
+> span {
+  font-size: 8px;
+
+  opacity: 0.5;
+}

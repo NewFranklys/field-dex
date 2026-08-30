@@ -998,148 +998,290 @@ function PokemonHero({
 
 
       {/* =======================================================
-          EVOLUTION
-          ======================================================= */}
-      <section className="record-evolution-section">
+    EVOLUTION — V2.2
+    =======================================================
+
+    Antes cada evolução parecia um "card".
+
+    Agora tratamos a evolução como uma
+    sequência temporal:
+
+    Squirtle ───── Wartortle ───── Blastoise
+
+    O Pokémon é o conteúdo principal.
+    A linha conecta os estágios.
+    ======================================================= */}
+<section className="record-evolution-section evolution-timeline-v22">
 
 
-        <div className="record-evolution-heading">
+  <div className="record-evolution-heading">
 
 
-          <div className="record-section-heading">
+    <div className="record-section-heading">
 
-            <span>
-              04
-            </span>
-
-
-            <div>
-
-              <strong>
-                Evolution Record
-              </strong>
-
-              <small>
-                Registered evolutionary family
-              </small>
-
-            </div>
-
-          </div>
+      <span>
+        04
+      </span>
 
 
+      <div>
 
-          <span>
-            Evolutionary sequence
-          </span>
+        <strong>
+          Evolution Record
+        </strong>
 
-        </div>
+        <small>
+          Registered evolutionary family
+        </small>
 
+      </div>
 
-
-        <div className="record-evolution-scroll">
-
-
-          <div className="record-evolution-line">
-
-            {pokemon.evolutions.map(
-              (
-                evolution,
-                index
-              ) => (
-
-                <div
-                  className="record-evolution-step"
-                  key={evolution.id}
-                >
+    </div>
 
 
-                  <button
+    <span>
+      Evolutionary sequence
+    </span>
 
-                    onClick={() => {
+  </div>
 
-                      onSelectPokemon(
-                        evolution.id
-                      )
+
+
+  <div className="record-evolution-scroll">
+
+
+    <div className="record-evolution-timeline">
+
+
+      {pokemon.evolutions.map(
+        (
+          evolution,
+          index
+        ) => {
+
+
+          const isLast =
+            index
+            ===
+            pokemon.evolutions.length - 1
+
+
+
+          return (
+
+            <div
+
+              className="evolution-timeline-unit"
+
+              key={
+                evolution.id
+              }
+
+            >
+
+
+              {/* =========================================
+                  ESTÁGIO
+                  ========================================= */}
+              <motion.button
+
+                type="button"
+
+                className="evolution-timeline-stage"
+
+                onClick={() => {
+
+                  onSelectPokemon(
+                    evolution.id
+                  )
+
+                }}
+
+
+                /*
+                  Cada estágio aparece quando
+                  a timeline chega na viewport.
+                */
+                initial={{
+                  opacity: 0,
+                  y: 18,
+                }}
+
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
+
+                viewport={{
+                  once: true,
+                  amount: 0.4,
+                }}
+
+                transition={{
+
+                  duration: 0.5,
+
+                  delay:
+                    index
+                    *
+                    0.12,
+
+                  ease: [
+                    0.16,
+                    1,
+                    0.3,
+                    1,
+                  ],
+
+                }}
+
+              >
+
+
+                {/* Número */}
+                <span className="timeline-pokemon-id">
+
+                  #{evolution.id
+                    .toString()
+                    .padStart(
+                      3,
+                      '0'
+                    )}
+
+                </span>
+
+
+
+                {/* Artwork */}
+                <span className="timeline-artwork">
+
+                  <span className="timeline-background-number">
+
+                    {evolution.id
+                      .toString()
+                      .padStart(
+                        3,
+                        '0'
+                      )}
+
+                  </span>
+
+
+                  <img
+
+                    src={
+                      evolution.image
+                    }
+
+                    alt={
+                      evolution.name
+                    }
+
+                  />
+
+                </span>
+
+
+
+                {/* Nome */}
+                <strong>
+
+                  {evolution.name}
+
+                </strong>
+
+
+
+                {/* Método de evolução */}
+                <small>
+
+                  {evolution.method}
+
+                </small>
+
+
+
+                {/*
+                  O ponto fica exatamente
+                  sobre a linha da timeline.
+                */}
+                <span className="timeline-node" />
+
+              </motion.button>
+
+
+
+              {/* =========================================
+                  CONECTOR
+                  =========================================
+
+                  Não existe depois do
+                  último Pokémon.
+              */}
+              {!isLast && (
+
+                <span className="timeline-connector">
+
+
+                  <motion.i
+
+                    initial={{
+                      scaleX: 0,
+                    }}
+
+                    whileInView={{
+                      scaleX: 1,
+                    }}
+
+                    viewport={{
+                      once: true,
+                    }}
+
+                    transition={{
+
+                      duration: 0.6,
+
+                      delay:
+                        0.15
+                        +
+                        (
+                          index
+                          *
+                          0.12
+                        ),
+
+                      ease: [
+                        0.16,
+                        1,
+                        0.3,
+                        1,
+                      ],
 
                     }}
 
-                  >
+                  />
 
 
-                    {/* número gigante */}
-                    <span className="evolution-background-number">
+                  <span>
+                    →
+                  </span>
 
-                      {evolution.id
-                        .toString()
-                        .padStart(3, '0')
-                      }
+                </span>
 
-                    </span>
+              )}
 
+            </div>
 
+          )
 
-                    <img
+        }
+      )}
 
-                      src={evolution.image}
+    </div>
 
-                      alt={evolution.name}
+  </div>
 
-                    />
-
-
-                    <span className="evolution-id">
-
-                      #{evolution.id
-                        .toString()
-                        .padStart(3, '0')
-                      }
-
-                    </span>
-
-
-                    <strong>
-                      {evolution.name}
-                    </strong>
-
-
-                    <small>
-                      {evolution.method}
-                    </small>
-
-                  </button>
-
-
-
-                  {index
-                    <
-                    pokemon.evolutions.length
-                    -
-                    1
-                    &&
-                    (
-
-                      <span className="record-evolution-arrow">
-
-                        <i />
-
-                        →
-
-                      </span>
-
-                    )
-                  }
-
-                </div>
-
-              )
-            )}
-
-          </div>
-
-        </div>
-
-      </section>
+</section>
 
 
 

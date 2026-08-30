@@ -1,0 +1,53 @@
+/* Shared shell styles */
+.home,
+.pokedex-page,
+.types-page {
+  min-height: 100vh;
+  color: #191919;
+}
+
+.home {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 32px 40px;
+  background: var(--soft-color);
+  transition: background 0.4s ease;
+}
+
+.header {
+  position: relative;
+  z-index: 2;
+}
+
+.logo-button {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -2.5px;
+  cursor: pointer;
+}
+
+.logo-button:hover { opacity: 0.65; }
+
+.database-name {
+  margin-top: 8px;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.status-message {
+  margin-top: 200px;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .home { padding: 24px; }
+}

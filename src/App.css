@@ -4893,3 +4893,5408 @@ and (
   }
 
 }
+
+/*
+  ============================================================
+  SPECIES ARCHIVE V2
+  ============================================================
+
+  A grade continua simples de usar,
+  mas cada Pokémon agora se comporta
+  como um registro do sistema.
+*/
+
+
+/*
+  ============================================================
+  ESTADO ATUAL DO ARQUIVO
+  ============================================================
+*/
+
+.archive-current-state {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 26px;
+}
+
+
+.archive-current-state span {
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.8px;
+
+  opacity: 0.42;
+}
+
+
+.archive-current-state strong {
+  position: relative;
+
+  padding-left: 15px;
+
+  font-size: 9px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+  color:
+    var(--archive-accent);
+}
+
+
+.archive-current-state strong::before {
+  content: '';
+
+  position: absolute;
+
+  left: 0;
+
+  top: 50%;
+
+  width: 7px;
+
+  height: 7px;
+
+  border-radius: 50%;
+
+  background:
+    var(--archive-accent);
+
+  transform:
+    translateY(-50%);
+}
+
+
+
+/*
+  ============================================================
+  FILTRO ATIVO
+  ============================================================
+*/
+
+.archive-v2
+.pokedex-type-filter.active {
+  border-color:
+    var(--archive-accent);
+
+  background:
+    var(--archive-accent);
+
+  color: #fff;
+}
+
+
+
+/*
+  ============================================================
+  LOADING
+  ============================================================
+*/
+
+.archive-loading {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding:
+    50px 0;
+}
+
+
+.archive-loading span {
+  width: 34px;
+
+  height: 1px;
+
+  background:
+    var(--archive-accent);
+
+  animation:
+    archive-loading-line
+    700ms
+    ease-in-out
+    infinite alternate;
+}
+
+
+.archive-loading p {
+  margin: 0;
+
+  font-size: 9px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.5;
+}
+
+
+@keyframes archive-loading-line {
+
+  from {
+    transform:
+      scaleX(0.25);
+
+    opacity: 0.25;
+  }
+
+
+  to {
+    transform:
+      scaleX(1);
+
+    opacity: 1;
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  GRID
+  ============================================================
+*/
+
+.archive-grid {
+  /*
+    Continuamos com 5 registros
+    em desktop grande.
+  */
+  grid-template-columns:
+    repeat(
+      5,
+      minmax(0, 1fr)
+    );
+}
+
+
+
+/*
+  ============================================================
+  REGISTRO
+  ============================================================
+*/
+
+.archive-record {
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: stretch;
+
+  min-width: 0;
+
+  min-height: 330px;
+
+  padding: 16px;
+
+  overflow: hidden;
+
+  isolation: isolate;
+
+  text-align: left;
+
+  /*
+    Sobrescreve o fundo
+    dos cards antigos.
+  */
+  background:
+    transparent;
+
+  transition:
+    background 350ms ease;
+}
+
+
+
+/*
+  Campo de cor.
+
+  Só aparece quando
+  interagimos com o registro.
+*/
+.archive-record::before {
+  content: '';
+
+  position: absolute;
+
+  z-index: -2;
+
+  inset: 0;
+
+  background:
+    var(--entry-soft);
+
+  opacity: 0;
+
+  transition:
+    opacity 350ms ease;
+}
+
+
+.archive-record:hover::before {
+  opacity: 0.72;
+}
+
+
+
+/*
+  Pequena linha de cor
+  aparece no topo.
+*/
+.archive-record::after {
+  content: '';
+
+  position: absolute;
+
+  left: 0;
+
+  top: 0;
+
+  width: 0;
+
+  height: 2px;
+
+  background:
+    var(--entry-accent);
+
+  transition:
+    width 450ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+.archive-record:hover::after {
+  width: 100%;
+}
+
+
+
+/*
+  ENTRY.
+*/
+.record-label {
+  position: absolute;
+
+  top: 16px;
+
+  right: 16px;
+
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.7px;
+
+  opacity: 0;
+
+  transform:
+    translateY(-4px);
+
+  transition:
+    opacity 200ms ease,
+    transform 300ms ease;
+}
+
+
+.archive-record:hover
+.record-label {
+  opacity: 0.4;
+
+  transform:
+    translateY(0);
+}
+
+
+
+/*
+  Número normal.
+*/
+.archive-record
+.pokedex-entry-number {
+  position: relative;
+
+  z-index: 5;
+
+  font-size: 8px;
+
+  letter-spacing: 1.6px;
+
+  transition:
+    color 250ms ease,
+    transform 300ms ease;
+}
+
+
+.archive-record:hover
+.pokedex-entry-number {
+  color:
+    var(--entry-accent);
+
+  transform:
+    translateX(4px);
+}
+
+
+
+/*
+  Número enorme ao fundo.
+*/
+.record-background-number {
+  position: absolute;
+
+  z-index: -1;
+
+  right: -8px;
+
+  top: 40px;
+
+  font-size:
+    clamp(
+      70px,
+      7vw,
+      120px
+    );
+
+  font-weight: 800;
+
+  line-height: 1;
+
+  letter-spacing: -7px;
+
+  color:
+    var(--entry-accent);
+
+  opacity: 0;
+
+  transform:
+    translateX(30px);
+
+  transition:
+    opacity 300ms ease,
+    transform 500ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+
+  pointer-events: none;
+}
+
+
+.archive-record:hover
+.record-background-number {
+  opacity: 0.055;
+
+  transform:
+    translateX(0);
+}
+
+
+
+/*
+  ============================================================
+  ÁREA VISUAL
+  ============================================================
+*/
+
+.archive-record-visual {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 100%;
+
+  height: 205px;
+
+  margin-top: 5px;
+}
+
+
+
+/*
+  Círculo técnico.
+
+  Normalmente quase invisível.
+*/
+.record-orbit {
+  position: absolute;
+
+  width: 145px;
+
+  height: 145px;
+
+  border:
+    1px solid
+    var(--entry-accent);
+
+  border-radius: 50%;
+
+  opacity: 0;
+
+  transform:
+    scale(0.82);
+
+  transition:
+    opacity 300ms ease,
+    transform 500ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+.record-orbit::after {
+  content: '';
+
+  position: absolute;
+
+  inset: 17%;
+
+  border:
+    1px dashed
+    var(--entry-accent);
+
+  border-radius: 50%;
+
+  opacity: 0.35;
+}
+
+
+.archive-record:hover
+.record-orbit {
+  opacity: 0.18;
+
+  transform:
+    scale(1);
+}
+
+
+
+/*
+  Pequenos eixos.
+*/
+.record-cross {
+  position: absolute;
+
+  background:
+    var(--entry-accent);
+
+  opacity: 0;
+
+  transition:
+    opacity 300ms ease;
+}
+
+
+.record-cross.horizontal {
+  width: 70%;
+
+  height: 1px;
+}
+
+
+.record-cross.vertical {
+  width: 1px;
+
+  height: 70%;
+}
+
+
+.archive-record:hover
+.record-cross {
+  opacity: 0.08;
+}
+
+
+
+/*
+  ============================================================
+  IMAGEM
+  ============================================================
+*/
+
+.archive-record
+.pokedex-entry-image {
+  position: relative;
+
+  z-index: 5;
+
+  width:
+    min(
+      90%,
+      175px
+    );
+
+  height: 175px;
+
+  object-fit: contain;
+
+  /*
+    Esse easing é usado bastante
+    na Home também.
+
+    Assim o site começa a ter
+    uma "linguagem de movimento".
+  */
+  transition:
+    transform 450ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    ),
+    filter 350ms ease;
+}
+
+
+.archive-record:hover
+.pokedex-entry-image {
+  transform:
+    translateY(-10px)
+    scale(1.08);
+
+  filter:
+    drop-shadow(
+      0 18px 12px
+      rgba(0, 0, 0, 0.09)
+    );
+}
+
+
+
+/*
+  ============================================================
+  SCANNER DO CARD
+  ============================================================
+*/
+
+.record-scan {
+  position: absolute;
+
+  z-index: 7;
+
+  left: 10%;
+
+  top: 7%;
+
+  bottom: 7%;
+
+  width: 1px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      transparent,
+      var(--entry-accent),
+      transparent
+    );
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+
+.archive-record:hover
+.record-scan {
+  animation:
+    record-scan
+    750ms
+    ease
+    both;
+}
+
+
+@keyframes record-scan {
+
+  0% {
+    left: 12%;
+
+    opacity: 0;
+  }
+
+
+  20% {
+    opacity: 0.35;
+  }
+
+
+  80% {
+    opacity: 0.18;
+  }
+
+
+  100% {
+    left: 88%;
+
+    opacity: 0;
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  INFORMAÇÕES
+  ============================================================
+*/
+
+.record-information {
+  position: relative;
+
+  z-index: 6;
+
+  display: flex;
+
+  flex-direction: column;
+
+  min-width: 0;
+
+  margin-top: auto;
+}
+
+
+.archive-record
+.pokedex-entry-name {
+  font-size: 18px;
+
+  transition:
+    transform 350ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+.archive-record:hover
+.pokedex-entry-name {
+  transform:
+    translateY(-3px);
+}
+
+
+
+/*
+  Tipos.
+*/
+.archive-record
+.pokedex-entry-types {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 5px;
+
+  margin-top: 7px;
+}
+
+
+
+/*
+  ============================================================
+  VIEW FIELD RECORD
+  ============================================================
+
+  Só aparece durante interação.
+*/
+
+.record-open {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  width: 100%;
+
+  max-height: 0;
+
+  margin-top: 0;
+
+  overflow: hidden;
+
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.5px;
+
+  color:
+    var(--entry-accent);
+
+  opacity: 0;
+
+  transform:
+    translateY(8px);
+
+  transition:
+    opacity 250ms ease,
+    transform 350ms ease,
+    max-height 350ms ease,
+    margin-top 350ms ease;
+}
+
+
+.record-open b {
+  font-size: 12px;
+
+  font-weight: 400;
+
+  transition:
+    transform 300ms ease;
+}
+
+
+.archive-record:hover
+.record-open {
+  max-height: 25px;
+
+  margin-top: 12px;
+
+  opacity: 1;
+
+  transform:
+    translateY(0);
+}
+
+
+.archive-record:hover
+.record-open b {
+  transform:
+    translate(
+      3px,
+      -3px
+    );
+}
+
+
+
+/*
+  ============================================================
+  FILTER TRANSITION FEEDBACK
+  ============================================================
+
+  Quando um tipo específico está ativo,
+  usamos a cor dele em alguns detalhes
+  da página, mas sem pintar tudo.
+*/
+
+.archive-v2
+.pokedex-results strong {
+  color:
+    var(--archive-accent);
+
+  transition:
+    color 300ms ease;
+}
+
+
+
+/*
+  ============================================================
+  DESKTOP MENOR
+  ============================================================
+*/
+
+@media (
+  min-width: 901px
+)
+and (
+  max-width: 1250px
+) {
+
+  .archive-grid {
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(0, 1fr)
+      );
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  ACESSIBILIDADE
+  ============================================================
+*/
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .archive-record,
+  .archive-record *,
+  .archive-loading span {
+    animation: none !important;
+
+    transition: none !important;
+  }
+
+}
+
+/*
+  ============================================================
+  SPECIES ARCHIVE V2.1
+  MOTION REFINEMENT
+  ============================================================
+
+  Objetivo:
+
+  mouse entra
+      ↓
+  1. fundo reage
+      ↓
+  2. Pokémon sobe
+      ↓
+  3. elementos técnicos aparecem
+      ↓
+  4. scanner atravessa
+      ↓
+  5. informações finais entram
+
+  Isso é "stagger":
+
+  vários elementos começam
+  em momentos ligeiramente diferentes.
+*/
+
+
+/*
+  ============================================================
+  1. CAMPO DE COR
+  ============================================================
+
+  Essa é a PRIMEIRA reação.
+
+  Ficamos um pouco mais fortes
+  que na versão anterior.
+*/
+
+.archive-record::before {
+  transition:
+    opacity
+    280ms
+    ease;
+}
+
+
+.archive-record:hover::before {
+  opacity: 0.88;
+}
+
+
+
+/*
+  Linha superior começa imediatamente.
+*/
+.archive-record::after {
+  transition:
+    width
+    420ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+
+/*
+  ============================================================
+  2. POKÉMON
+  ============================================================
+
+  Começa alguns milissegundos depois
+  do fundo.
+*/
+
+.archive-record
+.pokedex-entry-image {
+  transition:
+    transform
+    470ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    45ms,
+
+    filter
+    350ms
+    ease
+    45ms;
+}
+
+
+.archive-record:hover
+.pokedex-entry-image {
+  /*
+    Antes era -10px / 1.08.
+
+    Aumentamos só um pouco
+    para ficar mais perceptível.
+  */
+  transform:
+    translateY(-15px)
+    scale(1.11);
+
+  filter:
+    drop-shadow(
+      0 20px 14px
+      rgba(
+        0,
+        0,
+        0,
+        0.11
+      )
+    );
+}
+
+
+
+/*
+  ============================================================
+  3. CÍRCULO TÉCNICO
+  ============================================================
+
+  Entra DEPOIS do Pokémon começar
+  a se mover.
+*/
+
+.record-orbit {
+  transform:
+    scale(0.72);
+
+  transition:
+    opacity
+    260ms
+    ease
+    90ms,
+
+    transform
+    520ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    90ms;
+}
+
+
+.archive-record:hover
+.record-orbit {
+  /*
+    Um pouco mais visível.
+  */
+  opacity: 0.28;
+
+  transform:
+    scale(1);
+}
+
+
+
+/*
+  As cruzes técnicas entram
+  ligeiramente depois do círculo.
+*/
+
+.record-cross {
+  transition:
+    opacity
+    280ms
+    ease
+    140ms;
+}
+
+
+.archive-record:hover
+.record-cross {
+  opacity: 0.13;
+}
+
+
+
+/*
+  ============================================================
+  4. NÚMERO GRANDE
+  ============================================================
+
+  Ele não precisa aparecer imediatamente.
+
+  Queremos que pareça uma informação
+  revelada pelo registro.
+*/
+
+.record-background-number {
+  transform:
+    translateX(42px);
+
+  transition:
+    opacity
+    300ms
+    ease
+    130ms,
+
+    transform
+    520ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    130ms;
+}
+
+
+.archive-record:hover
+.record-background-number {
+  /*
+    Antes: 0.055.
+
+    Agora continua discreto,
+    mas dá para perceber melhor.
+  */
+  opacity: 0.085;
+
+  transform:
+    translateX(0);
+}
+
+
+
+/*
+  ============================================================
+  5. ENTRY + NÚMERO PEQUENO
+  ============================================================
+*/
+
+.record-label {
+  transition:
+    opacity
+    220ms
+    ease
+    170ms,
+
+    transform
+    320ms
+    ease
+    170ms;
+}
+
+
+.archive-record
+.pokedex-entry-number {
+  transition:
+    color
+    220ms
+    ease,
+
+    transform
+    320ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    120ms;
+}
+
+
+
+/*
+  ============================================================
+  6. NOME
+  ============================================================
+*/
+
+.archive-record
+.pokedex-entry-name {
+  transition:
+    transform
+    350ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    130ms;
+}
+
+
+.archive-record:hover
+.pokedex-entry-name {
+  transform:
+    translateY(-5px);
+}
+
+
+
+/*
+  ============================================================
+  7. VIEW FIELD RECORD
+  ============================================================
+
+  Esse é praticamente o último
+  elemento a aparecer.
+*/
+
+.record-open {
+  transition:
+    opacity
+    280ms
+    ease
+    190ms,
+
+    transform
+    380ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    190ms,
+
+    max-height
+    350ms
+    ease
+    160ms,
+
+    margin-top
+    350ms
+    ease
+    160ms;
+}
+
+
+
+/*
+  ============================================================
+  8. SCANNER
+  ============================================================
+
+  O scanner começa depois que
+  o resto do registro já reagiu.
+*/
+
+.archive-record:hover
+.record-scan {
+  animation:
+    record-scan-v2
+    780ms
+    170ms
+    cubic-bezier(
+      0.4,
+      0,
+      0.2,
+      1
+    )
+    both;
+}
+
+
+@keyframes record-scan-v2 {
+
+  0% {
+    left: 10%;
+
+    opacity: 0;
+  }
+
+
+  15% {
+    opacity: 0.48;
+  }
+
+
+  65% {
+    opacity: 0.28;
+  }
+
+
+  100% {
+    left: 90%;
+
+    opacity: 0;
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  SAÍDA DO HOVER
+  ============================================================
+
+  Quando o mouse sai, não queremos
+  esperar os mesmos delays.
+
+  Tudo volta mais rapidamente.
+*/
+
+.archive-record:not(:hover)::before,
+.archive-record:not(:hover)::after,
+.archive-record:not(:hover)
+.pokedex-entry-image,
+.archive-record:not(:hover)
+.record-orbit,
+.archive-record:not(:hover)
+.record-cross,
+.archive-record:not(:hover)
+.record-background-number,
+.archive-record:not(:hover)
+.record-label,
+.archive-record:not(:hover)
+.pokedex-entry-number,
+.archive-record:not(:hover)
+.pokedex-entry-name,
+.archive-record:not(:hover)
+.record-open {
+  transition-delay: 0ms;
+}
+
+/*
+  ============================================================
+  TYPE ANALYSIS V2
+  ============================================================
+
+  A página agora funciona como
+  um sistema de análise.
+
+  Cada linha contém três classes.
+
+  Quando uma fica ativa:
+
+  - ela expande;
+  - as vizinhas cedem espaço;
+  - aparece informação adicional;
+  - elementos técnicos reagem.
+*/
+
+
+/*
+  ============================================================
+  INTRO
+  ============================================================
+*/
+
+.types-analysis-intro {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-end;
+
+  gap: 60px;
+
+  margin-top: 52px;
+
+  margin-bottom: 46px;
+}
+
+
+.types-analysis-intro > div:first-child {
+  max-width: 650px;
+}
+
+
+.types-analysis-intro h1 {
+  margin:
+    12px 0 0;
+
+  font-size:
+    clamp(
+      58px,
+      6vw,
+      92px
+    );
+
+  line-height:
+    0.9;
+
+  letter-spacing:
+    -5px;
+}
+
+
+.types-analysis-intro p {
+  max-width: 500px;
+
+  margin-top: 22px;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+  opacity: 0.58;
+}
+
+
+
+/*
+  ============================================================
+  HEADER DATA
+  ============================================================
+*/
+
+.type-analysis-header-data {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  gap: 4px;
+}
+
+
+.type-analysis-header-data span {
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.42;
+}
+
+
+.type-analysis-header-data strong {
+  font-size: 10px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.3px;
+}
+
+
+
+/*
+  ============================================================
+  LIVE READOUT
+  ============================================================
+*/
+
+.type-live-readout {
+  min-width: 190px;
+
+  padding:
+    0 0 8px 18px;
+
+  border-left:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.16
+    );
+}
+
+
+.type-live-readout > span {
+  display: block;
+
+  margin-bottom: 14px;
+
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.4;
+}
+
+
+.type-live-readout div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+
+.type-live-readout strong {
+  font-size: 22px;
+
+  letter-spacing: -1px;
+
+  color:
+    var(--active-type-color);
+
+  transition:
+    color
+    250ms ease;
+}
+
+
+.type-live-readout small {
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+  opacity: 0.45;
+}
+
+
+
+/*
+  ============================================================
+  GRID
+  ============================================================
+*/
+
+.types-analysis-grid {
+  border-top:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.16
+    );
+}
+
+
+
+/*
+  ============================================================
+  LINHA
+  ============================================================
+
+  Flex é importante aqui.
+
+  Cada card começa com:
+
+  flex: 1
+
+  Quando um fica ativo:
+
+  flex: 1.38
+
+  e os outros:
+
+  flex: 0.81
+
+  O navegador redistribui
+  o espaço automaticamente.
+*/
+
+.types-analysis-row {
+  display: flex;
+
+  width: 100%;
+}
+
+
+
+/*
+  ============================================================
+  CARD
+  ============================================================
+*/
+
+.type-analysis-card {
+  position: relative;
+
+  flex: 1;
+
+  min-width: 0;
+
+  min-height: 300px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  padding: 18px 20px;
+
+  border: 0;
+
+  border-right:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.16
+    );
+
+  border-bottom:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.16
+    );
+
+  background:
+    transparent;
+
+  color: inherit;
+
+  font-family: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  isolation: isolate;
+
+  /*
+    Aqui está a animação física
+    de expansão.
+  */
+  transition:
+    flex
+    520ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    ),
+    background
+    350ms ease;
+}
+
+
+
+/*
+  Uma linha possui um ativo.
+
+  Todos cedem espaço...
+*/
+.types-analysis-row.has-active
+.type-analysis-card {
+  flex: 0.82;
+}
+
+
+
+/*
+  ...menos o ativo.
+*/
+.types-analysis-row.has-active
+.type-analysis-card.is-active {
+  flex: 1.36;
+
+  background:
+    var(--type-soft);
+}
+
+
+
+/*
+  ============================================================
+  CAMPO DE COR
+  ============================================================
+*/
+
+.type-analysis-card::before {
+  content: '';
+
+  position: absolute;
+
+  z-index: -3;
+
+  width: 310px;
+
+  height: 310px;
+
+  right: -160px;
+
+  bottom: -170px;
+
+  border-radius: 50%;
+
+  background:
+    var(--type-accent);
+
+  opacity: 0.035;
+
+  transform:
+    scale(0.8);
+
+  transition:
+    opacity
+    350ms ease,
+
+    transform
+    600ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+.type-analysis-card.is-active::before {
+  opacity: 0.1;
+
+  transform:
+    scale(1.3);
+}
+
+
+
+/*
+  Linha colorida superior.
+*/
+.type-analysis-card::after {
+  content: '';
+
+  position: absolute;
+
+  left: 0;
+
+  top: 0;
+
+  width: 0;
+
+  height: 2px;
+
+  background:
+    var(--type-accent);
+
+  transition:
+    width
+    500ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+.type-analysis-card.is-active::after {
+  width: 100%;
+}
+
+
+
+/*
+  ============================================================
+  TOPLINE
+  ============================================================
+*/
+
+.analysis-card-topline {
+  position: relative;
+
+  z-index: 10;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.8px;
+
+  opacity: 0.4;
+}
+
+
+
+/*
+  ============================================================
+  MARCA GIGANTE
+  ============================================================
+
+  FI
+  WA
+  GH
+  etc.
+*/
+
+.analysis-background-mark {
+  position: absolute;
+
+  z-index: -1;
+
+  right: -5px;
+
+  top: 34px;
+
+  font-size:
+    clamp(
+      100px,
+      10vw,
+      165px
+    );
+
+  font-weight: 800;
+
+  line-height: 1;
+
+  letter-spacing: -10px;
+
+  color:
+    var(--type-accent);
+
+  opacity: 0;
+
+  transform:
+    translateX(35px);
+
+  transition:
+    opacity
+    350ms ease
+    100ms,
+
+    transform
+    600ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    100ms;
+}
+
+
+.type-analysis-card.is-active
+.analysis-background-mark {
+  opacity: 0.07;
+
+  transform:
+    translateX(0);
+}
+
+
+
+/*
+  ============================================================
+  ORBIT
+  ============================================================
+*/
+
+.analysis-orbit {
+  position: absolute;
+
+  z-index: -1;
+
+  width: 180px;
+
+  height: 180px;
+
+  right: 20px;
+
+  top: 67px;
+
+  border:
+    1px solid
+    var(--type-accent);
+
+  border-radius: 50%;
+
+  opacity: 0;
+
+  transform:
+    scale(0.65)
+    rotate(-15deg);
+
+  transition:
+    opacity
+    300ms ease
+    70ms,
+
+    transform
+    650ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    70ms;
+}
+
+
+.analysis-orbit span {
+  position: absolute;
+
+  inset: 17%;
+
+  border:
+    1px dashed
+    var(--type-accent);
+
+  border-radius: 50%;
+}
+
+
+.type-analysis-card.is-active
+.analysis-orbit {
+  opacity: 0.18;
+
+  transform:
+    scale(1)
+    rotate(0deg);
+}
+
+
+
+/*
+  ============================================================
+  CONTEÚDO PRINCIPAL
+  ============================================================
+*/
+
+.analysis-main {
+  position: relative;
+
+  z-index: 5;
+
+  display: flex;
+
+  flex-direction: column;
+
+  margin-top: 54px;
+
+  max-width: 310px;
+
+  transition:
+    transform
+    500ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+.type-analysis-card.is-active
+.analysis-main {
+  transform:
+    translateY(-5px);
+}
+
+
+.analysis-kicker {
+  margin-bottom: 7px;
+
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.6px;
+
+  color:
+    var(--type-accent);
+
+  opacity: 0.65;
+}
+
+
+.analysis-type-name {
+  font-size:
+    clamp(
+      31px,
+      3vw,
+      46px
+    );
+
+  line-height: 0.95;
+
+  letter-spacing: -2.5px;
+
+  color:
+    var(--type-accent);
+}
+
+
+.analysis-description {
+  max-width: 270px;
+
+  margin-top: 12px;
+
+  font-size: 11px;
+
+  line-height: 1.55;
+
+  opacity: 0.56;
+}
+
+
+
+/*
+  ============================================================
+  SPECIES LIST
+  ============================================================
+*/
+
+.analysis-species {
+  position: absolute;
+
+  z-index: 8;
+
+  right: 22px;
+
+  bottom: 67px;
+}
+
+
+.analysis-species-list {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  gap: 4px;
+}
+
+
+.analysis-species-list > span {
+  display: flex;
+
+  align-items: baseline;
+
+  gap: 9px;
+
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+
+.analysis-species-list small {
+  font-size: 6px;
+
+  font-weight: 400;
+
+  letter-spacing: 1px;
+
+  opacity: 0.4;
+}
+
+
+
+/*
+  ============================================================
+  FOOTER
+  ============================================================
+*/
+
+.analysis-card-footer {
+  position: relative;
+
+  z-index: 10;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-top: auto;
+
+  padding-top: 25px;
+
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.5px;
+
+  color:
+    var(--type-accent);
+}
+
+
+.analysis-card-footer strong {
+  font-size: 15px;
+
+  font-weight: 400;
+
+  transition:
+    transform
+    350ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+.type-analysis-card.is-active
+.analysis-card-footer strong {
+  transform:
+    translateX(6px);
+}
+
+
+
+/*
+  ============================================================
+  SCANNER
+  ============================================================
+*/
+
+.analysis-scan-line {
+  position: absolute;
+
+  z-index: 15;
+
+  left: 6%;
+
+  top: 8%;
+
+  bottom: 8%;
+
+  width: 1px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      transparent,
+      var(--type-accent),
+      transparent
+    );
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+
+.type-analysis-card.is-active
+.analysis-scan-line {
+  animation:
+    type-analysis-scan
+    850ms
+    120ms
+    ease
+    both;
+}
+
+
+@keyframes type-analysis-scan {
+
+  0% {
+    left: 8%;
+
+    opacity: 0;
+  }
+
+
+  15% {
+    opacity: 0.4;
+  }
+
+
+  70% {
+    opacity: 0.18;
+  }
+
+
+  100% {
+    left: 92%;
+
+    opacity: 0;
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  TABLET / TEMPORÁRIO
+  ============================================================
+
+  Responsividade definitiva vem depois.
+
+  Aqui apenas impedimos a página
+  de quebrar durante o desenvolvimento.
+*/
+
+@media (max-width: 1000px) {
+
+  .types-analysis-intro {
+    align-items:
+      flex-start;
+  }
+
+
+  /*
+    Em telas menores não fazemos
+    expansão horizontal.
+
+    Fica uma coluna simples.
+  */
+  .types-analysis-row {
+    display: grid;
+
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .types-analysis-row.has-active
+  .type-analysis-card,
+  .types-analysis-row.has-active
+  .type-analysis-card.is-active {
+    flex: none;
+  }
+
+
+  .type-analysis-card {
+    min-height: 280px;
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  REDUCED MOTION
+  ============================================================
+*/
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .type-analysis-card,
+  .type-analysis-card *,
+  .type-live-readout * {
+    animation:
+      none !important;
+
+    transition:
+      none !important;
+  }
+
+}
+
+/*
+  ============================================================
+  TYPE LABORATORY V3
+  ============================================================
+*/
+
+
+/*
+  ============================================================
+  INTRO
+  ============================================================
+*/
+
+.type-lab-intro {
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    flex-end;
+
+  gap: 60px;
+
+  margin-top: 48px;
+
+  margin-bottom: 38px;
+}
+
+
+.type-lab-intro h1 {
+  margin:
+    10px 0 0;
+
+  font-size:
+    clamp(
+      56px,
+      5.7vw,
+      88px
+    );
+
+  line-height: 0.9;
+
+  letter-spacing: -5px;
+}
+
+
+.type-lab-intro p {
+  max-width: 470px;
+
+  margin-top: 20px;
+
+  font-size: 13px;
+
+  line-height: 1.55;
+
+  opacity: 0.56;
+}
+
+
+
+/*
+  ============================================================
+  HEADER INFO
+  ============================================================
+*/
+
+.type-lab-header-data,
+.type-lab-status {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  gap: 4px;
+}
+
+
+.type-lab-header-data span,
+.type-lab-status span {
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.4;
+}
+
+
+.type-lab-header-data strong,
+.type-lab-status strong {
+  font-size: 10px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+}
+
+
+
+/*
+  ============================================================
+  LABORATORY INTERFACE
+  ============================================================
+*/
+
+.type-lab-interface {
+  display: grid;
+
+  grid-template-columns:
+    minmax(
+      190px,
+      0.24fr
+    )
+    minmax(
+      0,
+      1fr
+    );
+
+  min-height: 650px;
+
+  border:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.16
+    );
+}
+
+
+
+/*
+  ============================================================
+  INDEX
+  ============================================================
+*/
+
+.type-lab-index {
+  border-right:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.16
+    );
+}
+
+
+.type-index-heading {
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items: center;
+
+  min-height: 52px;
+
+  padding:
+    0 16px;
+
+  border-bottom:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.16
+    );
+}
+
+
+.type-index-heading span,
+.type-index-heading strong {
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.7px;
+}
+
+
+.type-index-heading span {
+  opacity: 0.45;
+}
+
+
+
+/*
+  ============================================================
+  INDEX ITEM
+  ============================================================
+*/
+
+.type-index-item {
+  position: relative;
+
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    30px
+    1fr
+    16px;
+
+  align-items: center;
+
+  gap: 8px;
+
+  min-height: 32px;
+
+  padding:
+    0 14px;
+
+  overflow: hidden;
+
+  border: 0;
+
+  border-bottom:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.09
+    );
+
+  background:
+    transparent;
+
+  color: inherit;
+
+  font-family: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background
+    220ms ease,
+    padding-left
+    320ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+.type-index-item span {
+  font-size: 7px;
+
+  letter-spacing: 1px;
+
+  opacity: 0.35;
+}
+
+
+.type-index-item strong {
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+
+.type-index-item i {
+  justify-self: end;
+
+  width: 5px;
+
+  height: 5px;
+
+  border-radius: 50%;
+
+  background:
+    currentColor;
+
+  opacity: 0;
+
+  transform:
+    scale(0);
+
+  transition:
+    opacity
+    200ms ease,
+    transform
+    300ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+
+/*
+  Selecionado.
+*/
+.type-index-item.is-selected {
+  padding-left: 19px;
+
+  background:
+    var(--lab-soft);
+
+  color:
+    var(--lab-accent);
+}
+
+
+.type-index-item.is-selected i {
+  opacity: 1;
+
+  transform:
+    scale(1);
+}
+
+
+
+/*
+  Linha colorida do selecionado.
+*/
+.type-index-item::before {
+  content: '';
+
+  position: absolute;
+
+  left: 0;
+
+  top: 0;
+
+  bottom: 0;
+
+  width: 2px;
+
+  background:
+    var(--lab-accent);
+
+  transform:
+    scaleY(0);
+
+  transition:
+    transform
+    320ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+.type-index-item.is-selected::before {
+  transform:
+    scaleY(1);
+}
+
+
+
+/*
+  ============================================================
+  STAGE
+  ============================================================
+*/
+
+.type-lab-stage {
+  position: relative;
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  isolation: isolate;
+}
+
+
+
+/*
+  Campo de cor.
+*/
+.type-lab-field {
+  position: absolute;
+
+  z-index: -5;
+
+  width: 720px;
+
+  height: 720px;
+
+  right: -240px;
+
+  top: -130px;
+
+  border-radius: 50%;
+
+  background:
+    var(--lab-soft);
+
+  opacity: 0.75;
+
+  filter:
+    blur(20px);
+
+  transition:
+    background
+    450ms ease;
+}
+
+
+
+/*
+  ============================================================
+  ANALYSIS STAGE
+  ============================================================
+*/
+
+.type-analysis-stage {
+  position: relative;
+
+  min-height: 648px;
+
+  padding:
+    26px 30px 24px;
+
+  overflow: hidden;
+}
+
+
+
+/*
+  ============================================================
+  MARCA GIGANTE
+  ============================================================
+*/
+
+.lab-type-mark {
+  position: absolute;
+
+  z-index: -2;
+
+  top: 6px;
+
+  right: -12px;
+
+  font-size:
+    clamp(
+      170px,
+      18vw,
+      300px
+    );
+
+  font-weight: 800;
+
+  line-height: 1;
+
+  letter-spacing: -18px;
+
+  color:
+    var(--lab-accent);
+
+  opacity: 0.055;
+
+  pointer-events: none;
+}
+
+
+
+/*
+  ============================================================
+  ORBIT
+  ============================================================
+*/
+
+.lab-orbit {
+  position: absolute;
+
+  z-index: -1;
+
+  width: 410px;
+
+  height: 410px;
+
+  right: 10%;
+
+  top: 76px;
+
+  border:
+    1px solid
+    var(--lab-accent);
+
+  border-radius: 50%;
+
+  opacity: 0.16;
+
+  animation:
+    lab-orbit-enter
+    700ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    both;
+}
+
+
+.lab-orbit span {
+  position: absolute;
+
+  inset: 18%;
+
+  border:
+    1px dashed
+    var(--lab-accent);
+
+  border-radius: 50%;
+
+  opacity: 0.45;
+}
+
+
+@keyframes lab-orbit-enter {
+
+  from {
+    opacity: 0;
+
+    transform:
+      scale(0.78)
+      rotate(-12deg);
+  }
+
+
+  to {
+    opacity: 0.16;
+
+    transform:
+      scale(1)
+      rotate(0deg);
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  EIXOS
+  ============================================================
+*/
+
+.lab-axis {
+  position: absolute;
+
+  z-index: -2;
+
+  background:
+    var(--lab-accent);
+
+  opacity: 0.07;
+}
+
+
+.lab-axis.horizontal {
+  width: 58%;
+
+  height: 1px;
+
+  right: 3%;
+
+  top: 282px;
+}
+
+
+.lab-axis.vertical {
+  width: 1px;
+
+  height: 60%;
+
+  right: 31%;
+
+  top: 90px;
+}
+
+
+
+/*
+  ============================================================
+  HEADING
+  ============================================================
+*/
+
+.lab-type-heading {
+  position: relative;
+
+  z-index: 10;
+
+  max-width: 360px;
+}
+
+
+.lab-type-heading > span {
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.4;
+}
+
+
+.lab-type-heading h2 {
+  margin:
+    8px 0 0;
+
+  font-size:
+    clamp(
+      58px,
+      6vw,
+      94px
+    );
+
+  line-height: 0.88;
+
+  letter-spacing: -6px;
+
+  color:
+    var(--lab-accent);
+}
+
+
+.lab-type-heading p {
+  max-width: 320px;
+
+  margin-top: 15px;
+
+  font-size: 11px;
+
+  line-height: 1.55;
+
+  opacity: 0.58;
+}
+
+
+
+/*
+  ============================================================
+  RECORD COUNT
+  ============================================================
+*/
+
+.lab-record-count {
+  display: flex;
+
+  align-items:
+    flex-end;
+
+  gap: 9px;
+
+  margin-top: 20px;
+}
+
+
+.lab-record-count strong {
+  font-size: 42px;
+
+  line-height: 0.85;
+
+  letter-spacing: -2px;
+}
+
+
+.lab-record-count span {
+  font-size: 7px;
+
+  line-height: 1.2;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.2px;
+
+  opacity: 0.45;
+}
+
+
+
+/*
+  ============================================================
+  REPRESENTATIVE POKÉMON
+  ============================================================
+*/
+
+.lab-specimens {
+  position: absolute;
+
+  z-index: 8;
+
+  left: 35%;
+
+  right: 4%;
+
+  top: 75px;
+
+  height: 395px;
+
+  pointer-events: none;
+}
+
+
+
+/*
+  Cada Pokémon é botão,
+  então reativamos interação
+  individualmente.
+*/
+.lab-specimen {
+  position: absolute;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  color: inherit;
+
+  font-family: inherit;
+
+  cursor: pointer;
+
+  pointer-events: auto;
+}
+
+
+
+/*
+  Pokémon principal.
+*/
+.lab-specimen.specimen-1 {
+  z-index: 6;
+
+  width: 300px;
+
+  left: 31%;
+
+  top: 30px;
+}
+
+
+
+/*
+  Pokémon secundário esquerdo.
+*/
+.lab-specimen.specimen-2 {
+  z-index: 4;
+
+  width: 210px;
+
+  left: 4%;
+
+  top: 155px;
+}
+
+
+
+/*
+  Pokémon secundário direito.
+*/
+.lab-specimen.specimen-3 {
+  z-index: 5;
+
+  width: 220px;
+
+  right: 2%;
+
+  top: 158px;
+}
+
+
+
+.lab-specimen img {
+  display: block;
+
+  width: 100%;
+
+  height: 245px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 22px 15px
+      rgba(
+        0,
+        0,
+        0,
+        0.08
+      )
+    );
+
+  transition:
+    transform
+    450ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    ),
+    filter
+    350ms ease;
+}
+
+
+.lab-specimen:hover img {
+  transform:
+    translateY(-8px)
+    scale(1.055);
+
+  filter:
+    drop-shadow(
+      0 28px 17px
+      rgba(
+        0,
+        0,
+        0,
+        0.13
+      )
+    );
+}
+
+
+
+/*
+  Nome/ID.
+*/
+.lab-specimen > span,
+.lab-specimen > strong {
+  position: absolute;
+
+  left: 50%;
+
+  transform:
+    translateX(-50%);
+
+  white-space: nowrap;
+
+  opacity: 0;
+
+  transition:
+    opacity 200ms ease,
+    transform 300ms ease;
+}
+
+
+.lab-specimen > span {
+  bottom: -4px;
+
+  font-size: 6px;
+
+  letter-spacing: 1px;
+}
+
+
+.lab-specimen > strong {
+  bottom: -19px;
+
+  font-size: 10px;
+}
+
+
+.lab-specimen:hover > span,
+.lab-specimen:hover > strong {
+  opacity: 0.7;
+
+  transform:
+    translateX(-50%)
+    translateY(-2px);
+}
+
+
+
+/*
+  ============================================================
+  SEM ESPÉCIES
+  ============================================================
+*/
+
+.lab-no-specimens {
+  position: absolute;
+
+  right: 17%;
+
+  top: 150px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+}
+
+
+.lab-no-specimens span {
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.4;
+}
+
+
+.lab-no-specimens strong {
+  margin-top: 5px;
+
+  font-size: 100px;
+
+  line-height: 1;
+
+  letter-spacing: -7px;
+
+  color:
+    var(--lab-accent);
+
+  opacity: 0.07;
+}
+
+
+
+/*
+  ============================================================
+  RELAÇÕES
+  ============================================================
+*/
+
+.lab-relations {
+  position: absolute;
+
+  left: 30px;
+
+  right: 30px;
+
+  bottom: 92px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  border-top:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.14
+    );
+
+  border-bottom:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.14
+    );
+}
+
+
+.lab-relation {
+  min-width: 0;
+
+  padding:
+    13px 15px
+    13px 0;
+}
+
+
+.lab-relation:not(:last-child) {
+  border-right:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.12
+    );
+
+  margin-right: 15px;
+}
+
+
+.lab-relation > span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.5px;
+
+  opacity: 0.4;
+}
+
+
+.lab-relation div {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap:
+    5px 10px;
+}
+
+
+.lab-relation strong {
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.7px;
+
+  color:
+    var(--lab-accent);
+}
+
+
+.lab-relation em {
+  font-size: 10px;
+
+  font-style: normal;
+
+  opacity: 0.35;
+}
+
+
+
+/*
+  ============================================================
+  OPEN SPECIES
+  ============================================================
+*/
+
+.lab-open-species {
+  position: absolute;
+
+  left: 30px;
+
+  right: 30px;
+
+  bottom: 25px;
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items: center;
+
+  padding: 0;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  color: inherit;
+
+  font-family: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+
+.lab-open-species span {
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.5px;
+
+  opacity: 0.4;
+}
+
+
+.lab-open-species strong {
+  font-size: 10px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.8px;
+
+  color:
+    var(--lab-accent);
+
+  transition:
+    transform
+    300ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+.lab-open-species:hover strong {
+  transform:
+    translateX(7px);
+}
+
+
+
+/*
+  ============================================================
+  SCANNER
+  ============================================================
+*/
+
+.lab-scan {
+  position: absolute;
+
+  z-index: 20;
+
+  top: 7%;
+
+  bottom: 18%;
+
+  left: 30%;
+
+  width: 1px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      transparent,
+      var(--lab-accent),
+      transparent
+    );
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  animation:
+    lab-scan
+    850ms
+    100ms
+    ease
+    both;
+}
+
+
+@keyframes lab-scan {
+
+  0% {
+    left: 31%;
+
+    opacity: 0;
+  }
+
+
+  18% {
+    opacity: 0.45;
+  }
+
+
+  75% {
+    opacity: 0.18;
+  }
+
+
+  100% {
+    left: 94%;
+
+    opacity: 0;
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  LOADING
+  ============================================================
+*/
+
+.type-lab-loading {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  min-height: 648px;
+
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.5;
+}
+
+
+.type-lab-loading span {
+  width: 38px;
+
+  height: 1px;
+
+  background:
+    var(--lab-accent);
+
+  animation:
+    archive-loading-line
+    700ms
+    infinite
+    alternate;
+}
+
+
+
+/*
+  ============================================================
+  TEMPORÁRIO PARA TELAS MENORES
+  ============================================================
+
+  Responsividade final continua
+  sendo uma etapa posterior.
+*/
+
+@media (max-width: 1050px) {
+
+  .type-lab-interface {
+    grid-template-columns:
+      170px
+      minmax(
+        0,
+        1fr
+      );
+  }
+
+
+  .lab-specimens {
+    opacity: 0.85;
+  }
+
+
+  .lab-specimen.specimen-1 {
+    width: 240px;
+  }
+
+
+  .lab-specimen.specimen-2,
+  .lab-specimen.specimen-3 {
+    width: 170px;
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  REDUCED MOTION
+  ============================================================
+*/
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .type-lab *,
+  .type-lab *::before,
+  .type-lab *::after {
+    animation:
+      none !important;
+
+    transition:
+      none !important;
+  }
+
+}
+
+/*
+  ============================================================
+  TYPE OBSERVATORY — V4
+  ============================================================
+*/
+
+
+/*
+  ============================================================
+  HEADER / INTRO
+  ============================================================
+*/
+
+.obs-header-data,
+.obs-status {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  gap: 4px;
+}
+
+
+.obs-header-data span,
+.obs-status span {
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.4;
+}
+
+
+.obs-header-data strong,
+.obs-status strong {
+  font-size: 9px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+}
+
+
+.obs-intro {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-end;
+
+  gap: 60px;
+
+  margin-top: 48px;
+
+  margin-bottom: 34px;
+}
+
+
+.obs-intro > div:first-child {
+  max-width: 660px;
+}
+
+
+.obs-intro h1 {
+  margin: 10px 0 0;
+
+  font-size:
+    clamp(
+      58px,
+      5.8vw,
+      90px
+    );
+
+  line-height: 0.89;
+
+  letter-spacing: -5px;
+}
+
+
+.obs-intro p {
+  max-width: 490px;
+
+  margin-top: 20px;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+  opacity: 0.56;
+}
+
+
+
+/*
+  ============================================================
+  TYPE RAIL
+  ============================================================
+
+  Uma única faixa horizontal.
+
+  Não existe mais sidebar.
+*/
+
+.type-rail {
+  display: flex;
+
+  width: 100%;
+
+  overflow-x: auto;
+
+  border-top:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.16
+    );
+
+  border-bottom:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.16
+    );
+
+  scrollbar-width: none;
+}
+
+
+.type-rail::-webkit-scrollbar {
+  display: none;
+}
+
+
+
+/*
+  Cada tipo ocupa uma pequena
+  parte da faixa.
+*/
+.type-rail-item {
+  position: relative;
+
+  flex: 0 0 auto;
+
+  min-width: 91px;
+
+  height: 58px;
+
+  display: grid;
+
+  grid-template-columns:
+    auto
+    8px
+    1fr;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding:
+    0 12px;
+
+  border: 0;
+
+  border-right:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.08
+    );
+
+  background:
+    transparent;
+
+  color: inherit;
+
+  font-family: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background
+    220ms ease,
+    color
+    220ms ease;
+}
+
+
+.type-rail-item:hover {
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.025
+    );
+}
+
+
+.type-rail-item.is-selected {
+  color:
+    var(--obs-accent);
+
+  background:
+    var(--obs-soft);
+}
+
+
+
+.rail-index {
+  font-size: 6px;
+
+  letter-spacing: 1px;
+
+  opacity: 0.35;
+}
+
+
+.rail-dot {
+  width: 5px;
+
+  height: 5px;
+
+  border:
+    1px solid
+    currentColor;
+
+  border-radius: 50%;
+
+  opacity: 0.35;
+
+  transition:
+    background
+    250ms ease,
+    transform
+    300ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+.type-rail-item.is-selected
+.rail-dot {
+  background:
+    currentColor;
+
+  transform:
+    scale(1.25);
+}
+
+
+.type-rail-item strong {
+  font-size: 9px;
+
+  font-weight: 600;
+}
+
+
+
+/*
+  Essa linha é um único elemento Motion
+  que "viaja" de tipo para tipo.
+*/
+.rail-indicator {
+  position: absolute;
+
+  left: 0;
+
+  right: 0;
+
+  bottom: -1px;
+
+  height: 2px;
+
+  background:
+    var(--obs-accent);
+}
+
+
+
+/*
+  ============================================================
+  STAGE
+  ============================================================
+*/
+
+.observatory-stage {
+  position: relative;
+
+  min-height: 700px;
+
+  overflow: hidden;
+
+  isolation: isolate;
+
+  border-bottom:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.16
+    );
+}
+
+
+
+/*
+  Campo ambiente.
+
+  IMPORTANTE:
+
+  ele fica fora do AnimatePresence.
+
+  Então ele não desaparece
+  durante a troca.
+*/
+.observatory-color-field {
+  position: absolute;
+
+  z-index: -5;
+
+  width: 620px;
+
+  height: 620px;
+
+  right: 5%;
+
+  top: -80px;
+
+  border-radius: 50%;
+
+  background-color:
+    var(--obs-soft);
+
+  opacity: 0.74;
+
+  filter:
+    blur(24px);
+
+  transition:
+    background-color
+    500ms ease;
+}
+
+
+
+/*
+  Eixos persistentes.
+*/
+.observatory-static-axis {
+  position: absolute;
+
+  z-index: -4;
+
+  background:
+    var(--obs-accent);
+
+  opacity: 0.055;
+
+  transition:
+    background
+    450ms ease;
+}
+
+
+.observatory-static-axis.horizontal {
+  width: 58%;
+
+  height: 1px;
+
+  right: 3%;
+
+  top: 275px;
+}
+
+
+.observatory-static-axis.vertical {
+  width: 1px;
+
+  height: 430px;
+
+  right: 29%;
+
+  top: 55px;
+}
+
+
+
+/*
+  ============================================================
+  MOTION LAYER
+  ============================================================
+
+  É absolute porque durante mode="sync"
+  o antigo e o novo podem existir
+  ao mesmo tempo sem empurrar o layout.
+*/
+
+.observatory-motion-layer {
+  position: absolute;
+
+  inset: 0;
+
+  padding:
+    34px 34px 26px;
+}
+
+
+
+/*
+  ============================================================
+  MAIN
+  ============================================================
+*/
+
+.observatory-main {
+  display: grid;
+
+  grid-template-columns:
+    minmax(
+      280px,
+      0.72fr
+    )
+    minmax(
+      520px,
+      1.28fr
+    );
+
+  gap: 36px;
+
+  min-height: 425px;
+}
+
+
+
+/*
+  ============================================================
+  TYPE INFO
+  ============================================================
+*/
+
+.observatory-type-info {
+  position: relative;
+
+  z-index: 10;
+
+  padding-top: 12px;
+}
+
+
+.obs-classification {
+  display: block;
+
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.42;
+}
+
+
+.observatory-type-info h2 {
+  margin:
+    10px 0 0;
+
+  font-size:
+    clamp(
+      64px,
+      6.8vw,
+      108px
+    );
+
+  line-height: 0.85;
+
+  letter-spacing: -7px;
+
+  color:
+    var(--obs-accent);
+}
+
+
+.observatory-type-info > p {
+  max-width: 315px;
+
+  margin-top: 18px;
+
+  font-size: 11px;
+
+  line-height: 1.6;
+
+  opacity: 0.56;
+}
+
+
+
+/*
+  ============================================================
+  COUNT
+  ============================================================
+*/
+
+.obs-record-count {
+  display: flex;
+
+  align-items: flex-end;
+
+  gap: 10px;
+
+  margin-top: 25px;
+}
+
+
+.obs-record-count strong {
+  font-size: 54px;
+
+  line-height: 0.8;
+
+  letter-spacing: -3px;
+}
+
+
+.obs-record-count span {
+  font-size: 7px;
+
+  line-height: 1.25;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.2px;
+
+  opacity: 0.42;
+}
+
+
+
+/*
+  ============================================================
+  VIEW TYPE
+  ============================================================
+*/
+
+.obs-view-species {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  margin-top: 32px;
+
+  padding: 0;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  color:
+    var(--obs-accent);
+
+  font-family: inherit;
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+  cursor: pointer;
+}
+
+
+.obs-view-species strong {
+  font-size: 17px;
+
+  font-weight: 400;
+
+  transition:
+    transform
+    300ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+.obs-view-species:hover
+strong {
+  transform:
+    translateX(7px);
+}
+
+
+
+/*
+  ============================================================
+  VISUAL
+  ============================================================
+*/
+
+.observatory-visual {
+  position: relative;
+
+  min-width: 0;
+
+  height: 410px;
+}
+
+
+
+/*
+  ============================================================
+  SIGIL
+  ============================================================
+*/
+
+.observatory-sigil {
+  position: absolute;
+
+  z-index: 0;
+
+  width: 390px;
+
+  height: 390px;
+
+  left: 50%;
+
+  top: 5px;
+
+  border:
+    1px solid
+    var(--obs-accent);
+
+  border-radius: 50%;
+
+  opacity: 0.17;
+
+  transform:
+    translateX(-50%);
+
+  animation:
+    obs-sigil-enter
+    650ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    both;
+}
+
+
+.observatory-sigil::before {
+  content: '';
+
+  position: absolute;
+
+  inset: 18%;
+
+  border:
+    1px dashed
+    var(--obs-accent);
+
+  border-radius: 50%;
+
+  opacity: 0.45;
+}
+
+
+.observatory-sigil::after {
+  content: '';
+
+  position: absolute;
+
+  left: 50%;
+
+  top: -12%;
+
+  width: 1px;
+
+  height: 124%;
+
+  background:
+    var(--obs-accent);
+
+  opacity: 0.25;
+}
+
+
+.observatory-sigil > span {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 150px;
+
+  font-weight: 800;
+
+  letter-spacing: -10px;
+
+  color:
+    var(--obs-accent);
+
+  opacity: 0.09;
+}
+
+
+@keyframes obs-sigil-enter {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateX(-50%)
+      scale(0.8)
+      rotate(-10deg);
+  }
+
+
+  to {
+    opacity: 0.17;
+
+    transform:
+      translateX(-50%)
+      scale(1)
+      rotate(0deg);
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  SPECIMENS
+  ============================================================
+*/
+
+.observatory-specimens {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 5;
+}
+
+
+.obs-specimen {
+  position: absolute;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  color: inherit;
+
+  font-family: inherit;
+
+  cursor: pointer;
+}
+
+
+
+/*
+  Pokémon principal.
+*/
+.obs-specimen-1 {
+  z-index: 8;
+
+  width: 320px;
+
+  left: 50%;
+
+  top: 3px;
+
+  transform:
+    translateX(-50%);
+}
+
+
+
+/*
+  Apoio esquerdo.
+*/
+.obs-specimen-2 {
+  z-index: 5;
+
+  width: 205px;
+
+  left: 3%;
+
+  top: 165px;
+}
+
+
+
+/*
+  Apoio direito.
+*/
+.obs-specimen-3 {
+  z-index: 6;
+
+  width: 210px;
+
+  right: 2%;
+
+  top: 165px;
+}
+
+
+.obs-specimen img {
+  display: block;
+
+  width: 100%;
+
+  height: 280px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 22px 15px
+      rgba(
+        0,
+        0,
+        0,
+        0.08
+      )
+    );
+
+  transition:
+    transform
+    450ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    ),
+    filter
+    350ms ease;
+}
+
+
+.obs-specimen-2 img,
+.obs-specimen-3 img {
+  height: 205px;
+}
+
+
+.obs-specimen:hover img {
+  transform:
+    translateY(-8px)
+    scale(1.055);
+
+  filter:
+    drop-shadow(
+      0 27px 17px
+      rgba(
+        0,
+        0,
+        0,
+        0.13
+      )
+    );
+}
+
+
+
+/*
+  Nomes agora ficam visíveis.
+
+  Não são mais informação
+  escondida só no hover.
+*/
+.obs-specimen > span,
+.obs-specimen > strong {
+  position: absolute;
+
+  left: 50%;
+
+  transform:
+    translateX(-50%);
+
+  white-space: nowrap;
+}
+
+
+.obs-specimen > span {
+  bottom: -1px;
+
+  font-size: 6px;
+
+  letter-spacing: 1.4px;
+
+  opacity: 0.38;
+}
+
+
+.obs-specimen > strong {
+  bottom: -17px;
+
+  font-size: 10px;
+
+  opacity: 0.68;
+}
+
+
+
+/*
+  ============================================================
+  DARK / EMPTY
+  ============================================================
+*/
+
+.obs-empty-specimens {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+
+.obs-empty-specimens > span {
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.4;
+}
+
+
+.obs-empty-specimens > strong {
+  margin-top: 7px;
+
+  font-size: 130px;
+
+  line-height: 0.9;
+
+  letter-spacing: -8px;
+
+  color:
+    var(--obs-accent);
+
+  opacity: 0.08;
+}
+
+
+.obs-empty-specimens small {
+  margin-top: 8px;
+
+  font-size: 8px;
+
+  opacity: 0.4;
+}
+
+
+
+/*
+  ============================================================
+  SCANNER
+  ============================================================
+*/
+
+.obs-stage-scanner {
+  position: absolute;
+
+  z-index: 20;
+
+  top: 5%;
+
+  bottom: 4%;
+
+  left: 7%;
+
+  width: 1px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      transparent,
+      var(--obs-accent),
+      transparent
+    );
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  animation:
+    obs-stage-scan
+    800ms
+    110ms
+    ease
+    both;
+}
+
+
+@keyframes obs-stage-scan {
+
+  0% {
+    left: 10%;
+
+    opacity: 0;
+  }
+
+
+  18% {
+    opacity: 0.42;
+  }
+
+
+  72% {
+    opacity: 0.18;
+  }
+
+
+  100% {
+    left: 92%;
+
+    opacity: 0;
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  BATTLE RELATIONS
+  ============================================================
+*/
+
+.observatory-relations {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  border-top:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.14
+    );
+
+  border-bottom:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.14
+    );
+}
+
+
+.obs-relation-panel {
+  min-width: 0;
+
+  padding:
+    18px 22px
+    18px 0;
+}
+
+
+.obs-relation-panel
++
+.obs-relation-panel {
+  padding-left: 22px;
+
+  border-left:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.12
+    );
+}
+
+
+
+/*
+  ATTACK PROFILE / DEFENSE PROFILE
+*/
+.obs-relation-heading {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 12px;
+
+  margin-bottom: 16px;
+}
+
+
+.obs-relation-heading > span {
+  font-size: 7px;
+
+  letter-spacing: 1px;
+
+  opacity: 0.35;
+}
+
+
+.obs-relation-heading div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+
+.obs-relation-heading strong {
+  font-size: 11px;
+}
+
+
+.obs-relation-heading small {
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+  opacity: 0.38;
+}
+
+
+
+/*
+  Uma relação individual.
+*/
+.obs-relation-row {
+  display: grid;
+
+  grid-template-columns:
+    110px
+    minmax(
+      0,
+      1fr
+    );
+
+  gap: 14px;
+
+  align-items: start;
+
+  margin-top: 11px;
+}
+
+
+.obs-relation-row > span {
+  padding-top: 4px;
+
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.2px;
+
+  opacity: 0.43;
+}
+
+
+
+/*
+  ============================================================
+  RELATION CHIPS
+  ============================================================
+*/
+
+.obs-relation-chips {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 5px;
+}
+
+
+.obs-relation-chip {
+  display: inline-flex;
+
+  align-items: center;
+
+  min-height: 22px;
+
+  padding:
+    0 8px;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--chip-accent)
+      55%,
+      transparent
+    );
+
+  border-radius: 999px;
+
+  color:
+    var(--chip-accent);
+
+  font-size: 7px;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.7px;
+}
+
+
+.obs-relation-empty {
+  font-size: 10px;
+
+  opacity: 0.3;
+}
+
+
+
+/*
+  ============================================================
+  LOADING
+  ============================================================
+*/
+
+.obs-loading {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  min-height: 650px;
+
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.5;
+}
+
+
+.obs-loading > span {
+  width: 38px;
+
+  height: 1px;
+
+  background:
+    var(--obs-accent);
+
+  animation:
+    archive-loading-line
+    700ms
+    infinite
+    alternate;
+}
+
+
+
+/*
+  ============================================================
+  DESKTOP MENOR — TEMPORÁRIO
+  ============================================================
+*/
+
+@media (max-width: 1100px) {
+
+  .observatory-main {
+    grid-template-columns:
+      300px
+      minmax(
+        440px,
+        1fr
+      );
+  }
+
+
+  .obs-specimen-1 {
+    width: 275px;
+  }
+
+
+  .obs-specimen-2,
+  .obs-specimen-3 {
+    width: 165px;
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  REDUCED MOTION
+  ============================================================
+*/
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .type-observatory *,
+  .type-observatory *::before,
+  .type-observatory *::after {
+    animation:
+      none !important;
+
+    transition:
+      none !important;
+  }
+
+}
+
+/*
+  ============================================================
+  TYPE OBSERVATORY — V4.1
+  ============================================================
+
+  Refinos:
+
+  1. corrige centralização do protagonista;
+  2. aproxima os três Pokémon;
+  3. aumenta hierarquia do Pokémon principal;
+  4. centraliza trio + círculo;
+  5. compacta o palco;
+  6. aumenta legibilidade de Attack/Defense;
+  7. fortalece a faixa de tipos.
+*/
+
+
+/*
+  ============================================================
+  PALCO MAIS COMPACTO
+  ============================================================
+*/
+
+.observatory-stage {
+  min-height: 650px;
+}
+
+
+.observatory-motion-layer {
+  padding:
+    28px 30px 24px;
+}
+
+
+.observatory-main {
+  /*
+    A parte textual perde um pouco
+    de largura e damos mais espaço
+    para a composição Pokémon.
+  */
+  grid-template-columns:
+    minmax(270px, 0.6fr)
+    minmax(0, 1.4fr);
+
+  gap: 18px;
+
+  min-height: 395px;
+}
+
+
+.observatory-visual {
+  height: 390px;
+}
+
+
+
+/*
+  ============================================================
+  CÍRCULO CENTRAL
+  ============================================================
+*/
+
+.observatory-sigil {
+  width: 420px;
+
+  height: 420px;
+
+  left: 50%;
+
+  top: -8px;
+
+  /*
+    Esse transform pode continuar aqui
+    porque este elemento NÃO é controlado
+    pelo Motion.
+  */
+  transform:
+    translateX(-50%);
+}
+
+
+
+/*
+  ============================================================
+  TRIO DE POKÉMON
+  ============================================================
+*/
+
+
+/*
+  CHARIZARD / PROTAGONISTA
+  ----------------------------------------
+
+  IMPORTANTE:
+
+  antes usávamos:
+
+  transform: translateX(-50%);
+
+  Só que o Motion também escreve
+  na propriedade transform.
+
+  Agora usamos a propriedade moderna:
+
+  translate: -50% 0;
+
+  Ela é independente de transform.
+
+  Então:
+
+  CSS controla a centralização
+  Motion controla animação
+*/
+.obs-specimen-1 {
+  z-index: 8;
+
+  width: 370px;
+
+  left: 50%;
+
+  top: -6px;
+
+  transform: none;
+
+  translate:
+    -50% 0;
+}
+
+
+
+/*
+  Pokémon esquerdo.
+
+  Sai de 3% para 14%.
+
+  Ou seja:
+  vem MUITO mais para perto
+  do protagonista.
+*/
+.obs-specimen-2 {
+  z-index: 5;
+
+  width: 195px;
+
+  left: 14%;
+
+  top: 186px;
+}
+
+
+
+/*
+  Pokémon direito.
+
+  Agora é simétrico ao esquerdo.
+*/
+.obs-specimen-3 {
+  z-index: 6;
+
+  width: 200px;
+
+  right: 14%;
+
+  top: 186px;
+}
+
+
+
+/*
+  ============================================================
+  TAMANHO DAS ARTES
+  ============================================================
+*/
+
+
+/*
+  O protagonista ganha claramente
+  mais peso visual.
+*/
+.obs-specimen-1 img {
+  height: 325px;
+}
+
+
+
+/*
+  Auxiliares continuam importantes,
+  mas não competem com o principal.
+*/
+.obs-specimen-2 img,
+.obs-specimen-3 img {
+  height: 195px;
+}
+
+
+
+/*
+  ============================================================
+  NOMES DOS POKÉMON
+  ============================================================
+*/
+
+.obs-specimen > span {
+  bottom: -2px;
+
+  font-size: 7px;
+}
+
+
+.obs-specimen > strong {
+  bottom: -19px;
+
+  font-size: 11px;
+
+  opacity: 0.72;
+}
+
+
+
+/*
+  ============================================================
+  CAMPO DE COR
+  ============================================================
+
+  Centralizamos melhor o campo
+  com o trio visual.
+*/
+
+.observatory-color-field {
+  width: 590px;
+
+  height: 590px;
+
+  right: 7%;
+
+  top: -68px;
+
+  opacity: 0.68;
+}
+
+
+
+/*
+  ============================================================
+  TYPE RAIL
+  ============================================================
+
+  Ela continua compacta,
+  mas deixa de parecer tão tímida.
+*/
+
+.type-rail-item {
+  min-width: 94px;
+
+  height: 64px;
+
+  padding:
+    0 13px;
+}
+
+
+.type-rail-item strong {
+  font-size: 10px;
+}
+
+
+.rail-index {
+  font-size: 6.5px;
+}
+
+
+.rail-dot {
+  width: 6px;
+
+  height: 6px;
+}
+
+
+.type-rail-item.is-selected {
+  /*
+    A cor continua suave.
+    Só damos um pouco mais de presença.
+  */
+  background:
+    color-mix(
+      in srgb,
+      var(--obs-soft) 84%,
+      white
+    );
+}
+
+
+.rail-indicator {
+  height: 3px;
+}
+
+
+
+/*
+  ============================================================
+  FIRE / WATER / ETC
+  ============================================================
+*/
+
+.observatory-type-info h2 {
+  font-size:
+    clamp(
+      68px,
+      7vw,
+      112px
+    );
+}
+
+
+
+/*
+  Número de registros
+  um pouco mais importante.
+*/
+.obs-record-count strong {
+  font-size: 58px;
+}
+
+
+
+/*
+  ============================================================
+  BATTLE PROFILE
+  ============================================================
+
+  Antes havia bastante espaço
+  mas o conteúdo era minúsculo.
+
+  Aumentamos a leitura sem transformar
+  isso em uma tabela pesada.
+*/
+
+.observatory-relations {
+  margin-top: 2px;
+}
+
+
+.obs-relation-panel {
+  padding:
+    20px 24px
+    20px 0;
+}
+
+
+.obs-relation-panel
++
+.obs-relation-panel {
+  padding-left: 24px;
+}
+
+
+
+.obs-relation-heading {
+  gap: 14px;
+
+  margin-bottom: 18px;
+}
+
+
+.obs-relation-heading > span {
+  font-size: 8px;
+}
+
+
+.obs-relation-heading strong {
+  font-size: 13px;
+}
+
+
+.obs-relation-heading small {
+  margin-top: 1px;
+
+  font-size: 7.5px;
+}
+
+
+
+/*
+  Super Effective / Weak To / etc.
+*/
+.obs-relation-row {
+  grid-template-columns:
+    125px
+    minmax(0, 1fr);
+
+  gap: 15px;
+
+  margin-top: 13px;
+}
+
+
+.obs-relation-row > span {
+  padding-top: 5px;
+
+  font-size: 8px;
+}
+
+
+
+/*
+  Chips maiores.
+*/
+.obs-relation-chip {
+  min-height: 25px;
+
+  padding:
+    0 9px;
+
+  font-size: 7.5px;
+}
+
+
+
+/*
+  ============================================================
+  HOVER DOS POKÉMON
+  ============================================================
+
+  Agora temos uma pequena profundidade:
+
+  principal sobe mais,
+  auxiliares sobem menos.
+*/
+
+.obs-specimen-1:hover img {
+  transform:
+    translateY(-10px)
+    scale(1.045);
+}
+
+
+.obs-specimen-2:hover img,
+.obs-specimen-3:hover img {
+  transform:
+    translateY(-6px)
+    scale(1.05);
+}
+
+
+
+/*
+  ============================================================
+  DESKTOP MÉDIO
+  ============================================================
+
+  Corrige algumas regras antigas
+  da V4 que reduziriam demais
+  nossos Pokémon.
+*/
+
+@media (
+  min-width: 1101px
+) {
+
+  .obs-specimen-1 {
+    width: 370px;
+  }
+
+
+  .obs-specimen-2 {
+    width: 195px;
+  }
+
+
+  .obs-specimen-3 {
+    width: 200px;
+  }
+
+}

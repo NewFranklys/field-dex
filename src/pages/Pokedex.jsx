@@ -1,17 +1,18 @@
 /*
-  ========================================
-  POKÉDEX
-  ========================================
+  ============================================================
+  POKÉDEX / SPECIES ARCHIVE
+  ============================================================
 
-  Esta página:
+  Agora a página tem duas responsabilidades:
 
-  - carrega os 151 Pokémon de Kanto
-  - descobre os tipos de cada Pokémon
-  - permite pesquisar
-  - permite filtrar por tipo
-  - entende URLs como:
+  1. continuar sendo rápida para encontrar Pokémon;
+  2. parecer um "arquivo vivo" da mesma interface da Home.
 
-    /pokedex?type=fire
+  O Motion entra principalmente para:
+
+  - reorganizar a grade;
+  - animar entrada/saída dos Pokémon;
+  - criar uma sensação contínua ao trocar filtros.
 */
 
 
@@ -28,45 +29,53 @@ import {
 } from 'react-router-dom'
 
 
+/*
+  Motion:
+
+  motion
+  → transforma elementos normais em elementos animáveis.
+
+  AnimatePresence
+  → permite animar também quando um elemento DESAPARECE.
+*/
 import {
-  pokemonTypes,
+  AnimatePresence,
+  motion,
+} from 'motion/react'
+
+
+import {
   getTypeMeta,
+  pokemonTypes,
 } from '../data/pokemonTypes'
 
 
 
 /*
-  ========================================
+  ============================================================
   FORMATAR NOME
-  ========================================
-
-  mr-mime
-  ↓
-  Mr Mime
+  ============================================================
 */
 
 function formatPokemonName(name) {
 
   return name
     .split('-')
-    .map((word) => {
-
-      return (
-        word.charAt(0).toUpperCase()
-        +
-        word.slice(1)
-      )
-
-    })
+    .map((word) => (
+      word.charAt(0).toUpperCase()
+      +
+      word.slice(1)
+    ))
     .join(' ')
+
 }
 
 
 
 /*
-  ========================================
-  PEGAR ID PELA URL
-  ========================================
+  ============================================================
+  EXTRAIR ID DA URL DA POKEAPI
+  ============================================================
 
   https://pokeapi.co/api/v2/pokemon/25/
 
@@ -86,15 +95,10 @@ function getPokemonIdFromUrl(url) {
   return Number(
     parts[parts.length - 1]
   )
+
 }
 
 
-
-/*
-  ========================================
-  COMPONENTE
-  ========================================
-*/
 
 function Pokedex() {
 
@@ -104,17 +108,15 @@ function Pokedex() {
 
 
   /*
-    ========================================
+    ============================================================
     QUERY PARAMETERS
-    ========================================
-
-    Exemplo:
+    ============================================================
 
     /pokedex?type=ghost
 
-    typeFromUrl:
+    ↓
 
-    "ghost"
+    selectedType = "ghost"
   */
 
   const [
@@ -129,14 +131,7 @@ function Pokedex() {
 
 
   /*
-    Verificamos se o tipo recebido
-    realmente existe.
-
-    Se alguém colocar:
-
-    ?type=banana
-
-    voltamos para "all".
+    Só aceitamos tipos que realmente existem.
   */
   const selectedType =
 
@@ -152,9 +147,9 @@ function Pokedex() {
 
 
   /*
-    ========================================
-    STATES
-    ========================================
+    ============================================================
+    ESTADOS
+    ============================================================
   */
 
   const [
@@ -183,9 +178,9 @@ function Pokedex() {
 
 
   /*
-    ========================================
-    CARREGAR POKÉMON
-    ========================================
+    ============================================================
+    CARREGAR ARQUIVO
+    ============================================================
   */
 
   useEffect(() => {
@@ -193,16 +188,15 @@ function Pokedex() {
     async function loadPokedex() {
 
       setLoading(true)
-
       setError(null)
 
 
       try {
 
         /*
-          ========================================
+          --------------------------------------------------------
           1. LISTA DOS 151
-          ========================================
+          --------------------------------------------------------
         */
 
         const pokemonResponse =
@@ -226,101 +220,70 @@ function Pokedex() {
 
 
         /*
-          Criamos nossa lista base.
+          Criamos os registros básicos.
 
-          Nesse momento temos:
-
-          id
-          name
-          image
-
-          Os tipos serão adicionados depois.
+          Ainda sem tipos.
         */
         const basePokemonList =
-          pokemonData
-            .results
-            .map(
-              (pokemon) => {
+          pokemonData.results.map(
+            (pokemon) => {
 
-                const id =
-                  getPokemonIdFromUrl(
-                    pokemon.url
-                  )
+              const id =
+                getPokemonIdFromUrl(
+                  pokemon.url
+                )
 
 
-                return {
+              return {
 
-                  id,
+                id,
 
-                  name:
-                    formatPokemonName(
-                      pokemon.name
-                    ),
+                name:
+                  formatPokemonName(
+                    pokemon.name
+                  ),
 
-                  image:
-                    `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+                image:
+                  `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
 
-                  /*
-                    Começa vazio.
-
-                    Depois vamos descobrir
-                    os tipos.
-                  */
-                  types: [],
-
-                }
+                types: [],
 
               }
-            )
+
+            }
+          )
 
 
 
         /*
-          ========================================
-          2. CARREGAR OS 18 TIPOS
-          ========================================
-
-          pokemonTypes agora contém objetos:
-
-          {
-            slug: 'fire',
-            name: 'Fire'
-          }
-
-          Por isso usamos:
-
-          type.slug
+          --------------------------------------------------------
+          2. BUSCAR OS 18 TIPOS
+          --------------------------------------------------------
         */
 
         const typeResponses =
           await Promise.all(
 
             pokemonTypes.map(
-              (type) => {
+              (type) => (
 
-                return fetch(
+                fetch(
                   `https://pokeapi.co/api/v2/type/${type.slug}`
                 )
 
-              }
+              )
             )
 
           )
 
 
 
-        /*
-          Verificamos se alguma chamada
-          falhou.
-        */
-        const failedTypeRequest =
+        if (
           typeResponses.some(
             (response) =>
               !response.ok
           )
-
-
-        if (failedTypeRequest) {
+        ) {
 
           throw new Error(
             'Could not load Pokémon types.'
@@ -330,10 +293,6 @@ function Pokedex() {
 
 
 
-        /*
-          Transformamos as 18 respostas
-          em JSON.
-        */
         const typeDataList =
           await Promise.all(
 
@@ -347,17 +306,16 @@ function Pokedex() {
 
 
         /*
-          ========================================
-          3. MAPA DE TIPOS
-          ========================================
+          --------------------------------------------------------
+          3. MAPEAR TIPOS POR POKÉMON
+          --------------------------------------------------------
 
-          Vamos construir algo assim:
+          Resultado:
 
           {
             1: ['grass', 'poison'],
             4: ['fire'],
-            6: ['fire', 'flying'],
-            25: ['electric']
+            6: ['fire', 'flying']
           }
         */
 
@@ -368,79 +326,55 @@ function Pokedex() {
         typeDataList.forEach(
           (typeData, index) => {
 
-            /*
-              Descobrimos qual tipo
-              corresponde àquela resposta.
-
-              index 0 → normal
-              index 1 → fire
-              etc.
-            */
             const typeName =
               pokemonTypes[index].slug
 
 
 
-            /*
-              A API retorna todos os Pokémon
-              pertencentes àquele tipo.
-            */
-            typeData
-              .pokemon
-              .forEach(
-                (entry) => {
+            typeData.pokemon.forEach(
+              (entry) => {
 
-                  const pokemonId =
-                    getPokemonIdFromUrl(
-                      entry.pokemon.url
-                    )
-
-
-                  /*
-                    Nossa V1 usa apenas Kanto.
-                  */
-                  if (
-                    pokemonId < 1
-                    ||
-                    pokemonId > 151
-                  ) {
-
-                    return
-
-                  }
-
-
-
-                  /*
-                    Se ainda não existe
-                    uma lista para esse Pokémon,
-                    criamos.
-                  */
-                  if (
-                    !pokemonTypeMap[
-                      pokemonId
-                    ]
-                  ) {
-
-                    pokemonTypeMap[
-                      pokemonId
-                    ] = []
-
-                  }
-
-
-
-                  /*
-                    Adicionamos o tipo.
-                  */
-                  pokemonTypeMap[
-                    pokemonId
-                  ].push(
-                    typeName
+                const pokemonId =
+                  getPokemonIdFromUrl(
+                    entry.pokemon.url
                   )
 
+
+                /*
+                  Nossa V1 usa Kanto.
+                */
+                if (
+                  pokemonId < 1
+                  ||
+                  pokemonId > 151
+                ) {
+                  return
                 }
-              )
+
+
+
+                if (
+                  !pokemonTypeMap[
+                    pokemonId
+                  ]
+                ) {
+
+                  pokemonTypeMap[
+                    pokemonId
+                  ] = []
+
+                }
+
+
+
+                pokemonTypeMap[
+                  pokemonId
+                ].push(
+                  typeName
+                )
+
+              }
+            )
 
           }
         )
@@ -448,46 +382,32 @@ function Pokedex() {
 
 
         /*
-          ========================================
-          4. JUNTAR POKÉMON + TIPOS
-          ========================================
+          Juntamos tudo.
         */
-
         const completedPokemonList =
           basePokemonList.map(
-            (pokemon) => {
+            (pokemon) => ({
 
-              return {
+              ...pokemon,
 
-                ...pokemon,
+              types:
+                pokemonTypeMap[
+                  pokemon.id
+                ]
+                ||
+                [],
 
-                types:
-                  pokemonTypeMap[
-                    pokemon.id
-                  ]
-                  ||
-                  [],
-
-              }
-
-            }
+            })
           )
 
 
-
-        /*
-          Agora temos tudo.
-        */
         setPokemonList(
           completedPokemonList
         )
 
       } catch (error) {
 
-        console.error(
-          error
-        )
-
+        console.error(error)
 
         setError(
           error.message
@@ -495,10 +415,6 @@ function Pokedex() {
 
       } finally {
 
-        /*
-          Mesmo se der erro,
-          paramos o loading.
-        */
         setLoading(false)
 
       }
@@ -513,18 +429,9 @@ function Pokedex() {
 
 
   /*
-    ========================================
-    FILTRAR LISTA
-    ========================================
-
-    useMemo recalcula a lista somente
-    quando alguma dependência muda.
-
-    Aqui:
-
-    - lista
-    - pesquisa
-    - tipo selecionado
+    ============================================================
+    FILTRAGEM
+    ============================================================
   */
 
   const filteredPokemon =
@@ -540,19 +447,6 @@ function Pokedex() {
 
         return pokemonList.filter(
           (pokemon) => {
-
-
-            /*
-              =================================
-              FILTRO DE PESQUISA
-              =================================
-
-              Funciona por:
-
-              nome
-              ou
-              número
-            */
 
             const matchesSearch =
 
@@ -578,12 +472,6 @@ function Pokedex() {
 
 
 
-            /*
-              =================================
-              FILTRO DE TIPO
-              =================================
-            */
-
             const matchesType =
 
               selectedType === 'all'
@@ -598,9 +486,6 @@ function Pokedex() {
 
 
 
-            /*
-              Precisa passar pelos dois.
-            */
             return (
               matchesSearch
               &&
@@ -623,38 +508,46 @@ function Pokedex() {
 
 
   /*
-    ========================================
+    ============================================================
+    TEMA DO ARQUIVO
+    ============================================================
+
+    Se filtrarmos Water, a própria interface
+    recebe um pequeno toque azul.
+
+    Se for All Types, usamos neutro.
+  */
+
+  const selectedTypeMeta =
+
+    selectedType === 'all'
+
+      ? null
+
+      : getTypeMeta(
+          selectedType
+        )
+
+
+
+  /*
+    ============================================================
     TROCAR FILTRO
-    ========================================
+    ============================================================
   */
 
   function selectType(typeSlug) {
 
-    /*
-      All Types:
-
-      /pokedex
-    */
     if (typeSlug === 'all') {
 
       setSearchParams({})
 
       return
-
     }
 
 
-
-    /*
-      Fire:
-
-      /pokedex?type=fire
-    */
     setSearchParams({
-
-      type:
-        typeSlug,
-
+      type: typeSlug,
     })
 
   }
@@ -663,12 +556,30 @@ function Pokedex() {
 
   return (
 
-    <main className="pokedex-page">
+    <main
+
+      className="pokedex-page archive-v2"
+
+      style={{
+
+        '--archive-accent':
+          selectedTypeMeta?.accent
+          ||
+          '#191919',
+
+        '--archive-soft':
+          selectedTypeMeta?.soft
+          ||
+          '#ece9e2',
+
+      }}
+
+    >
 
 
-      {/* =================================
+      {/* =======================================================
           HEADER
-          ================================= */}
+          ======================================================= */}
       <header className="pokedex-header">
 
 
@@ -702,10 +613,11 @@ function Pokedex() {
 
 
 
-      {/* =================================
+      {/* =======================================================
           INTRO
-          ================================= */}
+          ======================================================= */}
       <section className="pokedex-intro">
+
 
         <span>
           National Pokédex / Generation I
@@ -722,17 +634,38 @@ function Pokedex() {
           species from the Kanto research archive.
         </p>
 
+
+        {/*
+          Pequeno indicador do filtro atual.
+        */}
+        <div className="archive-current-state">
+
+          <span>
+            Current Classification
+          </span>
+
+
+          <strong>
+
+            {selectedType === 'all'
+              ? 'All Species'
+              : selectedTypeMeta?.name
+            }
+
+          </strong>
+
+        </div>
+
       </section>
 
 
 
-      {/* =================================
+      {/* =======================================================
           FERRAMENTAS
-          ================================= */}
+          ======================================================= */}
       <section className="pokedex-tools">
 
 
-        {/* PESQUISA */}
         <div className="pokedex-search-area">
 
           <label htmlFor="pokedex-search">
@@ -764,21 +697,18 @@ function Pokedex() {
 
 
 
-        {/* RESULTADOS */}
         <div className="pokedex-results">
 
           <span>
-            Results
+            Active Records
           </span>
 
 
           <strong>
-
             {loading
               ? 0
               : filteredPokemon.length
             }
-
           </strong>
 
         </div>
@@ -787,29 +717,22 @@ function Pokedex() {
 
 
 
-      {/* =================================
+      {/* =======================================================
           FILTROS
-          ================================= */}
+          ======================================================= */}
       <div className="pokedex-type-filters">
 
 
-        {/* TODOS */}
         <button
 
           className={
             selectedType === 'all'
-
               ? 'pokedex-type-filter active'
-
               : 'pokedex-type-filter'
           }
 
           onClick={() => {
-
-            selectType(
-              'all'
-            )
-
+            selectType('all')
           }}
 
         >
@@ -818,7 +741,6 @@ function Pokedex() {
 
 
 
-        {/* 18 TIPOS */}
         {pokemonTypes.map(
           (type) => (
 
@@ -828,9 +750,7 @@ function Pokedex() {
 
               className={
                 selectedType === type.slug
-
                   ? 'pokedex-type-filter active'
-
                   : 'pokedex-type-filter'
               }
 
@@ -853,22 +773,28 @@ function Pokedex() {
 
 
 
-      {/* =================================
+      {/* =======================================================
           LOADING
-          ================================= */}
+          ======================================================= */}
       {loading && (
 
-        <p className="pokedex-status">
-          Loading species archive...
-        </p>
+        <div className="archive-loading">
+
+          <span />
+
+          <p>
+            Indexing species archive...
+          </p>
+
+        </div>
 
       )}
 
 
 
-      {/* =================================
+      {/* =======================================================
           ERRO
-          ================================= */}
+          ======================================================= */}
       {!loading && error && (
 
         <p className="pokedex-status">
@@ -879,128 +805,302 @@ function Pokedex() {
 
 
 
-      {/* =================================
-          GRID DE POKÉMON
-          ================================= */}
+      {/* =======================================================
+          GRID ANIMADO
+          ======================================================= */}
       {!loading && !error && (
 
-        <section className="pokedex-grid">
+        <section className="pokedex-grid archive-grid">
 
-          {filteredPokemon.map(
-            (pokemon) => (
 
-              <button
+          {/*
+            AnimatePresence permite que Pokémon
+            que deixaram de passar pelo filtro
+            tenham animação de SAÍDA.
+          */}
+          <AnimatePresence
+            mode="popLayout"
+          >
 
-                className="pokedex-entry"
+            {filteredPokemon.map(
+              (pokemon) => {
 
-                key={pokemon.id}
 
-                onClick={() => {
+                /*
+                  O tipo principal controla
+                  a cor do registro.
+                */
+                const primaryType =
+                  pokemon.types[0]
 
-                  navigate(
-                    `/pokemon/${pokemon.id}`
+
+                const primaryTypeMeta =
+                  getTypeMeta(
+                    primaryType
                   )
 
-                }}
-
-              >
 
 
-                {/* NÚMERO */}
-                <span className="pokedex-entry-number">
+                return (
 
-                  #{pokemon.id
-                    .toString()
-                    .padStart(
-                      3,
-                      '0'
-                    )}
+                  <motion.button
 
-                </span>
+                    /*
+                      layout é uma das partes
+                      mais legais do Motion.
 
+                      Quando a posição do Pokémon
+                      muda na grid, ele anima
+                      automaticamente até a
+                      nova posição.
+                    */
+                    layout
 
+                    key={pokemon.id}
 
-                {/* IMAGEM */}
-                <img
-
-                  className="pokedex-entry-image"
-
-                  src={pokemon.image}
-
-                  alt={pokemon.name}
-
-                  loading="lazy"
-
-                />
+                    className="
+                      pokedex-entry
+                      archive-record
+                    "
 
 
+                    style={{
 
-                {/* NOME */}
-                <strong className="pokedex-entry-name">
+                      '--entry-accent':
+                        primaryTypeMeta?.accent
+                        ||
+                        '#77736a',
 
-                  {pokemon.name}
+                      '--entry-soft':
+                        primaryTypeMeta?.soft
+                        ||
+                        '#ebe9e2',
 
-                </strong>
-
-
-
-                {/* TIPOS */}
-                <div className="pokedex-entry-types">
-
-                  {pokemon.types.map(
-                    (type) => {
-
-                      const typeMeta =
-                        getTypeMeta(
-                          type
-                        )
+                    }}
 
 
-                      return (
+                    /*
+                      Entrada.
+                    */
+                    initial={{
+                      opacity: 0,
+                      y: 14,
+                      scale: 0.985,
+                    }}
 
-                        <span
 
-                          key={type}
+                    /*
+                      Estado normal.
+                    */
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                      scale: 1,
+                    }}
 
-                          className="pokedex-entry-type"
 
-                          style={{
+                    /*
+                      Saída quando o filtro
+                      remove esse Pokémon.
+                    */
+                    exit={{
+                      opacity: 0,
+                      scale: 0.96,
+                      y: -8,
+                    }}
 
-                            '--type-color':
-                              typeMeta?.accent
-                              ||
-                              '#77736a',
 
-                          }}
+                    /*
+                      Transição do movimento
+                      da própria grid.
+                    */
+                    transition={{
 
-                        >
+                      layout: {
+                        duration: 0.42,
+                        ease: [
+                          0.16,
+                          1,
+                          0.3,
+                          1,
+                        ],
+                      },
 
-                          {typeMeta?.name
-                            ||
-                            formatPokemonName(
-                              type
-                            )
-                          }
+                      opacity: {
+                        duration: 0.18,
+                      },
 
-                        </span>
+                      scale: {
+                        duration: 0.25,
+                      },
 
+                    }}
+
+
+                    onClick={() => {
+
+                      navigate(
+                        `/pokemon/${pokemon.id}`
                       )
 
-                    }
-                  )}
+                    }}
 
-                </div>
+                  >
 
 
-                {/* SETA */}
-                <span className="pokedex-entry-arrow">
-                  ↗
-                </span>
+                    {/* ENTRY */}
+                    <span className="record-label">
+                      Entry
+                    </span>
 
-              </button>
 
-            )
-          )}
+
+                    {/* NÚMERO */}
+                    <span className="pokedex-entry-number">
+
+                      #{pokemon.id
+                        .toString()
+                        .padStart(
+                          3,
+                          '0'
+                        )}
+
+                    </span>
+
+
+
+                    {/*
+                      Número enorme e quase invisível
+                      no fundo.
+                    */}
+                    <span className="record-background-number">
+
+                      {pokemon.id
+                        .toString()
+                        .padStart(
+                          3,
+                          '0'
+                        )}
+
+                    </span>
+
+
+
+                    {/* ==========================================
+                        ÁREA VISUAL
+                        ========================================== */}
+                    <span className="archive-record-visual">
+
+
+                      <span className="record-orbit" />
+
+
+                      <span className="record-cross horizontal" />
+
+
+                      <span className="record-cross vertical" />
+
+
+                      <span className="record-scan" />
+
+
+
+                      <img
+
+                        className="pokedex-entry-image"
+
+                        src={pokemon.image}
+
+                        alt={pokemon.name}
+
+                        loading="lazy"
+
+                      />
+
+                    </span>
+
+
+
+                    {/* ==========================================
+                        INFORMAÇÕES
+                        ========================================== */}
+                    <span className="record-information">
+
+
+                      <strong className="pokedex-entry-name">
+                        {pokemon.name}
+                      </strong>
+
+
+
+                      <span className="pokedex-entry-types">
+
+                        {pokemon.types.map(
+                          (type) => {
+
+                            const typeMeta =
+                              getTypeMeta(
+                                type
+                              )
+
+
+                            return (
+
+                              <span
+
+                                key={type}
+
+                                className="pokedex-entry-type"
+
+                                style={{
+
+                                  '--type-color':
+                                    typeMeta?.accent
+                                    ||
+                                    '#77736a',
+
+                                }}
+
+                              >
+
+                                {typeMeta?.name
+                                  ||
+                                  formatPokemonName(
+                                    type
+                                  )
+                                }
+
+                              </span>
+
+                            )
+
+                          }
+                        )}
+
+                      </span>
+
+
+
+                      <span className="record-open">
+
+                        View field record
+
+                        <b>
+                          ↗
+                        </b>
+
+                      </span>
+
+                    </span>
+
+                  </motion.button>
+
+                )
+
+              }
+            )}
+
+          </AnimatePresence>
 
         </section>
 

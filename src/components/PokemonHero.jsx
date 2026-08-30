@@ -3,313 +3,636 @@ import {
   useState,
 } from 'react'
 
+import {
+  motion,
+} from 'motion/react'
+
+
+
 /*
-  ========================================
-  POKEMON HERO
-  ========================================
+  ============================================================
+  ARTWORK
+  ============================================================
 
-  Este componente recebe:
-
-  pokemon
-  → todos os dados do Pokémon atual
-
-  onSelectPokemon
-  → função usada para abrir outro Pokémon
-
-  Ela serve para:
-
-  - clicar numa evolução
-  - Pokémon anterior
-  - próximo Pokémon
+  Usamos isso também na navegação
+  Previous / Next.
 */
+
+function getPokemonArtwork(id) {
+
+  return (
+    'https://raw.githubusercontent.com/'
+    +
+    'PokeAPI/sprites/master/sprites/pokemon/'
+    +
+    `other/official-artwork/${id}.png`
+  )
+
+}
+
+
+
 function PokemonHero({
   pokemon,
   onSelectPokemon,
 }) {
 
-
   /*
-  ========================================
-  CONTROLE DO CRY
-  ========================================
-*/
-
-
-/*
-  useRef permite guardar uma referência
-  direta para um elemento do HTML.
-
-  Neste caso:
-
-  <audio>
-*/
-const audioRef =
-  useRef(null)
-
-
-/*
-  Guarda se o áudio
-  está tocando ou não.
-*/
-const [isCryPlaying, setIsCryPlaying] =
-  useState(false)
-
-
-
-/*
-  Função executada
-  quando clicamos no botão.
-*/
-function toggleCry() {
-
-  /*
-    Pegamos o elemento <audio>
-    através do ref.
+    ============================================================
+    CRY
+    ============================================================
   */
-  const audio =
-    audioRef.current
+
+  const audioRef =
+    useRef(null)
 
 
-  /*
-    Se ele ainda não existir,
-    não fazemos nada.
-  */
-  if (!audio) {
-    return
+  const [
+    isCryPlaying,
+    setIsCryPlaying,
+  ] = useState(false)
+
+
+
+  function toggleCry() {
+
+    const audio =
+      audioRef.current
+
+
+    if (!audio) {
+      return
+    }
+
+
+    if (isCryPlaying) {
+
+      audio.pause()
+
+      setIsCryPlaying(false)
+
+      return
+
+    }
+
+
+    audio.currentTime = 0
+
+    audio.play()
+
+    setIsCryPlaying(true)
+
   }
 
 
+
   /*
-    Se estiver tocando:
-    pausa.
+    ============================================================
+    ANIMAÇÃO BASE
+    ============================================================
   */
-  if (isCryPlaying) {
 
-    audio.pause()
+  const fadeUp = {
 
-    setIsCryPlaying(false)
+    hidden: {
+      opacity: 0,
+      y: 14,
+    },
 
-    return
+    visible: {
+      opacity: 1,
+      y: 0,
+    },
+
   }
 
 
-  /*
-    Caso contrário:
-    toca.
-  */
-  audio.play()
-
-  setIsCryPlaying(true)
-}
 
   return (
-    <section className="pokemon-hero">
+
+    <section className="field-record">
 
 
-      {/* =================================
-          LADO ESQUERDO
-          ================================= */}
-      <div className="pokemon-info">
+      {/* =======================================================
+          HERO
+          ======================================================= */}
+      <div className="record-hero">
 
 
-        {/* =================================
-            NÚMERO
-            ================================= */}
-        <span className="pokemon-number">
+        {/* =====================================================
+            IDENTIDADE
+            ===================================================== */}
+        <motion.div
 
-          #{pokemon.number
-            .toString()
-            .padStart(3, '0')}
+          className="record-identity"
 
-        </span>
+          initial="hidden"
 
+          animate="visible"
 
+          variants={{
 
-        {/* =================================
-            NOME
-            ================================= */}
-        <h2 className="pokemon-name">
-          {pokemon.name}
-        </h2>
+            hidden: {},
 
+            visible: {
 
+              transition: {
+                staggerChildren: 0.065,
+              },
 
-        {/* =================================
-            CATEGORIA
-            ================================= */}
-        <p className="pokemon-category">
-          {pokemon.category}
-        </p>
+            },
+
+          }}
+
+        >
 
 
+          <motion.span
+            className="record-eyebrow"
+            variants={fadeUp}
+          >
 
-        {/* =================================
-            DESCRIÇÃO
-            ================================= */}
-        <p className="pokemon-description">
-          {pokemon.description}
-        </p>
+            Field Record /
 
+            {' '}
 
+            {pokemon.number
+              .toString()
+              .padStart(3, '0')
+            }
 
-        {/* =================================
-            DADOS DE CAMPO
-            ================================= */}
-        <div className="pokemon-measurements">
-
-
-          {/* ALTURA */}
-          <div className="measurement">
-
-            <span className="measurement-label">
-              Height
-            </span>
-
-            <strong className="measurement-value">
-              {pokemon.height} m
-            </strong>
-
-          </div>
+          </motion.span>
 
 
 
-          {/* PESO */}
-          <div className="measurement">
+          {/* Número de fundo */}
+          <span className="record-hero-number">
 
-            <span className="measurement-label">
-              Weight
-            </span>
+            {pokemon.number
+              .toString()
+              .padStart(3, '0')
+            }
 
-            <strong className="measurement-value">
-              {pokemon.weight} kg
-            </strong>
-
-          </div>
-
-
-
-          {/* HABITAT */}
-          <div className="measurement">
-
-            <span className="measurement-label">
-              Habitat
-            </span>
-
-            <strong className="measurement-value">
-              {pokemon.habitat}
-            </strong>
-
-          </div>
-
-
-
-          {/* GERAÇÃO */}
-          <div className="measurement">
-
-            <span className="measurement-label">
-              Generation
-            </span>
-
-            <strong className="measurement-value">
-              {pokemon.generation}
-            </strong>
-
-          </div>
-
-        </div>
-
-
-
-        {/* =================================
-            HABILIDADES
-            ================================= */}
-        <div className="pokemon-abilities">
-
-          <span className="abilities-label">
-            Abilities
           </span>
 
 
-          <div className="abilities-list">
 
-            {pokemon.abilities.map(
-              (ability) => (
+          {/* Nome com reveal vertical */}
+          <div className="record-name-window">
+
+            <motion.h2
+
+              className="record-pokemon-name"
+
+              variants={{
+
+                hidden: {
+                  y: '105%',
+                },
+
+                visible: {
+
+                  y: 0,
+
+                  transition: {
+
+                    duration: 0.65,
+
+                    ease: [
+                      0.16,
+                      1,
+                      0.3,
+                      1,
+                    ],
+
+                  },
+
+                },
+
+              }}
+
+            >
+
+              {pokemon.name}
+
+            </motion.h2>
+
+          </div>
+
+
+
+          <motion.p
+            className="record-category"
+            variants={fadeUp}
+          >
+
+            {pokemon.category}
+
+          </motion.p>
+
+
+
+          <motion.p
+            className="record-description"
+            variants={fadeUp}
+          >
+
+            {pokemon.description}
+
+          </motion.p>
+
+
+
+          {/* TIPOS */}
+          <motion.div
+            className="record-types"
+            variants={fadeUp}
+          >
+
+            {pokemon.types.map(
+              (type) => (
 
                 <span
-                  className="ability"
-                  key={ability}
+                  className="record-type-chip"
+                  key={type}
                 >
-                  {ability}
+                  {type}
                 </span>
 
               )
             )}
 
-          </div>
-
-        </div>
+          </motion.div>
 
 
 
-        {/* =================================
-            BASE STATS
-            ================================= */}
-        <div className="pokemon-stats">
+          {/* DADOS DE CAMPO */}
+          <motion.div
+            className="record-field-data"
+            variants={fadeUp}
+          >
 
-          <span className="stats-title">
-            Base Stats
+
+            <div>
+
+              <span>
+                Height
+              </span>
+
+              <strong>
+                {pokemon.height} M
+              </strong>
+
+            </div>
+
+
+
+            <div>
+
+              <span>
+                Weight
+              </span>
+
+              <strong>
+                {pokemon.weight} KG
+              </strong>
+
+            </div>
+
+
+
+            <div>
+
+              <span>
+                Habitat
+              </span>
+
+              <strong>
+                {pokemon.habitat}
+              </strong>
+
+            </div>
+
+
+
+            <div>
+
+              <span>
+                Generation
+              </span>
+
+              <strong>
+                {pokemon.generation}
+              </strong>
+
+            </div>
+
+          </motion.div>
+
+
+
+          {/* HABILIDADES */}
+          <motion.div
+            className="record-abilities"
+            variants={fadeUp}
+          >
+
+            <span>
+              Abilities
+            </span>
+
+
+            <div>
+
+              {pokemon.abilities.map(
+                (ability) => (
+
+                  <strong key={ability}>
+                    {ability}
+                  </strong>
+
+                )
+              )}
+
+            </div>
+
+          </motion.div>
+
+        </motion.div>
+
+
+
+        {/* =====================================================
+            POKÉMON
+            ===================================================== */}
+        <div className="record-specimen-stage">
+
+
+          {/* Campo de cor */}
+          <span className="record-type-atmosphere" />
+
+
+
+          {/* Marca gigante */}
+          <span className="record-specimen-number">
+
+            {pokemon.number
+              .toString()
+              .padStart(3, '0')
+            }
+
           </span>
 
 
-          <div className="stats-grid">
+
+          {/* Órbita */}
+          <motion.span
+
+            className="field-record-orbit"
+
+            initial={{
+              opacity: 0,
+              scale: 0.72,
+              rotate: -12,
+            }}
+
+            animate={{
+              opacity: 1,
+              scale: 1,
+              rotate: 0,
+            }}
+
+            transition={{
+
+              duration: 0.8,
+
+              ease: [
+                0.16,
+                1,
+                0.3,
+                1,
+              ],
+
+            }}
+
+          >
+            <span />
+          </motion.span>
+
+
+
+          <span className="record-axis horizontal" />
+
+          <span className="record-axis vertical" />
+
+
+
+          <span className="record-scanner" />
+
+
+
+          <motion.img
+
+            className="record-specimen-image"
+
+            src={pokemon.image}
+
+            alt={pokemon.name}
+
+            initial={{
+              opacity: 0,
+              x: 55,
+              scale: 0.92,
+            }}
+
+            animate={{
+              opacity: 1,
+              x: 0,
+              scale: 1,
+            }}
+
+            transition={{
+
+              duration: 0.72,
+
+              delay: 0.08,
+
+              ease: [
+                0.16,
+                1,
+                0.3,
+                1,
+              ],
+
+            }}
+
+          />
+
+
+
+          <span className="record-specimen-label">
+
+            Registered specimen
+
+          </span>
+
+        </div>
+
+      </div>
+
+
+
+      {/* =======================================================
+          ANALYSIS DECK
+
+          Stats + Cry agora fazem parte
+          da mesma composição.
+          ======================================================= */}
+      <section className="record-analysis-deck">
+
+
+        {/* =====================================================
+            BASE STATS
+            ===================================================== */}
+        <div className="record-analysis-panel stats-panel">
+
+
+          <div className="record-section-heading">
+
+            <span>
+              01
+            </span>
+
+
+            <div>
+
+              <strong>
+                Base Stat Analysis
+              </strong>
+
+              <small>
+                Species baseline values
+              </small>
+
+            </div>
+
+          </div>
+
+
+
+          <div className="record-stats">
 
             {pokemon.stats.map(
-              (stat) => (
+              (
+                stat,
+                index
+              ) => {
 
-                <div
-                  className="stat"
-                  key={stat.name}
-                >
+                const statPercentage =
+                  Math.min(
+                    (
+                      stat.value
+                      /
+                      180
+                    )
+                    *
+                    100,
+                    100
+                  )
 
 
-                  {/* Nome + valor */}
-                  <div className="stat-header">
 
-                    <span className="stat-label">
+                return (
+
+                  <motion.div
+
+                    className="record-stat"
+
+                    key={stat.name}
+
+                    initial={{
+                      opacity: 0,
+                      y: 8,
+                    }}
+
+                    whileInView={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+
+                    viewport={{
+                      once: true,
+                      amount: 0.4,
+                    }}
+
+                    transition={{
+                      delay:
+                        index
+                        *
+                        0.055,
+                    }}
+
+                  >
+
+
+                    <span>
                       {stat.label}
                     </span>
 
-                    <strong className="stat-value">
+
+                    <strong>
                       {stat.value}
                     </strong>
 
-                  </div>
 
+                    <div className="record-stat-track">
 
+                      <motion.span
 
-                  {/* Barra */}
-                  <div className="stat-bar">
+                        initial={{
+                          width: 0,
+                        }}
 
-                    <div
-                      className="stat-bar-fill"
+                        whileInView={{
+                          width:
+                            `${statPercentage}%`,
+                        }}
 
-                      style={{
-                        width:
-                          `${Math.min(
+                        viewport={{
+                          once: true,
+                        }}
+
+                        transition={{
+
+                          duration: 0.7,
+
+                          delay:
+                            0.12
+                            +
                             (
-                              stat.value /
-                              180
-                            ) * 100,
-                            100
-                          )}%`,
-                      }}
-                    />
+                              index
+                              *
+                              0.06
+                            ),
 
-                  </div>
+                          ease: [
+                            0.16,
+                            1,
+                            0.3,
+                            1,
+                          ],
 
-                </div>
+                        }}
 
-              )
+                      />
+
+                    </div>
+
+                  </motion.div>
+
+                )
+
+              }
             )}
 
           </div>
@@ -318,123 +641,221 @@ function toggleCry() {
 
 
 
-        {/* =================================
-            TIPOS
-            ================================= */}
-        <div className="pokemon-types">
+        {/* =====================================================
+            VOCALIZATION
+            ===================================================== */}
+        <div className="record-analysis-panel cry-panel">
 
-          {pokemon.types.map(
-            (type) => (
 
-              <span
-                className="type"
-                key={type}
+          <div className="record-section-heading">
+
+            <span>
+              02
+            </span>
+
+
+            <div>
+
+              <strong>
+                Vocalization
+              </strong>
+
+              <small>
+                Recorded species cry
+              </small>
+
+            </div>
+
+          </div>
+
+
+
+          {pokemon.cry ? (
+
+            <>
+
+              <audio
+
+                ref={audioRef}
+
+                src={pokemon.cry}
+
+                preload="none"
+
+                onEnded={() => {
+                  setIsCryPlaying(false)
+                }}
+
+                onPause={() => {
+                  setIsCryPlaying(false)
+                }}
+
+              />
+
+
+
+              <button
+
+                className="record-cry-control"
+
+                onClick={toggleCry}
+
               >
-                {type}
-              </span>
 
-            )
+
+                <span className="record-cry-play">
+
+                  {isCryPlaying
+                    ? 'Ⅱ'
+                    : '▶'
+                  }
+
+                </span>
+
+
+
+                <span className={`
+                  record-waveform
+                  ${isCryPlaying
+                    ? 'is-playing'
+                    : ''
+                  }
+                `}>
+
+                  {[
+                    18,
+                    32,
+                    14,
+                    42,
+                    26,
+                    50,
+                    21,
+                    37,
+                    16,
+                    45,
+                    29,
+                    20,
+                    38,
+                    15,
+                    31,
+                    22,
+                    44,
+                    18,
+                    28,
+                    14,
+                    35,
+                    20,
+                  ].map(
+                    (
+                      height,
+                      index
+                    ) => (
+
+                      <i
+
+                        key={index}
+
+                        style={{
+
+                          '--wave-height':
+                            `${height}%`,
+
+                          '--wave-delay':
+                            `${index * 35}ms`,
+
+                        }}
+
+                      />
+
+                    )
+                  )}
+
+                </span>
+
+
+
+                <strong>
+
+                  {isCryPlaying
+                    ? 'Playing'
+                    : 'Play Cry'
+                  }
+
+                </strong>
+
+              </button>
+
+            </>
+
+          ) : (
+
+            <p className="record-no-data">
+              No recorded cry available.
+            </p>
+
           )}
 
         </div>
 
-        {/* =================================
-    CRY
-    ================================= */}
-
-{pokemon.cry && (
-
-  <div className="pokemon-cry">
-
-    <span className="cry-label">
-      Cry
-    </span>
-
-
-    {/*
-      Esse é o elemento de áudio.
-
-      Ele não precisa mostrar
-      os controles padrão do navegador,
-      porque vamos criar nosso próprio botão.
-    */}
-    <audio
-
-      ref={audioRef}
-
-      src={pokemon.cry}
-
-      preload="none"
-
-      /*
-        Quando o Cry terminar,
-        atualizamos nosso estado.
-      */
-      onEnded={() => {
-        setIsCryPlaying(false)
-      }}
-
-      /*
-        Também sincronizamos quando
-        ele for pausado.
-      */
-      onPause={() => {
-        setIsCryPlaying(false)
-      }}
-
-    />
-
-
-    <button
-      className="cry-button"
-      onClick={toggleCry}
-    >
-
-      <span className="cry-icon">
-
-        {isCryPlaying
-          ? 'Ⅱ'
-          : '▶'
-        }
-
-      </span>
-
-
-      {isCryPlaying
-        ? 'Pause Cry'
-        : 'Play Cry'
-      }
-
-    </button>
-
-  </div>
-
-)}
+      </section>
 
 
 
-        {/* =================================
-            TYPE MATCHUPS
-            ================================= */}
-        <div className="pokemon-matchups">
+      {/* =======================================================
+          TYPE RESPONSE
+          ======================================================= */}
+      <section className="record-type-analysis">
 
-          <span className="matchups-title">
-            Type Matchups
+
+        <div className="record-type-analysis-heading">
+
+
+          <div className="record-section-heading">
+
+            <span>
+              03
+            </span>
+
+
+            <div>
+
+              <strong>
+                Type Response
+              </strong>
+
+              <small>
+                Defensive interaction analysis
+              </small>
+
+            </div>
+
+          </div>
+
+
+
+          <span className="record-type-analysis-code">
+
+            {pokemon.types
+              .join(' / ')
+            }
+
           </span>
 
+        </div>
 
 
-          {/* =================================
-              FRAQUEZAS
-              ================================= */}
-          <div className="matchup-group">
 
-            <span className="matchup-group-label">
+        <div className="record-matchups">
+
+
+          <div className="record-matchup-column">
+
+            <span>
               Weak To
             </span>
 
 
-            <div className="matchup-list">
+            <div>
 
               {pokemon
                 .matchups
@@ -443,8 +864,16 @@ function toggleCry() {
                   (matchup) => (
 
                     <span
-                      className="matchup-chip weakness"
-                      key={matchup.type}
+
+                      className="
+                        record-matchup-chip
+                        weakness
+                      "
+
+                      key={
+                        matchup.type
+                      }
+
                     >
 
                       {matchup.type}
@@ -464,17 +893,14 @@ function toggleCry() {
 
 
 
-          {/* =================================
-              RESISTÊNCIAS
-              ================================= */}
-          <div className="matchup-group">
+          <div className="record-matchup-column">
 
-            <span className="matchup-group-label">
+            <span>
               Resists
             </span>
 
 
-            <div className="matchup-list">
+            <div>
 
               {pokemon
                 .matchups
@@ -483,8 +909,16 @@ function toggleCry() {
                   (matchup) => (
 
                     <span
-                      className="matchup-chip resistance"
-                      key={matchup.type}
+
+                      className="
+                        record-matchup-chip
+                        resistance
+                      "
+
+                      key={
+                        matchup.type
+                      }
+
                     >
 
                       {matchup.type}
@@ -504,25 +938,21 @@ function toggleCry() {
 
 
 
-          {/* =================================
-              IMUNIDADES
-
-              Só aparece se houver alguma.
-              ================================= */}
           {pokemon
             .matchups
             .immunities
             .length > 0
-            && (
+            &&
+            (
 
-              <div className="matchup-group">
+              <div className="record-matchup-column">
 
-                <span className="matchup-group-label">
+                <span>
                   Immune To
                 </span>
 
 
-                <div className="matchup-list">
+                <div>
 
                   {pokemon
                     .matchups
@@ -531,8 +961,16 @@ function toggleCry() {
                       (matchup) => (
 
                         <span
-                          className="matchup-chip immunity"
-                          key={matchup.type}
+
+                          className="
+                            record-matchup-chip
+                            immunity
+                          "
+
+                          key={
+                            matchup.type
+                          }
+
                         >
 
                           {matchup.type}
@@ -555,78 +993,144 @@ function toggleCry() {
 
         </div>
 
+      </section>
 
 
-        {/* =================================
-            EVOLUTION FAMILY
-            ================================= */}
-        <div className="pokemon-evolutions">
 
-          <span className="evolution-title">
-            Evolution Family
+      {/* =======================================================
+          EVOLUTION
+          ======================================================= */}
+      <section className="record-evolution-section">
+
+
+        <div className="record-evolution-heading">
+
+
+          <div className="record-section-heading">
+
+            <span>
+              04
+            </span>
+
+
+            <div>
+
+              <strong>
+                Evolution Record
+              </strong>
+
+              <small>
+                Registered evolutionary family
+              </small>
+
+            </div>
+
+          </div>
+
+
+
+          <span>
+            Evolutionary sequence
           </span>
 
+        </div>
 
-          <div className="evolution-list">
+
+
+        <div className="record-evolution-scroll">
+
+
+          <div className="record-evolution-line">
 
             {pokemon.evolutions.map(
-              (evolution) => (
+              (
+                evolution,
+                index
+              ) => (
 
-                <button
-
-                  className="evolution-card"
-
+                <div
+                  className="record-evolution-step"
                   key={evolution.id}
-
-                  /*
-                    Ao clicar:
-
-                    abrimos aquele Pokémon.
-                  */
-                  onClick={() => {
-
-                    onSelectPokemon(
-                      evolution.id
-                    )
-
-                  }}
-
                 >
 
 
-                  {/* Imagem */}
-                  <img
-                    src={evolution.image}
-                    alt={evolution.name}
-                    className="evolution-image"
-                  />
+                  <button
+
+                    onClick={() => {
+
+                      onSelectPokemon(
+                        evolution.id
+                      )
+
+                    }}
+
+                  >
 
 
+                    {/* número gigante */}
+                    <span className="evolution-background-number">
 
-                  {/* Informações */}
-                  <div className="evolution-info">
-
-                    <span className="evolution-number">
-
-                      #{evolution.id
+                      {evolution.id
                         .toString()
-                        .padStart(3, '0')}
+                        .padStart(3, '0')
+                      }
 
                     </span>
 
 
-                    <strong className="evolution-name">
+
+                    <img
+
+                      src={evolution.image}
+
+                      alt={evolution.name}
+
+                    />
+
+
+                    <span className="evolution-id">
+
+                      #{evolution.id
+                        .toString()
+                        .padStart(3, '0')
+                      }
+
+                    </span>
+
+
+                    <strong>
                       {evolution.name}
                     </strong>
 
 
-                    <span className="evolution-method">
+                    <small>
                       {evolution.method}
-                    </span>
+                    </small>
 
-                  </div>
+                  </button>
 
-                </button>
+
+
+                  {index
+                    <
+                    pokemon.evolutions.length
+                    -
+                    1
+                    &&
+                    (
+
+                      <span className="record-evolution-arrow">
+
+                        <i />
+
+                        →
+
+                      </span>
+
+                    )
+                  }
+
+                </div>
 
               )
             )}
@@ -635,139 +1139,174 @@ function toggleCry() {
 
         </div>
 
+      </section>
 
 
-        {/* =================================
-            ANTERIOR / PRÓXIMO
-            ================================= */}
-        <div className="pokemon-sequence-nav">
+
+      {/* =======================================================
+          PREVIOUS / NEXT
+          ======================================================= */}
+      <nav className="record-navigation">
 
 
-          {/* =============================
-              POKÉMON ANTERIOR
-              ============================= */}
-          {pokemon.navigation.previous ? (
+        {pokemon.navigation.previous ? (
 
-            <button
+          <button
 
-              className="sequence-button previous"
+            className="
+              record-nav-item
+              previous
+            "
 
-              onClick={() => {
+            onClick={() => {
 
-                onSelectPokemon(
-                  pokemon.navigation.previous.id
+              onSelectPokemon(
+                pokemon
+                  .navigation
+                  .previous
+                  .id
+              )
+
+            }}
+
+          >
+
+
+            <img
+
+              src={
+                getPokemonArtwork(
+                  pokemon
+                    .navigation
+                    .previous
+                    .id
                 )
+              }
 
-              }}
+              alt=""
 
-            >
-
-              <span className="sequence-direction">
-                ← Previous
-              </span>
+            />
 
 
-              <span className="sequence-number">
-
-                #{pokemon.navigation.previous.id
-                  .toString()
-                  .padStart(3, '0')}
-
-              </span>
+            <span>
+              ← Previous Record
+            </span>
 
 
-              <strong className="sequence-name">
+            <small>
 
-                {pokemon.navigation.previous.name}
+              #{pokemon
+                .navigation
+                .previous
+                .id
+                .toString()
+                .padStart(3, '0')
+              }
 
-              </strong>
-
-            </button>
-
-          ) : (
-
-            /*
-              Bulbasaur (#001)
-              não possui anterior.
-            */
-            <div />
-
-          )}
+            </small>
 
 
+            <strong>
 
-          {/* =============================
-              PRÓXIMO POKÉMON
-              ============================= */}
-          {pokemon.navigation.next ? (
+              {pokemon
+                .navigation
+                .previous
+                .name
+              }
 
-            <button
+            </strong>
 
-              className="sequence-button next"
+          </button>
 
-              onClick={() => {
+        ) : (
 
-                onSelectPokemon(
-                  pokemon.navigation.next.id
+          <div />
+
+        )}
+
+
+
+        {pokemon.navigation.next ? (
+
+          <button
+
+            className="
+              record-nav-item
+              next
+            "
+
+            onClick={() => {
+
+              onSelectPokemon(
+                pokemon
+                  .navigation
+                  .next
+                  .id
+              )
+
+            }}
+
+          >
+
+
+            <img
+
+              src={
+                getPokemonArtwork(
+                  pokemon
+                    .navigation
+                    .next
+                    .id
                 )
+              }
 
-              }}
+              alt=""
 
-            >
-
-              <span className="sequence-direction">
-                Next →
-              </span>
+            />
 
 
-              <span className="sequence-number">
-
-                #{pokemon.navigation.next.id
-                  .toString()
-                  .padStart(3, '0')}
-
-              </span>
+            <span>
+              Next Record →
+            </span>
 
 
-              <strong className="sequence-name">
+            <small>
 
-                {pokemon.navigation.next.name}
+              #{pokemon
+                .navigation
+                .next
+                .id
+                .toString()
+                .padStart(3, '0')
+              }
 
-              </strong>
-
-            </button>
-
-          ) : (
-
-            /*
-              Mew (#151)
-              não possui próximo.
-            */
-            <div />
-
-          )}
-
-        </div>
-
-      </div>
+            </small>
 
 
+            <strong>
 
-      {/* =================================
-          LADO DIREITO
-          ================================= */}
-      <div className="pokemon-image-area">
+              {pokemon
+                .navigation
+                .next
+                .name
+              }
 
-        <img
-          src={pokemon.image}
-          alt={pokemon.name}
-          className="pokemon-image"
-        />
+            </strong>
 
-      </div>
+          </button>
+
+        ) : (
+
+          <div />
+
+        )}
+
+      </nav>
 
     </section>
+
   )
+
 }
 
 

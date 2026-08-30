@@ -10298,3 +10298,2734 @@ strong {
   }
 
 }
+
+/*
+  ============================================================
+  FIELD RECORD V2
+  ============================================================
+
+  Nova ficha individual do Pokémon.
+
+  Direção:
+
+  - arquivo científico
+  - Pokémon como protagonista
+  - informação organizada em seções
+  - animação usada para revelar dados
+  - mesma linguagem visual da Home,
+    Browse e Type Observatory
+*/
+
+
+/*
+  ============================================================
+  CONTAINER PRINCIPAL
+  ============================================================
+*/
+
+.field-record {
+  width: 100%;
+
+  margin-top: 68px;
+
+  color: #181818;
+}
+
+
+
+/*
+  ============================================================
+  HERO
+  ============================================================
+
+  Esquerda:
+  identificação e informações.
+
+  Direita:
+  Pokémon catalogado.
+*/
+
+.record-hero {
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 0.8fr)
+    minmax(480px, 1.2fr);
+
+  gap:
+    clamp(
+      40px,
+      6vw,
+      110px
+    );
+
+  align-items: center;
+
+  min-height: 620px;
+
+  padding-bottom: 45px;
+
+  border-bottom:
+    1px solid
+    rgba(0, 0, 0, 0.16);
+}
+
+
+
+/*
+  ============================================================
+  IDENTIDADE
+  ============================================================
+*/
+
+.record-identity {
+  position: relative;
+
+  z-index: 10;
+
+  min-width: 0;
+}
+
+
+.record-eyebrow {
+  display: block;
+
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2.4px;
+
+  color:
+    var(--accent-color);
+
+  opacity: 0.7;
+}
+
+
+
+/*
+  Número enorme atrás do nome.
+*/
+.record-hero-number {
+  position: absolute;
+
+  z-index: -1;
+
+  left: -10px;
+
+  top: 8px;
+
+  font-size:
+    clamp(
+      130px,
+      13vw,
+      210px
+    );
+
+  font-weight: 800;
+
+  line-height: 1;
+
+  letter-spacing: -12px;
+
+  color:
+    var(--accent-color);
+
+  opacity: 0.045;
+
+  pointer-events: none;
+}
+
+
+
+/*
+  ============================================================
+  NOME COM REVEAL
+  ============================================================
+
+  A div funciona como uma janela.
+
+  O nome começa abaixo dela
+  e sobe para dentro.
+*/
+
+.record-name-window {
+  overflow: hidden;
+
+  margin-top: 17px;
+}
+
+
+.record-pokemon-name {
+  margin: 0;
+
+  font-size:
+    clamp(
+      72px,
+      7.5vw,
+      120px
+    );
+
+  line-height: 0.85;
+
+  letter-spacing: -7px;
+}
+
+
+
+/*
+  Categoria oficial.
+
+  Ex:
+  Flame Pokémon
+*/
+.record-category {
+  margin:
+    18px 0 0;
+
+  font-size: 10px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.48;
+}
+
+
+
+/*
+  ============================================================
+  DESCRIÇÃO
+  ============================================================
+*/
+
+.record-description {
+  max-width: 510px;
+
+  margin:
+    18px 0 0;
+
+  font-size: 13px;
+
+  line-height: 1.65;
+
+  opacity: 0.62;
+}
+
+
+
+/*
+  ============================================================
+  TIPOS
+  ============================================================
+*/
+
+.record-types {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  margin-top: 22px;
+}
+
+
+.record-type-chip {
+  display: inline-flex;
+
+  align-items: center;
+
+  min-height: 28px;
+
+  padding:
+    0 11px;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--accent-color) 55%,
+      transparent
+    );
+
+  border-radius: 999px;
+
+  color:
+    var(--accent-color);
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+}
+
+
+
+/*
+  ============================================================
+  FIELD DATA
+  ============================================================
+
+  Height / Weight / Habitat / Generation
+*/
+
+.record-field-data {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+
+  gap: 22px;
+
+  max-width: 600px;
+
+  margin-top: 30px;
+
+  padding:
+    17px 0;
+
+  border-top:
+    1px solid
+    rgba(0, 0, 0, 0.14);
+
+  border-bottom:
+    1px solid
+    rgba(0, 0, 0, 0.14);
+}
+
+
+.record-field-data div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+
+.record-field-data span {
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.5px;
+
+  opacity: 0.4;
+}
+
+
+.record-field-data strong {
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+
+
+/*
+  ============================================================
+  ABILITIES
+  ============================================================
+*/
+
+.record-abilities {
+  margin-top: 22px;
+}
+
+
+.record-abilities > span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.6px;
+
+  opacity: 0.4;
+}
+
+
+.record-abilities > div {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap:
+    5px 18px;
+}
+
+
+.record-abilities strong {
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+
+
+/*
+  ============================================================
+  SPECIMEN STAGE
+  ============================================================
+*/
+
+.record-specimen-stage {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-width: 0;
+
+  height: 570px;
+
+  overflow: hidden;
+
+  isolation: isolate;
+}
+
+
+
+/*
+  Cor ambiente baseada no tipo.
+
+  Como PokemonPage já fornece
+  --soft-color e --accent-color,
+  não precisamos calcular nada novo.
+*/
+
+.record-specimen-stage::before {
+  content: '';
+
+  position: absolute;
+
+  z-index: -5;
+
+  width: 510px;
+
+  height: 510px;
+
+  border-radius: 50%;
+
+  background:
+    var(--soft-color);
+
+  filter:
+    blur(16px);
+
+  opacity: 0.85;
+}
+
+
+
+/*
+  Número gigantesco no cenário.
+*/
+.record-specimen-stage::after {
+  content: '';
+
+  position: absolute;
+
+  z-index: -6;
+
+  inset:
+    10% 5%;
+
+  border:
+    1px solid
+    rgba(0, 0, 0, 0.05);
+
+  pointer-events: none;
+}
+
+
+
+/*
+  ============================================================
+  ORBIT
+  ============================================================
+*/
+
+.field-record-orbit {
+  position: absolute;
+
+  z-index: -1;
+
+  width:
+    min(
+      37vw,
+      500px
+    );
+
+  aspect-ratio: 1;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--accent-color) 35%,
+      transparent
+    );
+
+  border-radius: 50%;
+}
+
+
+.field-record-orbit > span {
+  position: absolute;
+
+  inset: 17%;
+
+  border:
+    1px dashed
+    color-mix(
+      in srgb,
+      var(--accent-color) 35%,
+      transparent
+    );
+
+  border-radius: 50%;
+
+  opacity: 0.55;
+}
+
+
+
+/*
+  Pequenas marcas no círculo.
+*/
+.field-record-orbit::before,
+.field-record-orbit::after {
+  content: '';
+
+  position: absolute;
+
+  background:
+    var(--accent-color);
+
+  opacity: 0.25;
+}
+
+
+.field-record-orbit::before {
+  left: 50%;
+
+  top: -20px;
+
+  width: 1px;
+
+  height: calc(100% + 40px);
+}
+
+
+.field-record-orbit::after {
+  left: -20px;
+
+  top: 50%;
+
+  width: calc(100% + 40px);
+
+  height: 1px;
+}
+
+
+
+/*
+  ============================================================
+  EIXOS
+  ============================================================
+*/
+
+.record-axis {
+  position: absolute;
+
+  z-index: -2;
+
+  background:
+    var(--accent-color);
+
+  opacity: 0.06;
+}
+
+
+.record-axis.horizontal {
+  width: 85%;
+
+  height: 1px;
+}
+
+
+.record-axis.vertical {
+  width: 1px;
+
+  height: 80%;
+}
+
+
+
+/*
+  ============================================================
+  POKÉMON
+  ============================================================
+*/
+
+.record-specimen-image {
+  position: relative;
+
+  z-index: 8;
+
+  width:
+    min(
+      92%,
+      590px
+    );
+
+  max-height: 520px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 30px 22px
+      rgba(0, 0, 0, 0.11)
+    );
+}
+
+
+
+/*
+  Pequena identificação na base.
+*/
+.record-specimen-label {
+  position: absolute;
+
+  right: 18px;
+
+  bottom: 16px;
+
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  opacity: 0.35;
+}
+
+
+
+/*
+  ============================================================
+  SCANNER
+  ============================================================
+*/
+
+.record-scanner {
+  position: absolute;
+
+  z-index: 15;
+
+  top: 8%;
+
+  bottom: 8%;
+
+  left: 10%;
+
+  width: 1px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      transparent,
+      var(--accent-color),
+      transparent
+    );
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  animation:
+    field-record-scan
+    950ms
+    250ms
+    ease
+    both;
+}
+
+
+@keyframes field-record-scan {
+
+  0% {
+    left: 10%;
+
+    opacity: 0;
+  }
+
+
+  15% {
+    opacity: 0.5;
+  }
+
+
+  75% {
+    opacity: 0.2;
+  }
+
+
+  100% {
+    left: 90%;
+
+    opacity: 0;
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  SEÇÕES
+  ============================================================
+*/
+
+.record-section {
+  display: grid;
+
+  grid-template-columns:
+    220px
+    minmax(0, 1fr);
+
+  gap: 40px;
+
+  padding:
+    32px 0;
+
+  border-bottom:
+    1px solid
+    rgba(0, 0, 0, 0.15);
+}
+
+
+
+/*
+  Títulos laterais:
+
+  01 Vocalization
+  02 Base Stat Analysis
+  etc.
+*/
+
+.record-section-heading {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 13px;
+}
+
+
+.record-section-heading > span {
+  padding-top: 2px;
+
+  font-size: 7px;
+
+  letter-spacing: 1px;
+
+  opacity: 0.35;
+}
+
+
+.record-section-heading > div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+
+.record-section-heading strong {
+  font-size: 13px;
+}
+
+
+.record-section-heading small {
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.2px;
+
+  opacity: 0.37;
+}
+
+
+
+/*
+  ============================================================
+  CRY
+  ============================================================
+*/
+
+.record-cry-control {
+  display: grid;
+
+  grid-template-columns:
+    36px
+    minmax(200px, 1fr)
+    auto;
+
+  gap: 18px;
+
+  align-items: center;
+
+  width: min(
+    100%,
+    720px
+  );
+
+  min-height: 64px;
+
+  padding:
+    0 18px;
+
+  border:
+    1px solid
+    rgba(0, 0, 0, 0.14);
+
+  background:
+    transparent;
+
+  color: inherit;
+
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition:
+    background
+    250ms ease,
+    border-color
+    250ms ease;
+}
+
+
+.record-cry-control:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--accent-color) 55%,
+      transparent
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--soft-color) 45%,
+      transparent
+    );
+}
+
+
+.record-cry-play {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 30px;
+
+  height: 30px;
+
+  border:
+    1px solid
+    var(--accent-color);
+
+  border-radius: 50%;
+
+  color:
+    var(--accent-color);
+
+  font-size: 10px;
+}
+
+
+.record-cry-control > strong {
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.2px;
+}
+
+
+
+/*
+  ============================================================
+  WAVEFORM
+  ============================================================
+*/
+
+.record-waveform {
+  display: flex;
+
+  align-items: center;
+
+  gap: 4px;
+
+  height: 36px;
+}
+
+
+.record-waveform i {
+  display: block;
+
+  flex: 1;
+
+  min-width: 2px;
+
+  max-width: 4px;
+
+  height:
+    var(--wave-height);
+
+  background:
+    var(--accent-color);
+
+  opacity: 0.34;
+
+  transform-origin: center;
+}
+
+
+
+/*
+  Quando o áudio toca,
+  as barras começam a pulsar.
+*/
+
+.record-waveform.is-playing i {
+  animation:
+    record-wave
+    520ms
+    var(--wave-delay)
+    ease-in-out
+    infinite alternate;
+}
+
+
+@keyframes record-wave {
+
+  from {
+    transform:
+      scaleY(0.45);
+
+    opacity: 0.24;
+  }
+
+
+  to {
+    transform:
+      scaleY(1.25);
+
+    opacity: 0.85;
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  STATS
+  ============================================================
+*/
+
+.record-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  column-gap: 50px;
+
+  row-gap: 22px;
+}
+
+
+.record-stat {
+  display: grid;
+
+  grid-template-columns:
+    90px
+    34px
+    minmax(0, 1fr);
+
+  gap: 12px;
+
+  align-items: center;
+}
+
+
+.record-stat > span {
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+  opacity: 0.48;
+}
+
+
+.record-stat > strong {
+  font-size: 11px;
+}
+
+
+.record-stat-track {
+  position: relative;
+
+  height: 2px;
+
+  overflow: hidden;
+
+  background:
+    rgba(0, 0, 0, 0.1);
+}
+
+
+.record-stat-track > span {
+  position: absolute;
+
+  left: 0;
+
+  top: 0;
+
+  bottom: 0;
+
+  background:
+    var(--accent-color);
+}
+
+
+
+/*
+  ============================================================
+  MATCHUPS
+  ============================================================
+*/
+
+.record-matchups {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 26px;
+}
+
+
+.record-matchup-column > span {
+  display: block;
+
+  margin-bottom: 12px;
+
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.5px;
+
+  opacity: 0.42;
+}
+
+
+.record-matchup-column > div {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 6px;
+}
+
+
+.record-matchup-chip {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  min-height: 28px;
+
+  padding:
+    0 9px;
+
+  border:
+    1px solid
+    rgba(0, 0, 0, 0.17);
+
+  border-radius: 999px;
+
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.7px;
+}
+
+
+.record-matchup-chip strong {
+  font-size: 8px;
+
+  color:
+    var(--accent-color);
+}
+
+
+
+/*
+  Fraquezas um pouco mais fortes.
+*/
+.record-matchup-chip.weakness {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--accent-color) 50%,
+      rgba(0, 0, 0, 0.18)
+    );
+}
+
+
+
+/*
+  ============================================================
+  EVOLUTION RECORD
+  ============================================================
+*/
+
+.record-evolution-line {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  overflow-x: auto;
+
+  padding-bottom: 6px;
+}
+
+
+.record-evolution-step {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+}
+
+
+.record-evolution-step button {
+  position: relative;
+
+  min-width: 170px;
+
+  min-height: 205px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  padding:
+    12px;
+
+  border:
+    1px solid
+    rgba(0, 0, 0, 0.14);
+
+  background:
+    transparent;
+
+  color: inherit;
+
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition:
+    background
+    300ms ease,
+    border-color
+    300ms ease;
+}
+
+
+.record-evolution-step button:hover {
+  background:
+    var(--soft-color);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--accent-color) 40%,
+      transparent
+    );
+}
+
+
+.record-evolution-step img {
+  width: 125px;
+
+  height: 125px;
+
+  object-fit: contain;
+
+  transition:
+    transform
+    400ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+.record-evolution-step button:hover img {
+  transform:
+    translateY(-7px)
+    scale(1.06);
+}
+
+
+.record-evolution-step button > span {
+  margin-top: 5px;
+
+  font-size: 7px;
+
+  letter-spacing: 1px;
+
+  opacity: 0.4;
+}
+
+
+.record-evolution-step button > strong {
+  margin-top: 2px;
+
+  font-size: 12px;
+}
+
+
+.record-evolution-step button > small {
+  margin-top: 4px;
+
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+  opacity: 0.45;
+}
+
+
+.record-evolution-arrow {
+  font-size: 18px;
+
+  color:
+    var(--accent-color);
+
+  opacity: 0.5;
+}
+
+
+
+/*
+  ============================================================
+  PREVIOUS / NEXT
+  ============================================================
+*/
+
+.record-navigation {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  border-bottom:
+    1px solid
+    rgba(0, 0, 0, 0.15);
+}
+
+
+.record-nav-item {
+  min-height: 115px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  padding:
+    20px;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  color: inherit;
+
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition:
+    background
+    300ms ease;
+}
+
+
+.record-nav-item.previous {
+  align-items: flex-start;
+
+  text-align: left;
+
+  border-right:
+    1px solid
+    rgba(0, 0, 0, 0.15);
+}
+
+
+.record-nav-item.next {
+  align-items: flex-end;
+
+  text-align: right;
+}
+
+
+.record-nav-item:hover {
+  background:
+    var(--soft-color);
+}
+
+
+.record-nav-item > span {
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.5px;
+
+  opacity: 0.4;
+}
+
+
+.record-nav-item > strong {
+  font-size:
+    clamp(
+      18px,
+      2vw,
+      28px
+    );
+
+  letter-spacing: -1px;
+
+  transition:
+    transform
+    350ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+.record-nav-item.previous:hover
+> strong {
+  transform:
+    translateX(-6px);
+}
+
+
+.record-nav-item.next:hover
+> strong {
+  transform:
+    translateX(6px);
+}
+
+
+
+/*
+  ============================================================
+  TEMPORÁRIO — DESKTOP MENOR
+  ============================================================
+
+  Responsividade completa será feita
+  depois que a identidade estiver fechada.
+*/
+
+@media (
+  min-width: 901px
+)
+and (
+  max-width: 1200px
+) {
+
+  .record-hero {
+    grid-template-columns:
+      minmax(0, 0.9fr)
+      minmax(400px, 1.1fr);
+
+    gap: 30px;
+  }
+
+
+  .record-pokemon-name {
+    font-size:
+      clamp(
+        64px,
+        7vw,
+        95px
+      );
+  }
+
+
+  .record-specimen-image {
+    width: 90%;
+  }
+
+
+  .record-field-data {
+    gap: 12px;
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  MOBILE TEMPORÁRIO
+  ============================================================
+*/
+
+@media (max-width: 900px) {
+
+  .record-hero {
+    grid-template-columns:
+      1fr;
+
+    min-height: auto;
+  }
+
+
+  .record-specimen-stage {
+    height: 480px;
+
+    grid-row: 1;
+  }
+
+
+  .record-identity {
+    grid-row: 2;
+  }
+
+
+  .record-section {
+    grid-template-columns:
+      1fr;
+
+    gap: 24px;
+  }
+
+
+  .record-stats {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .record-matchups {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
+
+/*
+  ============================================================
+  REDUCED MOTION
+  ============================================================
+*/
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .field-record *,
+  .field-record *::before,
+  .field-record *::after {
+    animation:
+      none !important;
+
+    transition:
+      none !important;
+  }
+
+}
+
+/*
+  ============================================================
+  FIELD RECORD — V2.1
+  ============================================================
+
+  Objetivo:
+
+  MENOS
+  "planilha científica"
+
+  MAIS
+  "Pokémon sendo analisado por um sistema"
+*/
+
+
+/*
+  ============================================================
+  FUNDO NEUTRO
+  ============================================================
+
+  A cor do Pokémon não domina mais
+  a página inteira.
+*/
+
+.pokemon-record-page {
+  background:
+    #f5f2ea;
+}
+
+
+
+/*
+  O conteúdo ainda conhece:
+
+  --accent-color
+  --soft-color
+
+  Então conseguimos usar Fire/Water/etc.
+  apenas onde realmente importa.
+*/
+
+.pokemon-record-page
+.field-record {
+  color:
+    #171717;
+}
+
+
+
+/*
+  ============================================================
+  SEARCH — INTEGRADO
+  ============================================================
+*/
+
+.pokemon-record-page
+.pokemon-search {
+  top: 34px;
+
+  right: 40px;
+
+  width: 300px;
+}
+
+
+.pokemon-record-page
+.pokemon-search form {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  border-bottom:
+    1px solid
+    rgba(0, 0, 0, 0.55);
+}
+
+
+.pokemon-record-page
+.pokemon-search input {
+  border: 0;
+
+  background:
+    transparent;
+
+  padding:
+    10px 0;
+
+  outline: 0;
+
+  font-family: inherit;
+}
+
+
+.pokemon-record-page
+.pokemon-search button {
+  border: 0;
+
+  background:
+    transparent;
+
+  color: inherit;
+
+  padding:
+    10px 0
+    10px 18px;
+
+  font-family: inherit;
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+  cursor: pointer;
+}
+
+
+
+/*
+  ============================================================
+  HERO
+  ============================================================
+*/
+
+.pokemon-record-page
+.field-record {
+  margin-top: 54px;
+}
+
+
+.record-hero {
+  grid-template-columns:
+    minmax(350px, 0.72fr)
+    minmax(0, 1.28fr);
+
+  gap: 0;
+
+  min-height: 610px;
+
+  overflow: hidden;
+}
+
+
+
+/*
+  Texto continua na esquerda,
+  mas o palco visual invade
+  um pouco o espaço central.
+*/
+
+.record-identity {
+  z-index: 10;
+
+  padding-right: 10px;
+}
+
+
+.record-specimen-stage {
+  z-index: 4;
+
+  height: 590px;
+
+  /*
+    Invade visualmente o centro.
+
+    Isso quebra aquela sensação
+    de "duas colunas".
+  */
+  margin-left:
+    clamp(
+      -80px,
+      -5vw,
+      -35px
+    );
+}
+
+
+
+/*
+  ============================================================
+  CAMPO DE COR
+  ============================================================
+*/
+
+.record-type-atmosphere {
+  position: absolute;
+
+  z-index: -5;
+
+  width: 560px;
+
+  height: 560px;
+
+  border-radius: 50%;
+
+  background:
+    var(--soft-color);
+
+  filter:
+    blur(23px);
+
+  opacity: 0.78;
+}
+
+
+
+/*
+  Número gigantesco atrás.
+*/
+
+.record-specimen-number {
+  position: absolute;
+
+  z-index: -4;
+
+  right: -5px;
+
+  top: 80px;
+
+  font-size:
+    clamp(
+      160px,
+      18vw,
+      290px
+    );
+
+  font-weight: 800;
+
+  line-height: 1;
+
+  letter-spacing: -17px;
+
+  color:
+    var(--accent-color);
+
+  opacity: 0.045;
+
+  pointer-events: none;
+}
+
+
+
+/*
+  Retiramos o antigo campo gigante
+  que pintava demais o cenário.
+*/
+
+.record-specimen-stage::before {
+  display: none;
+}
+
+
+
+/*
+  ============================================================
+  POKÉMON MAIOR
+  ============================================================
+*/
+
+.record-specimen-image {
+  width:
+    min(
+      96%,
+      650px
+    );
+
+  max-height: 550px;
+}
+
+
+.field-record-orbit {
+  width:
+    min(
+      39vw,
+      525px
+    );
+}
+
+
+
+/*
+  ============================================================
+  IDENTIDADE
+  ============================================================
+*/
+
+.record-pokemon-name {
+  font-size:
+    clamp(
+      76px,
+      7.2vw,
+      118px
+    );
+}
+
+
+.record-description {
+  max-width: 470px;
+}
+
+
+
+/*
+  ============================================================
+  ANALYSIS DECK
+  ============================================================
+
+  Stats e Cry agora fazem parte
+  de um mesmo painel.
+*/
+
+.record-analysis-deck {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.35fr)
+    minmax(320px, 0.65fr);
+
+  border-bottom:
+    1px solid
+    rgba(0, 0, 0, 0.15);
+}
+
+
+.record-analysis-panel {
+  min-height: 330px;
+
+  padding:
+    30px 32px;
+}
+
+
+.record-analysis-panel
++
+.record-analysis-panel {
+  border-left:
+    1px solid
+    rgba(0, 0, 0, 0.15);
+}
+
+
+
+/*
+  ============================================================
+  STATS — AGORA MAIS VERTICAIS
+  ============================================================
+*/
+
+.record-analysis-deck
+.record-stats {
+  grid-template-columns:
+    1fr;
+
+  gap: 20px;
+
+  margin-top: 38px;
+}
+
+
+.record-analysis-deck
+.record-stat {
+  grid-template-columns:
+    95px
+    42px
+    minmax(0, 1fr);
+
+  gap: 14px;
+}
+
+
+.record-analysis-deck
+.record-stat-track {
+  height: 3px;
+}
+
+
+
+/*
+  ============================================================
+  CRY
+  ============================================================
+*/
+
+.cry-panel {
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--soft-color) 36%,
+      transparent
+    );
+}
+
+
+
+/*
+  Número decorativo.
+*/
+
+.cry-panel::after {
+  content: 'CRY';
+
+  position: absolute;
+
+  right: -7px;
+
+  bottom: -20px;
+
+  font-size: 105px;
+
+  font-weight: 800;
+
+  letter-spacing: -7px;
+
+  color:
+    var(--accent-color);
+
+  opacity: 0.035;
+
+  pointer-events: none;
+}
+
+
+.cry-panel
+.record-cry-control {
+  position: relative;
+
+  z-index: 3;
+
+  width: 100%;
+
+  grid-template-columns:
+    42px
+    1fr;
+
+  margin-top: 58px;
+
+  padding:
+    20px 0;
+
+  border: 0;
+
+  border-top:
+    1px solid
+    rgba(0, 0, 0, 0.14);
+
+  border-bottom:
+    1px solid
+    rgba(0, 0, 0, 0.14);
+
+  background:
+    transparent;
+}
+
+
+.cry-panel
+.record-cry-control
+> strong {
+  grid-column:
+    1 / -1;
+
+  justify-self: start;
+
+  margin-top: 4px;
+
+  color:
+    var(--accent-color);
+}
+
+
+.cry-panel
+.record-waveform {
+  height: 70px;
+}
+
+
+
+/*
+  ============================================================
+  TYPE RESPONSE
+  ============================================================
+*/
+
+.record-type-analysis {
+  position: relative;
+
+  padding:
+    31px 32px
+    36px;
+
+  overflow: hidden;
+
+  border-bottom:
+    1px solid
+    rgba(0, 0, 0, 0.15);
+
+  background:
+    color-mix(
+      in srgb,
+      var(--soft-color) 18%,
+      transparent
+    );
+}
+
+
+
+/*
+  Código do tipo ao fundo.
+*/
+
+.record-type-analysis-code {
+  position: absolute;
+
+  right: 25px;
+
+  top: 20px;
+
+  font-size:
+    clamp(
+      55px,
+      7vw,
+      100px
+    );
+
+  font-weight: 800;
+
+  letter-spacing: -5px;
+
+  text-transform: uppercase;
+
+  color:
+    var(--accent-color);
+
+  opacity: 0.035;
+
+  pointer-events: none;
+}
+
+
+.record-type-analysis-heading {
+  position: relative;
+
+  z-index: 5;
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items: flex-start;
+}
+
+
+.record-type-analysis
+.record-matchups {
+  position: relative;
+
+  z-index: 5;
+
+  margin-top: 34px;
+}
+
+
+
+/*
+  Matchups agora respiram mais.
+*/
+
+.record-type-analysis
+.record-matchup-column {
+  padding:
+    0 25px 0 0;
+}
+
+
+.record-type-analysis
+.record-matchup-column
++
+.record-matchup-column {
+  padding-left: 25px;
+
+  border-left:
+    1px solid
+    rgba(0, 0, 0, 0.12);
+}
+
+
+.record-type-analysis
+.record-matchup-column
+> span {
+  font-size: 8px;
+
+  margin-bottom: 15px;
+}
+
+
+.record-type-analysis
+.record-matchup-chip {
+  min-height: 31px;
+
+  padding:
+    0 11px;
+}
+
+
+
+/*
+  ============================================================
+  EVOLUTION — GRANDE
+  ============================================================
+*/
+
+.record-evolution-section {
+  padding:
+    34px 32px
+    46px;
+
+  border-bottom:
+    1px solid
+    rgba(0, 0, 0, 0.15);
+}
+
+
+.record-evolution-heading {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content:
+    space-between;
+}
+
+
+.record-evolution-heading
+> span {
+  font-size: 7px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.8px;
+
+  opacity: 0.38;
+}
+
+
+
+/*
+  Wrapper separado para permitir
+  scroll em famílias muito grandes.
+*/
+
+.record-evolution-scroll {
+  overflow-x: auto;
+
+  margin-top: 38px;
+
+  scrollbar-width: thin;
+}
+
+
+.record-evolution-line {
+  width: max-content;
+
+  min-width: 100%;
+
+  justify-content: center;
+
+  gap: 30px;
+
+  padding:
+    10px 0 18px;
+}
+
+
+
+/*
+  Cada estágio agora é realmente
+  parte principal da página.
+*/
+
+.record-evolution-step button {
+  position: relative;
+
+  width: 240px;
+
+  min-width: 240px;
+
+  height: 285px;
+
+  justify-content: flex-end;
+
+  overflow: hidden;
+
+  padding:
+    22px;
+
+  border:
+    1px solid
+    rgba(0, 0, 0, 0.15);
+
+  background:
+    transparent;
+}
+
+
+.record-evolution-step img {
+  position: relative;
+
+  z-index: 3;
+
+  width: 185px;
+
+  height: 185px;
+}
+
+
+.record-evolution-step
+.evolution-background-number {
+  position: absolute;
+
+  z-index: 0;
+
+  top: 15px;
+
+  right: -4px;
+
+  margin: 0;
+
+  font-size: 84px;
+
+  font-weight: 800;
+
+  line-height: 1;
+
+  letter-spacing: -6px;
+
+  color:
+    var(--accent-color);
+
+  opacity: 0.045;
+}
+
+
+.record-evolution-step
+.evolution-id {
+  position: relative;
+
+  z-index: 4;
+
+  margin-top: 5px;
+
+  font-size: 7px;
+}
+
+
+.record-evolution-step
+button > strong {
+  position: relative;
+
+  z-index: 4;
+
+  margin-top: 4px;
+
+  font-size: 17px;
+}
+
+
+.record-evolution-step
+button > small {
+  position: relative;
+
+  z-index: 4;
+
+  margin-top: 6px;
+}
+
+
+
+/*
+  Arrow deixa de ser uma setinha
+  perdida entre cards.
+*/
+
+.record-evolution-arrow {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  width: 75px;
+
+  color:
+    var(--accent-color);
+}
+
+
+.record-evolution-arrow i {
+  display: block;
+
+  flex: 1;
+
+  height: 1px;
+
+  background:
+    var(--accent-color);
+
+  opacity: 0.25;
+}
+
+
+
+/*
+  ============================================================
+  PREVIOUS / NEXT — VISUAL
+  ============================================================
+*/
+
+.record-navigation {
+  min-height: 170px;
+}
+
+
+.record-nav-item {
+  position: relative;
+
+  min-height: 170px;
+
+  overflow: hidden;
+
+  padding:
+    30px 38px;
+
+  isolation: isolate;
+}
+
+
+.record-nav-item img {
+  position: absolute;
+
+  z-index: -1;
+
+  top: 50%;
+
+  width: 190px;
+
+  height: 190px;
+
+  object-fit: contain;
+
+  opacity: 0;
+
+  filter:
+    grayscale(1);
+
+  transition:
+    opacity 350ms ease,
+    transform 500ms
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+
+.record-nav-item.previous
+img {
+  right: 22px;
+
+  transform:
+    translateY(-45%)
+    translateX(25px);
+}
+
+
+.record-nav-item.next
+img {
+  left: 22px;
+
+  transform:
+    translateY(-45%)
+    translateX(-25px);
+}
+
+
+.record-nav-item:hover
+img {
+  opacity: 0.09;
+}
+
+
+.record-nav-item.previous:hover
+img {
+  transform:
+    translateY(-50%)
+    translateX(0);
+}
+
+
+.record-nav-item.next:hover
+img {
+  transform:
+    translateY(-50%)
+    translateX(0);
+}
+
+
+
+/*
+  Número separado do nome.
+*/
+
+.record-nav-item
+> small {
+  margin-top: 13px;
+
+  font-size: 8px;
+
+  letter-spacing: 1.5px;
+
+  opacity: 0.4;
+}
+
+
+.record-nav-item
+> strong {
+  margin-top: 2px;
+
+  font-size:
+    clamp(
+      30px,
+      3vw,
+      48px
+    );
+
+  line-height: 0.95;
+
+  letter-spacing: -2px;
+}
+
+
+
+/*
+  ============================================================
+  SEÇÃO HEADING
+  ============================================================
+*/
+
+.record-analysis-deck
+.record-section-heading strong,
+.record-type-analysis
+.record-section-heading strong,
+.record-evolution-section
+.record-section-heading strong {
+  font-size: 15px;
+}
+
+
+
+/*
+  ============================================================
+  TELAS MENORES — TEMPORÁRIO
+  ============================================================
+*/
+
+@media (
+  min-width: 901px
+)
+and (
+  max-width: 1200px
+) {
+
+  .record-analysis-deck {
+    grid-template-columns:
+      1fr
+      360px;
+  }
+
+
+  .record-evolution-step button {
+    width: 210px;
+
+    min-width: 210px;
+  }
+
+}
+
+
+
+@media (max-width: 900px) {
+
+  .record-analysis-deck {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .record-analysis-panel
+  +
+  .record-analysis-panel {
+    border-left: 0;
+
+    border-top:
+      1px solid
+      rgba(0, 0, 0, 0.15);
+  }
+
+
+  .record-type-analysis
+  .record-matchups {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .record-type-analysis
+  .record-matchup-column
+  +
+  .record-matchup-column {
+    padding-left: 0;
+
+    padding-top: 22px;
+
+    border-left: 0;
+
+    border-top:
+      1px solid
+      rgba(0, 0, 0, 0.12);
+  }
+
+}
+
+/*
+  ============================================================
+  FIELD RECORD — LEGIBILITY PASS
+  ============================================================
+
+  Aumenta a legibilidade dos microtextos
+  sem destruir a hierarquia visual.
+*/
+
+
+/*
+  ========================================
+  EVOLUTION RECORD
+  ========================================
+*/
+
+/* #007 / #008 / #009 */
+.record-evolution-step
+.evolution-id {
+  font-size: 8px;
+
+  font-weight: 500;
+
+  letter-spacing: 1.2px;
+
+  opacity: 0.58;
+}
+
+
+/*
+  Squirtle / Wartortle / Blastoise
+
+  O nome já estava bom,
+  mas ganha um pouco mais de presença.
+*/
+.record-evolution-step
+button > strong {
+  font-size: 18px;
+
+  font-weight: 650;
+}
+
+
+/*
+  BASE FORM
+  LV. 16
+  LV. 36
+
+  Essa é a principal correção.
+*/
+.record-evolution-step
+button > small {
+  margin-top: 7px;
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+  letter-spacing: 1.15px;
+
+  color:
+    rgba(
+      0,
+      0,
+      0,
+      0.58
+    );
+
+  opacity: 1;
+}
+
+
+
+/*
+  ========================================
+  SECTION SUBTITLES
+  ========================================
+
+  "SPECIES BASELINE VALUES"
+  "RECORDED SPECIES CRY"
+  etc.
+*/
+
+.record-section-heading small {
+  font-size: 8px;
+
+  line-height: 1.3;
+
+  letter-spacing: 1.25px;
+
+  opacity: 0.5;
+}
+
+
+
+/*
+  ========================================
+  SECTION NUMBERS
+  ========================================
+
+  01 / 02 / 03 / 04
+*/
+
+.record-section-heading > span {
+  font-size: 8px;
+
+  opacity: 0.48;
+}
+
+
+
+/*
+  ========================================
+  FIELD DATA LABELS
+  ========================================
+
+  HEIGHT
+  WEIGHT
+  HABITAT
+  GENERATION
+*/
+
+.record-field-data span,
+.record-abilities > span {
+  font-size: 8px;
+
+  opacity: 0.52;
+}
+
+
+
+/*
+  ========================================
+  TYPE RESPONSE
+  ========================================
+
+  WEAK TO
+  RESISTS
+  IMMUNE TO
+*/
+
+.record-type-analysis
+.record-matchup-column
+> span {
+  font-size: 9px;
+
+  font-weight: 500;
+
+  opacity: 0.55;
+}
+
+
+
+/*
+  ========================================
+  EVOLUTION HEADER
+  ========================================
+*/
+
+.record-evolution-heading
+> span {
+  font-size: 8px;
+
+  opacity: 0.5;
+}

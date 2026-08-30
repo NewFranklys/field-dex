@@ -1343,7 +1343,7 @@ function PokemonPage() {
   return (
     <main
 
-      className="home"
+      className="home pokemon-record-page"
 
       style={{
 
@@ -1419,6 +1419,20 @@ function PokemonPage() {
       ) : (
 
         <PokemonHero
+
+          /*
+            A key diz ao React:
+
+            "quando o número mudar,
+            este é um novo componente."
+
+            Isso faz as animações de entrada
+            do PokemonHero reiniciarem quando
+            navegarmos para outro Pokémon.
+          */
+          key={
+            pokemon.number
+          }
 
           pokemon={
             pokemon

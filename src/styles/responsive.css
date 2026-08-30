@@ -1,0 +1,1364 @@
+/*
+  ============================================================
+  FIELD DEX — RESPONSIVE LAYER
+  ============================================================
+
+  Este arquivo é importado POR ÚLTIMO.
+
+  A ideia é simples:
+  - os arquivos de cada página definem o desktop;
+  - este arquivo adapta a composição para notebook, tablet e celular;
+  - não precisamos espalhar patches de responsividade por todo o projeto.
+*/
+
+
+/* ============================================================
+   TABLET / DESKTOP COMPACTO — até 1100px
+   ============================================================ */
+
+@media (max-width: 1100px) {
+  /* HOME */
+  .home-stage {
+    grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
+    gap: 32px;
+  }
+
+  .home-title {
+    font-size: clamp(50px, 5.5vw, 72px);
+  }
+
+  .featured-specimen {
+    min-height: 520px;
+  }
+
+  .specimen-visual {
+    height: 380px;
+  }
+
+  .specimen-image {
+    width: min(86%, 420px);
+  }
+
+  .specimen-orbit {
+    width: min(34vw, 380px);
+  }
+
+  /* POKÉDEX */
+  .pokedex-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  /* TYPES
+     O layout ainda permanece lado a lado nesta largura,
+     mas deixamos a área visual mais flexível. */
+  .observatory-main {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+
+  .obs-specimen-1 {
+    width: 300px;
+  }
+
+  .obs-specimen-2,
+  .obs-specimen-3 {
+    width: 155px;
+  }
+}
+
+
+/* ============================================================
+   TABLET — até 900px
+   ============================================================ */
+
+@media (max-width: 900px) {
+  /* ----------------------------------------------------------
+     HOME
+     ---------------------------------------------------------- */
+
+  .home-page {
+    padding: 24px;
+  }
+
+  .home-stage {
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-top: 54px;
+  }
+
+  .home-intro {
+    max-width: 690px;
+  }
+
+  .home-title {
+    max-width: 660px;
+    font-size: clamp(54px, 9vw, 78px);
+  }
+
+  .home-description {
+    max-width: 520px;
+  }
+
+  .home-search {
+    width: min(100%, 610px);
+  }
+
+  .featured-specimen {
+    width: 100%;
+    min-height: 540px;
+    margin-top: 64px;
+    padding-right: 0;
+  }
+
+  .specimen-visual {
+    height: 390px;
+  }
+
+  .specimen-orbit {
+    width: min(52vw, 390px);
+  }
+
+  .specimen-image {
+    width: min(70vw, 440px);
+    max-height: 380px;
+  }
+
+  .specimen-type-field {
+    width: 55%;
+    right: 5%;
+  }
+
+  .home-research-modules {
+    grid-template-columns: 1fr;
+    margin-top: 50px;
+  }
+
+  .research-module {
+    min-height: 250px;
+  }
+
+  .module-content {
+    margin-top: 35px;
+  }
+
+  /* ----------------------------------------------------------
+     POKÉDEX
+     ---------------------------------------------------------- */
+
+  .pokedex-page {
+    padding: 24px;
+  }
+
+  .pokedex-intro {
+    margin-top: 54px;
+  }
+
+  .pokedex-tools {
+    gap: 28px;
+  }
+
+  .pokedex-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pokedex-entry {
+    min-height: 285px;
+  }
+
+  .archive-record-visual {
+    height: 175px;
+  }
+
+  .pokedex-entry-image {
+    height: 160px;
+  }
+
+  /* ----------------------------------------------------------
+     TYPES
+     ---------------------------------------------------------- */
+
+  .types-page {
+    padding: 24px 24px 48px;
+  }
+
+  .obs-intro {
+    align-items: flex-start;
+    gap: 24px;
+    margin-top: 44px;
+  }
+
+  .type-rail {
+    margin-inline: -24px;
+    width: calc(100% + 48px);
+    padding-inline: 24px;
+    scroll-snap-type: x proximity;
+  }
+
+  .type-rail-item {
+    scroll-snap-align: start;
+  }
+
+  /* O conteúdo deixa de depender de uma camada absoluta.
+     Assim a altura passa a acompanhar o conteúdo real. */
+  .observatory-stage {
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .observatory-motion-layer {
+    position: relative;
+    inset: auto;
+    padding: 28px 0 0;
+  }
+
+  .observatory-main {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    min-height: 0;
+  }
+
+  .observatory-type-info {
+    max-width: 520px;
+  }
+
+  .observatory-visual {
+    height: 455px;
+  }
+
+  .observatory-color-field {
+    width: 470px;
+    height: 470px;
+    top: 270px;
+    right: 50%;
+    transform: translateX(50%);
+  }
+
+  .observatory-static-axis {
+    display: none;
+  }
+
+  .observatory-sigil {
+    width: 370px;
+    height: 370px;
+    top: 18px;
+  }
+
+  .obs-specimen-1 {
+    width: 315px;
+    top: 18px;
+  }
+
+  .obs-specimen-1 img {
+    height: 300px;
+  }
+
+  .obs-specimen-2 {
+    width: 155px;
+    left: 8%;
+    top: 245px;
+  }
+
+  .obs-specimen-3 {
+    width: 155px;
+    right: 8%;
+    top: 245px;
+  }
+
+  .obs-specimen-2 img,
+  .obs-specimen-3 img {
+    height: 150px;
+  }
+
+  .observatory-relations {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .obs-relation-row {
+    grid-template-columns: 100px minmax(0, 1fr);
+  }
+
+  /* ----------------------------------------------------------
+     POKÉMON RECORD
+     ---------------------------------------------------------- */
+
+  .pokemon-record-page {
+    padding: 24px;
+  }
+
+  .pokemon-record-page .logo-button {
+    font-size: 40px;
+  }
+
+  .pokemon-record-page .pokemon-search {
+    position: static;
+    width: min(100%, 520px);
+    margin: 28px 0 0 auto;
+  }
+
+  .pokemon-record-page .field-record {
+    margin-top: 38px;
+  }
+
+  .record-hero {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    padding-bottom: 38px;
+  }
+
+  /* No tablet o Pokémon abre a ficha visualmente. */
+  .record-specimen-stage {
+    grid-row: 1;
+    height: 500px;
+    margin-left: 0;
+  }
+
+  .record-identity {
+    grid-row: 2;
+    max-width: 680px;
+    padding-right: 0;
+    padding-top: 22px;
+  }
+
+  .record-specimen-image {
+    width: min(82vw, 540px);
+    max-height: 465px;
+  }
+
+  .field-record-orbit {
+    width: min(62vw, 450px);
+  }
+
+  .record-type-atmosphere {
+    width: 470px;
+    height: 470px;
+  }
+
+  .record-analysis-deck {
+    grid-template-columns: 1fr;
+  }
+
+  .record-analysis-panel + .record-analysis-panel {
+    border-left: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+  }
+
+  .record-type-analysis .record-matchups {
+    grid-template-columns: 1fr;
+  }
+
+  .record-type-analysis .record-matchup-column {
+    min-height: auto;
+    padding: 0;
+  }
+
+  .record-type-analysis .record-matchup-column + .record-matchup-column {
+    margin-top: 22px;
+    padding: 22px 0 0;
+    border-left: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+  }
+
+  .record-evolution-scroll {
+    margin-inline: -8px;
+    padding-inline: 8px;
+  }
+
+  .record-navigation {
+    min-height: 140px;
+  }
+
+  .record-nav-item {
+    min-height: 140px;
+    padding: 24px;
+  }
+}
+
+
+/* ============================================================
+   MOBILE — até 600px
+   ============================================================ */
+
+@media (max-width: 600px) {
+  /* ----------------------------------------------------------
+     HOME
+     ---------------------------------------------------------- */
+
+  .home-page {
+    padding: 18px;
+  }
+
+  .home-logo {
+    font-size: 34px;
+    letter-spacing: -2px;
+    white-space: nowrap;
+  }
+
+  .home-eyebrow {
+    margin-top: 6px;
+    font-size: 7px;
+    letter-spacing: 2px;
+  }
+
+  .home-version {
+    font-size: 7px;
+    letter-spacing: 1.4px;
+  }
+
+  .home-stage {
+    margin-top: 48px;
+  }
+
+  .home-section-label {
+    margin-bottom: 11px;
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+
+  .home-title {
+    font-size: clamp(45px, 14vw, 62px);
+    line-height: 0.91;
+    letter-spacing: -3px;
+  }
+
+  .home-description {
+    margin-top: 20px;
+    max-width: 390px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .home-search {
+    margin-top: 26px;
+  }
+
+  .home-search input {
+    padding: 12px 0;
+    font-size: 15px;
+  }
+
+  .home-search button {
+    padding-left: 12px;
+    font-size: 11px;
+  }
+
+  .featured-specimen {
+    min-height: 0;
+    margin-top: 56px;
+    padding-bottom: 22px;
+  }
+
+  .specimen-topline span,
+  .specimen-topline button {
+    font-size: 7px;
+    letter-spacing: 1.4px;
+  }
+
+  .specimen-visual {
+    height: 330px;
+    margin-top: 6px;
+  }
+
+  .specimen-image {
+    width: min(92%, 340px);
+    max-height: 310px;
+  }
+
+  .specimen-orbit {
+    width: min(76vw, 300px);
+  }
+
+  .specimen-axis.horizontal {
+    width: 90%;
+    left: 5%;
+  }
+
+  .specimen-axis.vertical {
+    height: 84%;
+    top: 8%;
+  }
+
+  .specimen-background-number {
+    top: 32px;
+    right: -8px;
+    font-size: clamp(120px, 37vw, 170px);
+    letter-spacing: -8px;
+  }
+
+  .specimen-type-field {
+    width: 78%;
+    right: -12%;
+    top: 18%;
+    opacity: 0.45;
+  }
+
+  /* Hover não existe de forma confiável em touch. */
+  .specimen-view {
+    right: 8px;
+    bottom: 8px;
+    opacity: 0.48;
+    transform: none;
+  }
+
+  .specimen-identification {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    margin-top: 2px;
+  }
+
+  .specimen-name {
+    font-size: clamp(34px, 11vw, 46px);
+  }
+
+  .specimen-category {
+    font-size: 8px;
+  }
+
+  .specimen-data {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    justify-content: initial;
+  }
+
+  .specimen-data span {
+    font-size: 7px;
+  }
+
+  .specimen-data strong {
+    font-size: 9px;
+  }
+
+  .home-research-modules {
+    margin-top: 44px;
+  }
+
+  .research-module {
+    min-height: 220px;
+    padding: 17px;
+  }
+
+  .module-topline,
+  .module-kicker,
+  .module-action {
+    font-size: 7px;
+  }
+
+  .module-content {
+    margin-top: 29px;
+  }
+
+  .module-title {
+    font-size: 31px;
+  }
+
+  .module-content p {
+    max-width: 215px;
+    font-size: 10px;
+  }
+
+  .home-footer {
+    flex-direction: column;
+    gap: 7px;
+    padding-top: 30px;
+    font-size: 7px;
+  }
+
+  /* ----------------------------------------------------------
+     POKÉDEX
+     ---------------------------------------------------------- */
+
+  .pokedex-page {
+    padding: 18px;
+  }
+
+  .pokedex-logo {
+    font-size: 34px;
+    letter-spacing: -2px;
+    white-space: nowrap;
+  }
+
+  .pokedex-archive span {
+    font-size: 7px;
+  }
+
+  .pokedex-archive strong {
+    font-size: 9px;
+  }
+
+  .pokedex-intro {
+    margin-top: 48px;
+    margin-bottom: 28px;
+  }
+
+  .pokedex-intro > span {
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+
+  .pokedex-intro h1 {
+    font-size: clamp(44px, 13vw, 60px);
+    letter-spacing: -3px;
+  }
+
+  .pokedex-intro p {
+    font-size: 12px;
+  }
+
+  .archive-current-state {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 7px;
+    margin-top: 20px;
+  }
+
+  .pokedex-tools {
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 16px;
+  }
+
+  .pokedex-search-area {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .pokedex-search-area input {
+    font-size: 15px;
+  }
+
+  .pokedex-results {
+    flex: 0 0 auto;
+  }
+
+  .pokedex-results strong {
+    font-size: 21px;
+  }
+
+  /* Em vez de ocupar meia página com 19 botões,
+     a classificação vira uma rail horizontal. */
+  .pokedex-type-filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+    gap: 7px;
+    width: calc(100% + 36px);
+    margin: 0 -18px 24px;
+    padding: 0 18px 5px;
+  }
+
+  .pokedex-type-filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pokedex-type-filter {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    padding: 8px 11px;
+    font-size: 9px;
+  }
+
+  .pokedex-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pokedex-entry {
+    min-height: 245px;
+    padding: 11px;
+  }
+
+  .archive-record-visual {
+    height: 150px;
+  }
+
+  .pokedex-entry-image {
+    width: min(92%, 145px);
+    height: 145px;
+  }
+
+  .pokedex-entry-name {
+    font-size: 15px;
+  }
+
+  .pokedex-entry-type {
+    padding: 3px 6px;
+    font-size: 7px;
+  }
+
+  .record-background-number {
+    font-size: 72px;
+  }
+
+  /* ----------------------------------------------------------
+     TYPES
+     ---------------------------------------------------------- */
+
+  .types-page {
+    padding: 18px 18px 40px;
+  }
+
+  .types-logo {
+    font-size: 34px;
+    letter-spacing: -2px;
+  }
+
+  .obs-header-data span,
+  .obs-status span {
+    font-size: 6px;
+  }
+
+  .obs-header-data strong,
+  .obs-status strong {
+    font-size: 8px;
+  }
+
+  .obs-intro {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    margin-top: 42px;
+    margin-bottom: 28px;
+  }
+
+  .obs-status {
+    align-items: flex-start;
+  }
+
+  .types-eyebrow {
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+
+  .obs-intro h1 {
+    font-size: clamp(48px, 14vw, 64px);
+    letter-spacing: -3px;
+  }
+
+  .obs-intro p {
+    font-size: 12px;
+  }
+
+  .type-rail {
+    width: calc(100% + 36px);
+    margin-inline: -18px;
+    padding-inline: 18px;
+  }
+
+  .type-rail-item {
+    min-width: 100px;
+    height: 58px;
+    padding-inline: 11px;
+  }
+
+  .observatory-motion-layer {
+    padding-top: 24px;
+  }
+
+  .observatory-type-info h2 {
+    font-size: clamp(62px, 20vw, 82px);
+    letter-spacing: -4px;
+  }
+
+  .observatory-type-info > p {
+    max-width: 330px;
+    font-size: 11px;
+  }
+
+  .obs-record-count strong {
+    font-size: 48px;
+  }
+
+  .observatory-visual {
+    height: 420px;
+  }
+
+  .observatory-color-field {
+    width: 390px;
+    height: 390px;
+    top: 285px;
+  }
+
+  .observatory-sigil {
+    width: 315px;
+    height: 315px;
+    top: 22px;
+  }
+
+  .observatory-sigil > span {
+    font-size: 118px;
+  }
+
+  .obs-specimen-1 {
+    width: 265px;
+    top: 24px;
+  }
+
+  .obs-specimen-1 img {
+    height: 255px;
+  }
+
+  .obs-specimen-2 {
+    width: 120px;
+    left: 3%;
+    top: 235px;
+  }
+
+  .obs-specimen-3 {
+    width: 120px;
+    right: 3%;
+    top: 235px;
+  }
+
+  .obs-specimen-2 img,
+  .obs-specimen-3 img {
+    height: 120px;
+  }
+
+  .obs-specimen > strong {
+    font-size: 9px;
+  }
+
+  .observatory-relations {
+    grid-template-columns: 1fr;
+  }
+
+  .obs-relation-panel {
+    padding: 20px 0;
+  }
+
+  .obs-relation-panel + .obs-relation-panel {
+    padding: 20px 0;
+    border-left: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+  }
+
+  .obs-relation-row {
+    grid-template-columns: 90px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  /* ----------------------------------------------------------
+     POKÉMON RECORD
+     ---------------------------------------------------------- */
+
+  .pokemon-record-page {
+    padding: 18px;
+  }
+
+  .pokemon-record-page .logo-button {
+    font-size: 34px;
+    white-space: nowrap;
+  }
+
+  .pokemon-record-page .database-name {
+    font-size: 7px;
+    letter-spacing: 2px;
+  }
+
+  .pokemon-record-page .pokemon-search {
+    width: 100%;
+    margin-top: 22px;
+  }
+
+  .pokemon-record-page .pokemon-search input {
+    font-size: 13px;
+  }
+
+  .pokemon-record-page .pokemon-search button {
+    font-size: 8px;
+  }
+
+  .pokemon-record-page .field-record {
+    margin-top: 30px;
+  }
+
+  .record-hero {
+    padding-bottom: 32px;
+  }
+
+  .record-specimen-stage {
+    height: 405px;
+  }
+
+  .record-specimen-stage::after {
+    inset: 7% 0;
+  }
+
+  .record-specimen-image {
+    width: min(94vw, 390px);
+    max-height: 375px;
+  }
+
+  .field-record-orbit {
+    width: min(78vw, 340px);
+  }
+
+  .record-type-atmosphere {
+    width: 365px;
+    height: 365px;
+  }
+
+  .record-specimen-number {
+    top: 74px;
+    right: -8px;
+    font-size: clamp(125px, 38vw, 170px);
+    letter-spacing: -9px;
+  }
+
+  .record-specimen-label {
+    right: 7px;
+    bottom: 8px;
+    font-size: 6px;
+  }
+
+  .record-identity {
+    padding-top: 20px;
+  }
+
+  .record-eyebrow {
+    font-size: 8px;
+  }
+
+  .record-pokemon-name {
+    font-size: clamp(50px, 16vw, 70px);
+    line-height: 0.9;
+    letter-spacing: -4px;
+  }
+
+  .record-category {
+    margin-top: 13px;
+    font-size: 9px;
+  }
+
+  .record-description {
+    margin-top: 14px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .record-types {
+    margin-top: 18px;
+  }
+
+  .record-field-data {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 22px;
+    margin-top: 24px;
+  }
+
+  .record-field-data span,
+  .record-abilities > span {
+    font-size: 7px;
+  }
+
+  .record-field-data strong,
+  .record-abilities strong {
+    font-size: 11px;
+  }
+
+  .record-analysis-panel,
+  .record-type-analysis,
+  .record-evolution-section {
+    padding: 24px 18px;
+  }
+
+  .record-analysis-panel {
+    min-height: 0;
+  }
+
+  .record-analysis-deck .record-stats {
+    margin-top: 28px;
+    gap: 17px;
+  }
+
+  .record-analysis-deck .record-stat {
+    grid-template-columns: 72px 34px minmax(0, 1fr);
+    gap: 9px;
+  }
+
+  .record-section-heading strong,
+  .record-analysis-deck .record-section-heading strong,
+  .record-type-analysis .record-section-heading strong,
+  .record-evolution-section .record-section-heading strong {
+    font-size: 14px;
+  }
+
+  .record-section-heading small {
+    font-size: 7px;
+  }
+
+  .cry-panel .record-cry-control {
+    margin-top: 28px;
+  }
+
+  .record-waveform {
+    height: 54px;
+  }
+
+  .record-type-analysis-code {
+    top: 28px;
+    right: 12px;
+    font-size: 54px;
+  }
+
+  .record-matchup-chip {
+    min-height: 28px;
+    padding-inline: 9px;
+    font-size: 7px;
+  }
+
+  .record-evolution-heading {
+    gap: 18px;
+  }
+
+  .record-evolution-heading > span {
+    display: none;
+  }
+
+  /* Funciona tanto com a versão antiga de cards quanto com a timeline V2.2. */
+  .record-evolution-line,
+  .record-evolution-timeline {
+    justify-content: flex-start;
+  }
+
+  .record-evolution-step button,
+  .evolution-timeline-stage {
+    width: 205px;
+    min-width: 205px;
+  }
+
+  .record-navigation {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .record-nav-item {
+    min-height: 110px;
+    padding: 20px;
+  }
+
+  .record-nav-item.previous {
+    border-right: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  }
+
+  .record-nav-item > strong {
+    font-size: 29px;
+  }
+}
+
+
+/* ============================================================
+   CELULAR ESTREITO — até 360px
+   ============================================================ */
+
+@media (max-width: 360px) {
+  /* HOME: em 320/360 não forçamos marca + arquivo na mesma linha. */
+  .home-page {
+    padding: 16px;
+  }
+
+  .home-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 13px;
+  }
+
+  .home-header > div:first-child {
+    width: 100%;
+  }
+
+  .home-logo {
+    width: max-content;
+    max-width: 100%;
+    font-size: 31px;
+    letter-spacing: -1.7px;
+    white-space: nowrap;
+  }
+
+  .home-version {
+    align-items: flex-start;
+    margin-left: 0;
+    font-size: 6px;
+    letter-spacing: 1.1px;
+  }
+
+  .home-stage {
+    margin-top: 42px;
+  }
+
+  .home-title {
+    font-size: 38px;
+    line-height: 0.94;
+    letter-spacing: -2px;
+  }
+
+  .home-description {
+    font-size: 12px;
+  }
+
+  .home-search {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .home-search input {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .home-search button {
+    justify-self: end;
+    padding: 6px 0;
+    font-size: 10px;
+  }
+
+  .featured-specimen {
+    margin-top: 48px;
+  }
+
+  .specimen-visual {
+    height: 285px;
+  }
+
+  .specimen-image {
+    width: min(88%, 280px);
+    max-height: 270px;
+  }
+
+  .specimen-orbit {
+    width: min(76vw, 255px);
+  }
+
+  /* POKÉDEX */
+  .pokedex-page {
+    padding: 16px;
+  }
+
+  .pokedex-logo {
+    font-size: 30px;
+  }
+
+  .pokedex-archive span {
+    font-size: 6px;
+  }
+
+  .pokedex-intro h1 {
+    font-size: 42px;
+  }
+
+  .pokedex-tools {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .pokedex-results {
+    align-items: flex-start;
+  }
+
+  .pokedex-type-filters {
+    width: calc(100% + 32px);
+    margin-inline: -16px;
+    padding-inline: 16px;
+  }
+
+  /* Em 320px dois cards ficam apertados demais. */
+  .pokedex-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pokedex-entry {
+    min-height: 250px;
+  }
+
+  .archive-record-visual {
+    height: 160px;
+  }
+
+  .pokedex-entry-image {
+    width: 155px;
+    height: 155px;
+  }
+
+  /* TYPES */
+  .types-page {
+    padding: 16px 16px 36px;
+  }
+
+  .types-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .types-logo {
+    font-size: 31px;
+    white-space: nowrap;
+  }
+
+  .obs-header-data {
+    align-items: flex-start;
+  }
+
+  .obs-intro h1 {
+    font-size: 50px;
+  }
+
+  .type-rail {
+    width: calc(100% + 32px);
+    margin-inline: -16px;
+    padding-inline: 16px;
+  }
+
+  .observatory-type-info h2 {
+    font-size: 58px;
+  }
+
+  .observatory-visual {
+    height: 385px;
+  }
+
+  .observatory-color-field {
+    width: 330px;
+    height: 330px;
+  }
+
+  .observatory-sigil {
+    width: 280px;
+    height: 280px;
+  }
+
+  .obs-specimen-1 {
+    width: 235px;
+  }
+
+  .obs-specimen-1 img {
+    height: 225px;
+  }
+
+  .obs-specimen-2,
+  .obs-specimen-3 {
+    width: 105px;
+    top: 220px;
+  }
+
+  .obs-specimen-2 img,
+  .obs-specimen-3 img {
+    height: 105px;
+  }
+
+  .obs-relation-row {
+    grid-template-columns: 78px minmax(0, 1fr);
+  }
+
+  /* POKÉMON RECORD */
+  .pokemon-record-page {
+    padding: 16px;
+  }
+
+  .pokemon-record-page .logo-button {
+    font-size: 31px;
+  }
+
+  .pokemon-record-page .pokemon-search form {
+    grid-template-columns: 1fr auto;
+  }
+
+  .record-specimen-stage {
+    height: 340px;
+  }
+
+  .record-specimen-image {
+    width: min(92vw, 310px);
+    max-height: 315px;
+  }
+
+  .field-record-orbit {
+    width: min(82vw, 285px);
+  }
+
+  .record-type-atmosphere {
+    width: 300px;
+    height: 300px;
+  }
+
+  .record-specimen-number {
+    top: 68px;
+    font-size: 120px;
+  }
+
+  /* Evita nomes como Machamp serem cortados. */
+  .record-pokemon-name {
+    font-size: 44px;
+    line-height: 0.92;
+    letter-spacing: -2.5px;
+    overflow-wrap: anywhere;
+  }
+
+  .record-field-data {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .record-analysis-panel,
+  .record-type-analysis,
+  .record-evolution-section {
+    padding-inline: 14px;
+  }
+
+  .record-analysis-deck .record-stat {
+    grid-template-columns: 62px 30px minmax(0, 1fr);
+    gap: 7px;
+  }
+
+  .record-nav-item > strong {
+    font-size: 25px;
+  }
+}
+
+
+/* ============================================================
+   TOUCH / POINTER SEM HOVER
+   ============================================================ */
+
+@media (hover: none) {
+  /* O parallax depende de mouse; em touch mantemos composição estável. */
+  .specimen-image,
+  .specimen-orbit,
+  .specimen-background-number,
+  .specimen-type-field {
+    transform: none !important;
+  }
+
+  /* Informações que antes apareciam apenas no hover do Browse
+     ficam disponíveis também em touch. */
+  .archive-record .record-label {
+    opacity: 0.35;
+    transform: none;
+  }
+
+  .archive-record .record-open {
+    max-height: 22px;
+    margin-top: 8px;
+    opacity: 0.78;
+    transform: none;
+  }
+
+  .archive-record:hover .pokedex-entry-image,
+  .obs-specimen:hover img {
+    transform: none;
+  }
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

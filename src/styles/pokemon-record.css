@@ -1,0 +1,144 @@
+/* Individual Pokémon Field Record */
+.pokemon-record-page { background:#f5f2ea; }
+.pokemon-record-page .field-record { color:#171717; margin-top:54px; }
+.field-record { width:100%; color:#181818; }
+
+.pokemon-record-page .pokemon-search { position:absolute; top:34px; right:40px; z-index:10; width:300px; }
+.pokemon-record-page .pokemon-search form { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; border-bottom:1px solid rgba(0,0,0,.55); }
+.pokemon-record-page .pokemon-search input { width:100%; border:0; background:transparent; padding:10px 0; outline:0; font:inherit; }
+.pokemon-record-page .pokemon-search button { border:0; background:transparent; color:inherit; padding:10px 0 10px 18px; font:inherit; font-size:8px; font-weight:600; text-transform:uppercase; letter-spacing:1px; cursor:pointer; }
+
+.record-hero { position:relative; display:grid; grid-template-columns:minmax(350px,.72fr) minmax(0,1.28fr); gap:0; align-items:center; min-height:610px; padding-bottom:45px; overflow:hidden; border-bottom:1px solid rgba(0,0,0,.16); }
+.record-identity { position:relative; z-index:10; min-width:0; padding-right:10px; }
+.record-eyebrow { display:block; font-size:8px; text-transform:uppercase; letter-spacing:2.4px; color:var(--accent-color); opacity:.7; }
+.record-hero-number { position:absolute; z-index:-1; left:-10px; top:8px; font-size:clamp(130px,13vw,210px); font-weight:800; line-height:1; letter-spacing:-12px; color:var(--accent-color); opacity:.045; pointer-events:none; }
+.record-name-window { overflow:hidden; margin-top:17px; }
+.record-pokemon-name { margin:0; font-size:clamp(76px,7.2vw,118px); line-height:.85; letter-spacing:-7px; }
+.record-category { margin:18px 0 0; font-size:10px; text-transform:uppercase; letter-spacing:2px; opacity:.48; }
+.record-description { max-width:470px; margin:18px 0 0; font-size:13px; line-height:1.65; opacity:.62; }
+.record-types { display:flex; flex-wrap:wrap; gap:7px; margin-top:22px; }
+.record-type-chip { display:inline-flex; align-items:center; min-height:28px; padding:0 11px; border:1px solid color-mix(in srgb,var(--accent-color) 55%,transparent); border-radius:999px; color:var(--accent-color); font-size:8px; font-weight:600; text-transform:uppercase; letter-spacing:1px; }
+
+.record-field-data { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:22px; max-width:600px; margin-top:30px; padding:17px 0; border-top:1px solid rgba(0,0,0,.14); border-bottom:1px solid rgba(0,0,0,.14); }
+.record-field-data div { display:flex; flex-direction:column; gap:5px; }
+.record-field-data span,.record-abilities > span { font-size:8px; text-transform:uppercase; letter-spacing:1.5px; opacity:.52; }
+.record-field-data strong { font-size:12px; font-weight:600; }
+.record-abilities { margin-top:22px; }
+.record-abilities > span { display:block; margin-bottom:8px; letter-spacing:1.6px; }
+.record-abilities > div { display:flex; flex-wrap:wrap; gap:5px 18px; }
+.record-abilities strong { font-size:11px; font-weight:600; }
+
+.record-specimen-stage { position:relative; z-index:4; display:flex; align-items:center; justify-content:center; min-width:0; height:590px; margin-left:clamp(-80px,-5vw,-35px); overflow:hidden; isolation:isolate; }
+.record-specimen-stage::after { content:''; position:absolute; z-index:-6; inset:10% 5%; border:1px solid rgba(0,0,0,.05); pointer-events:none; }
+.record-type-atmosphere { position:absolute; z-index:-5; width:560px; height:560px; border-radius:50%; background:var(--soft-color); filter:blur(23px); opacity:.78; }
+.record-specimen-number { position:absolute; z-index:-4; right:-5px; top:80px; font-size:clamp(160px,18vw,290px); font-weight:800; line-height:1; letter-spacing:-17px; color:var(--accent-color); opacity:.045; pointer-events:none; }
+.field-record-orbit { position:absolute; z-index:-1; width:min(39vw,525px); aspect-ratio:1; border:1px solid color-mix(in srgb,var(--accent-color) 35%,transparent); border-radius:50%; }
+.field-record-orbit > span { position:absolute; inset:17%; border:1px dashed color-mix(in srgb,var(--accent-color) 35%,transparent); border-radius:50%; opacity:.55; }
+.field-record-orbit::before,.field-record-orbit::after { content:''; position:absolute; background:var(--accent-color); opacity:.25; }
+.field-record-orbit::before { left:50%; top:-20px; width:1px; height:calc(100% + 40px); }
+.field-record-orbit::after { left:-20px; top:50%; width:calc(100% + 40px); height:1px; }
+.record-axis { position:absolute; z-index:-2; background:var(--accent-color); opacity:.06; }
+.record-axis.horizontal { width:85%; height:1px; }
+.record-axis.vertical { width:1px; height:80%; }
+.record-specimen-image { position:relative; z-index:8; width:min(96%,650px); max-height:550px; object-fit:contain; filter:drop-shadow(0 30px 22px rgba(0,0,0,.11)); }
+.record-specimen-label { position:absolute; right:18px; bottom:16px; font-size:7px; text-transform:uppercase; letter-spacing:2px; opacity:.35; }
+.record-scanner { position:absolute; z-index:15; top:8%; bottom:8%; left:10%; width:1px; background:linear-gradient(to bottom,transparent,var(--accent-color),transparent); opacity:0; pointer-events:none; animation:field-record-scan 950ms 250ms ease both; }
+@keyframes field-record-scan { 0%{left:10%;opacity:0}15%{opacity:.5}75%{opacity:.2}100%{left:90%;opacity:0} }
+
+.record-section-heading { display:flex; align-items:flex-start; gap:13px; }
+.record-section-heading > span { padding-top:2px; font-size:8px; letter-spacing:1px; opacity:.48; }
+.record-section-heading > div { display:flex; flex-direction:column; gap:4px; }
+.record-section-heading strong { font-size:13px; }
+.record-section-heading small { font-size:8px; line-height:1.3; text-transform:uppercase; letter-spacing:1.25px; opacity:.5; }
+
+.record-analysis-deck { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr); border-bottom:1px solid rgba(0,0,0,.15); }
+.record-analysis-panel { min-height:330px; padding:30px 32px; }
+.record-analysis-panel + .record-analysis-panel { border-left:1px solid rgba(0,0,0,.15); }
+.record-analysis-deck .record-section-heading strong,.record-type-analysis .record-section-heading strong,.record-evolution-section .record-section-heading strong { font-size:15px; }
+.record-analysis-deck .record-stats { display:grid; grid-template-columns:1fr; gap:20px; margin-top:38px; }
+.record-analysis-deck .record-stat { display:grid; grid-template-columns:95px 42px minmax(0,1fr); gap:14px; align-items:center; }
+.record-stat > span { font-size:8px; text-transform:uppercase; letter-spacing:1px; opacity:.48; }
+.record-stat > strong { font-size:11px; }
+.record-stat-track { position:relative; height:3px; overflow:hidden; background:rgba(0,0,0,.1); }
+.record-stat-track > span { position:absolute; left:0; top:0; bottom:0; background:var(--accent-color); }
+
+.cry-panel { position:relative; overflow:hidden; background:color-mix(in srgb,var(--soft-color) 36%,transparent); }
+.cry-panel::after { content:'CRY'; position:absolute; right:-7px; bottom:-20px; font-size:105px; font-weight:800; letter-spacing:-7px; color:var(--accent-color); opacity:.035; pointer-events:none; }
+.record-cry-control { display:grid; align-items:center; color:inherit; font:inherit; cursor:pointer; }
+.cry-panel .record-cry-control { position:relative; z-index:3; width:100%; grid-template-columns:42px 1fr; gap:18px; margin-top:58px; padding:20px 0; border:0; border-top:1px solid rgba(0,0,0,.14); border-bottom:1px solid rgba(0,0,0,.14); background:transparent; }
+.record-cry-play { display:flex; align-items:center; justify-content:center; width:30px; height:30px; border:1px solid var(--accent-color); border-radius:50%; color:var(--accent-color); font-size:10px; }
+.cry-panel .record-cry-control > strong { grid-column:1/-1; justify-self:start; margin-top:4px; color:var(--accent-color); font-size:8px; text-transform:uppercase; letter-spacing:1.2px; }
+.record-waveform { display:flex; align-items:center; gap:4px; height:70px; }
+.record-waveform i { display:block; flex:1; min-width:2px; max-width:4px; height:var(--wave-height); background:var(--accent-color); opacity:.34; transform-origin:center; }
+.record-waveform.is-playing i { animation:record-wave 520ms var(--wave-delay) ease-in-out infinite alternate; }
+@keyframes record-wave { from{transform:scaleY(.45);opacity:.24} to{transform:scaleY(1.25);opacity:.85} }
+.record-no-data { font-size:10px; opacity:.5; }
+
+.record-type-analysis { position:relative; padding:31px 32px 36px; overflow:hidden; border-bottom:1px solid rgba(0,0,0,.15); background:color-mix(in srgb,var(--soft-color) 18%,transparent); }
+.record-type-analysis-code { position:absolute; right:25px; top:20px; font-size:clamp(55px,7vw,100px); font-weight:800; letter-spacing:-5px; text-transform:uppercase; color:var(--accent-color); opacity:.035; pointer-events:none; }
+.record-type-analysis-heading { position:relative; z-index:5; display:flex; justify-content:space-between; align-items:flex-start; }
+.record-matchups { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:26px; }
+.record-type-analysis .record-matchups { position:relative; z-index:5; margin-top:34px; }
+.record-type-analysis .record-matchup-column { padding:0 25px 0 0; }
+.record-type-analysis .record-matchup-column + .record-matchup-column { padding-left:25px; border-left:1px solid rgba(0,0,0,.12); }
+.record-matchup-column > span { display:block; margin-bottom:15px; font-size:9px; font-weight:500; text-transform:uppercase; letter-spacing:1.5px; opacity:.55; }
+.record-matchup-column > div { display:flex; flex-wrap:wrap; gap:6px; }
+.record-matchup-chip { display:inline-flex; align-items:center; gap:7px; min-height:31px; padding:0 11px; border:1px solid rgba(0,0,0,.17); border-radius:999px; font-size:8px; text-transform:uppercase; letter-spacing:.7px; }
+.record-matchup-chip strong { font-size:8px; color:var(--accent-color); }
+.record-matchup-chip.weakness { border-color:color-mix(in srgb,var(--accent-color) 50%,rgba(0,0,0,.18)); }
+
+.record-evolution-section { padding:34px 32px 46px; border-bottom:1px solid rgba(0,0,0,.15); }
+.record-evolution-heading { display:flex; align-items:flex-start; justify-content:space-between; }
+.record-evolution-heading > span { font-size:8px; text-transform:uppercase; letter-spacing:1.8px; opacity:.5; }
+.record-evolution-scroll { overflow-x:auto; margin-top:38px; scrollbar-width:thin; }
+.record-evolution-line { display:flex; align-items:center; width:max-content; min-width:100%; justify-content:center; gap:30px; padding:10px 0 18px; }
+.record-evolution-step { display:flex; align-items:center; gap:16px; }
+.record-evolution-step button { position:relative; width:240px; min-width:240px; height:285px; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; overflow:hidden; padding:22px; border:1px solid rgba(0,0,0,.15); background:transparent; color:inherit; font:inherit; cursor:pointer; transition:background 300ms ease,border-color 300ms ease; }
+.record-evolution-step button:hover { background:var(--soft-color); border-color:color-mix(in srgb,var(--accent-color) 40%,transparent); }
+.record-evolution-step img { position:relative; z-index:3; width:185px; height:185px; object-fit:contain; transition:transform 400ms cubic-bezier(.16,1,.3,1); }
+.record-evolution-step button:hover img { transform:translateY(-7px) scale(1.06); }
+.record-evolution-step .evolution-background-number { position:absolute; z-index:0; top:15px; right:-4px; margin:0; font-size:84px; font-weight:800; line-height:1; letter-spacing:-6px; color:var(--accent-color); opacity:.045; }
+.record-evolution-step .evolution-id { position:relative; z-index:4; margin-top:5px; font-size:8px; font-weight:500; letter-spacing:1.2px; opacity:.58; }
+.record-evolution-step button > strong { position:relative; z-index:4; margin-top:4px; font-size:18px; font-weight:650; }
+.record-evolution-step button > small { position:relative; z-index:4; margin-top:7px; font-size:9px; font-weight:600; letter-spacing:1.15px; color:rgba(0,0,0,.58); opacity:1; text-transform:uppercase; }
+.record-evolution-arrow { position:relative; display:flex; align-items:center; gap:8px; width:75px; color:var(--accent-color); opacity:.5; }
+.record-evolution-arrow i { display:block; flex:1; height:1px; background:var(--accent-color); opacity:.25; }
+
+.record-navigation { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); min-height:170px; border-bottom:1px solid rgba(0,0,0,.15); }
+.record-nav-item { position:relative; min-height:170px; display:flex; flex-direction:column; justify-content:center; gap:7px; overflow:hidden; padding:30px 38px; isolation:isolate; border:0; background:transparent; color:inherit; font:inherit; cursor:pointer; transition:background 300ms ease; }
+.record-nav-item.previous { align-items:flex-start; text-align:left; border-right:1px solid rgba(0,0,0,.15); }
+.record-nav-item.next { align-items:flex-end; text-align:right; }
+.record-nav-item:hover { background:var(--soft-color); }
+.record-nav-item img { position:absolute; z-index:-1; top:50%; width:190px; height:190px; object-fit:contain; opacity:0; filter:grayscale(1); transition:opacity 350ms ease,transform 500ms cubic-bezier(.16,1,.3,1); }
+.record-nav-item.previous img { right:22px; transform:translateY(-45%) translateX(25px); }
+.record-nav-item.next img { left:22px; transform:translateY(-45%) translateX(-25px); }
+.record-nav-item:hover img { opacity:.09; }
+.record-nav-item.previous:hover img { transform:translateY(-50%) translateX(0); }
+.record-nav-item.next:hover img { transform:translateY(-50%) translateX(0); }
+.record-nav-item > span { font-size:7px; text-transform:uppercase; letter-spacing:1.5px; opacity:.4; }
+.record-nav-item > small { margin-top:13px; font-size:8px; letter-spacing:1.5px; opacity:.4; }
+.record-nav-item > strong { margin-top:2px; font-size:clamp(30px,3vw,48px); line-height:.95; letter-spacing:-2px; transition:transform 350ms cubic-bezier(.16,1,.3,1); }
+.record-nav-item.previous:hover > strong { transform:translateX(-6px); }
+.record-nav-item.next:hover > strong { transform:translateX(6px); }
+
+@media (min-width:901px) and (max-width:1200px) {
+  .record-hero { grid-template-columns:minmax(0,.9fr) minmax(400px,1.1fr); }
+  .record-pokemon-name { font-size:clamp(64px,7vw,95px); }
+  .record-analysis-deck { grid-template-columns:1fr 360px; }
+  .record-evolution-step button { width:210px; min-width:210px; }
+}
+
+@media (max-width:900px) {
+  .pokemon-record-page .pokemon-search { position:static; width:100%; margin-top:24px; }
+  .record-hero { grid-template-columns:1fr; min-height:auto; }
+  .record-specimen-stage { height:480px; margin-left:0; grid-row:1; }
+  .record-identity { grid-row:2; }
+  .record-analysis-deck { grid-template-columns:1fr; }
+  .record-analysis-panel + .record-analysis-panel { border-left:0; border-top:1px solid rgba(0,0,0,.15); }
+  .record-type-analysis .record-matchups { grid-template-columns:1fr; }
+  .record-type-analysis .record-matchup-column + .record-matchup-column { padding-left:0; padding-top:22px; border-left:0; border-top:1px solid rgba(0,0,0,.12); }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .field-record *, .field-record *::before, .field-record *::after { animation:none!important; transition:none!important; }
+}

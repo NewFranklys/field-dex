@@ -95,6 +95,8 @@ function EvolutionCard({
 }) {
   const parentOutside = evolution.parent && !inArchive(evolution.parent.id);
   const localizedMethod = localizeEvolutionMethod(evolution.method, t, tp);
+  const combineExternalOriginMethod = Boolean(parentOutside && showMethod);
+
   return (
     <button
       type="button"
@@ -113,15 +115,27 @@ function EvolutionCard({
         <Artwork src={evolution.image} alt={evolution.name} loading="lazy" />
       </span>
       <strong>{evolution.name}</strong>
-      <small>
-        {evolution.parent
-          ? t("from", {
-              name: evolution.parent.name,
-              suffix: parentOutside ? ` (${t("outsideKanto")})` : "",
-            })
-          : t("familyOrigin")}
+      <small className={combineExternalOriginMethod ? "evolution-origin-line" : undefined}>
+        <span>
+          {evolution.parent
+            ? t("from", {
+                name: evolution.parent.name,
+                suffix: parentOutside ? ` (${t("outsideKanto")})` : "",
+              })
+            : t("familyOrigin")}
+        </span>
+        {combineExternalOriginMethod && (
+          <span className="evolution-origin-method">
+            <span aria-hidden="true">·</span>
+            <EvolutionMethodIcon
+              method={localizedMethod}
+              details={evolution.methodDetails}
+            />
+            <span>{localizedMethod}</span>
+          </span>
+        )}
       </small>
-      {showMethod && (
+      {showMethod && !combineExternalOriginMethod && (
         <span className="evolution-card-method">
           <EvolutionMethodIcon
             method={localizedMethod}

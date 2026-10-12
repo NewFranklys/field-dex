@@ -4,12 +4,14 @@ const specialNames = {
   "nidoran-f": "Nidoran♀",
   "nidoran-m": "Nidoran♂",
 };
+
 export const formatName = (name = "") =>
   specialNames[name] ||
   name
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+
 export function normalizeQuery(value) {
   const query = String(value)
     .trim()
@@ -21,9 +23,16 @@ export function normalizeQuery(value) {
     .replace(/\s+/g, "-");
   return /^\d+$/.test(query) ? String(Number(query)) : query;
 }
-export const idFromUrl = (url) => Number(url.split("/").filter(Boolean).at(-1));
+
+export const idFromUrl = (url = "") =>
+  Number(String(url).split("/").filter(Boolean).at(-1));
+
+export const speciesIdFromPokemon = (data = {}) =>
+  idFromUrl(data.species?.url) || data.species?.id || data.id;
+
 export const artwork = (id) =>
   `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+
 export function filterPokemon(list, query, type) {
   const normalized = normalizeQuery(query);
   return list.filter(
@@ -35,6 +44,7 @@ export function filterPokemon(list, query, type) {
       (type === "all" || pokemon.types.includes(type)),
   );
 }
+
 export function evolutionMethod(details = {}) {
   const conditions = [];
   if (details.min_level) conditions.push(`Lv. ${details.min_level}`);
@@ -71,6 +81,7 @@ export function evolutionMethod(details = {}) {
     "Method not recorded"
   );
 }
+
 // Keep parent identity: siblings must never masquerade as successive evolutions.
 export function evolutionFamily(node, parent = null) {
   const id = idFromUrl(node.species.url);
@@ -90,6 +101,7 @@ export function evolutionFamily(node, parent = null) {
     ...node.evolves_to.flatMap((child) => evolutionFamily(child, { id, name })),
   ];
 }
+
 export function calculateMatchups(types) {
   const multipliers = {};
   for (const type of types)
@@ -115,6 +127,7 @@ export function calculateMatchups(types) {
     immunities: values.filter((x) => x.multiplier === 0),
   };
 }
+
 export function formatPokemon(data, species) {
   const labels = {
     hp: "HP",
@@ -124,9 +137,15 @@ export function formatPokemon(data, species) {
     "special-defense": "Sp. Def",
     speed: "Speed",
   };
+  const speciesId = species?.id || speciesIdFromPokemon(data);
+
   return {
-    id: data.id,
-    number: data.id,
+    // `id` remains the public species-record identity for current callers.
+    id: speciesId,
+    number: speciesId,
+    speciesId,
+    pokemonId: data.id,
+    isDefaultForm: data.is_default !== false,
     name: formatName(data.name),
     category:
       species?.genera?.find((x) => x.language.name === "en")?.genus ||

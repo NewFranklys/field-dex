@@ -21,6 +21,7 @@ describe("Pokémon transformations", () => {
   ])("normalizes %s", (input, output) =>
     expect(normalizeQuery(input)).toBe(output),
   );
+
   it("combines exact numeric searches and partial names with type filters", () => {
     const list = [
       { id: 25, name: "Pikachu", types: ["electric"] },
@@ -30,12 +31,14 @@ describe("Pokémon transformations", () => {
     expect(filterPokemon(list, "pika", "water")).toEqual([]);
     expect(filterPokemon(list, "PIKA", "all")).toEqual([list[0]]);
   });
+
   it("retains sibling parents instead of inventing sequential evolutions", () => {
     const family = evolutionFamily(eeveeFamily.chain);
     expect(family.slice(1).every((x) => x.parent.id === 133)).toBe(true);
     expect(family[1].method).toBe("Water Stone");
     expect(family.at(-1).method).toBe("High friendship · Day");
   });
+
   it("combines trade items, level and additional conditions", () => {
     expect(
       evolutionMethod({
@@ -47,6 +50,7 @@ describe("Pokémon transformations", () => {
       "Lv. 20 · Attack > Defense",
     );
   });
+
   it("multiplies dual types including cancellation, quarter resistance and immunity", () => {
     const relations = (double, half, none) => ({
       damage_relations: {
@@ -69,6 +73,7 @@ describe("Pokémon transformations", () => {
       immunities: [{ type: "Ground", multiplier: 0 }],
     });
   });
+
   it("supplies honest missing-data fallbacks and labels hidden abilities", () => {
     const result = formatPokemon(
       { ...pokemon(), sprites: {}, cries: {} },
@@ -79,6 +84,28 @@ describe("Pokémon transformations", () => {
     expect(result.category).toBe("Category unavailable");
     expect(result.abilities).toContain("Lightning Rod (hidden)");
   });
+
+  it("keeps species identity distinct from an alternate pokemon form id", () => {
+    const result = formatPokemon(
+      {
+        ...pokemon(6),
+        id: 10034,
+        name: "charizard-mega-x",
+        is_default: false,
+        species: {
+          name: "charizard",
+          url: "https://pokeapi.co/api/v2/pokemon-species/6/",
+        },
+      },
+      { id: 6 },
+    );
+
+    expect(result.id).toBe(6);
+    expect(result.speciesId).toBe(6);
+    expect(result.pokemonId).toBe(10034);
+    expect(result.isDefaultForm).toBe(false);
+  });
+
   it("random encounters stay in scope without repeating the current specimen", () => {
     for (const current of [1, 25, 151])
       for (const value of [0, 0.5, 0.999]) {

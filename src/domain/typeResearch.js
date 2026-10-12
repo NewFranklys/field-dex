@@ -1,5 +1,6 @@
 import { artwork, idFromUrl, formatName } from "./pokemon";
-import { inArchive } from "../data/archive";
+import { CURRENT_ARCHIVE, inArchive } from "../data/archive";
+
 const representativePreferences = {
   normal: [
     143, // Snorlax
@@ -87,6 +88,7 @@ const representativePreferences = {
     122, // Mr. Mime
   ],
 };
+
 function pickRepresentatives(pokemonList, typeSlug) {
   const pokemonById = new Map(
     pokemonList.map((pokemon) => [pokemon.id, pokemon]),
@@ -95,13 +97,10 @@ function pickRepresentatives(pokemonList, typeSlug) {
   const selected = [];
   preferredIds.forEach((id) => {
     const pokemon = pokemonById.get(id);
-    if (pokemon) {
-      selected.push(pokemon);
-    }
+    if (pokemon) selected.push(pokemon);
   });
-  if (selected.length >= 3) {
-    return selected.slice(0, 3);
-  }
+  if (selected.length >= 3) return selected.slice(0, 3);
+
   const fallbackIndexes = [
     0,
     Math.floor(pokemonList.length / 2),
@@ -120,7 +119,7 @@ function pickRepresentatives(pokemonList, typeSlug) {
   return selected;
 }
 
-export function typeResearch(dataList) {
+export function typeResearch(dataList, archive = CURRENT_ARCHIVE) {
   return Object.fromEntries(
     dataList.map((data) => {
       const list = data.pokemon
@@ -132,7 +131,7 @@ export function typeResearch(dataList) {
             image: artwork(id),
           };
         })
-        .filter((p) => inArchive(p.id))
+        .filter((p) => inArchive(p.id, archive))
         .sort((a, b) => a.id - b.id);
       const r = data.damage_relations;
       return [

@@ -2,11 +2,13 @@ const API = "https://pokeapi.co/api/v2/";
 const cache = new Map();
 const MAX_ENTRIES = 256;
 const MAX_AGE = 30 * 60 * 1000;
+
 export class ApiError extends Error {
-  constructor(message, status = 0) {
+  constructor(message, status = 0, code = "unknown") {
     super(message);
     this.name = "ApiError";
     this.status = status;
+    this.code = code;
   }
 }
 
@@ -21,13 +23,16 @@ export function request(path) {
   const promise = (async () => {
     try {
       const response = await fetch(url, { signal: controller.signal });
-      if (!response.ok)
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new ApiError("Pokémon not found.", response.status, "notFound");
+        }
         throw new ApiError(
-          response.status === 404
-            ? "Pokémon not found."
-            : "The research database is temporarily unavailable.",
+          "The research database is temporarily unavailable.",
           response.status,
+          "unavailable",
         );
+      }
       return await response.json();
     } catch (error) {
       cache.delete(url);
@@ -36,6 +41,8 @@ export function request(path) {
         controller.signal.aborted
           ? "The request took too long. Please try again."
           : "Could not reach the research database. Check your connection and try again.",
+        0,
+        controller.signal.aborted ? "timeout" : "offline",
       );
     } finally {
       clearTimeout(timeout);

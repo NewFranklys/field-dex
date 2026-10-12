@@ -34,6 +34,10 @@ export default {
       fighting: "Fighting", poison: "Poison", ground: "Ground", flying: "Flying", psychic: "Psychic", bug: "Bug",
       rock: "Rock", ghost: "Ghost", dragon: "Dragon", dark: "Dark", steel: "Steel", fairy: "Fairy"
     },
+    habitats: {
+      cave: "Cave", forest: "Forest", grassland: "Grassland", mountain: "Mountain", rare: "Rare",
+      "rough-terrain": "Rough terrain", sea: "Sea", urban: "Urban", "waters-edge": "Water's edge"
+    },
     stats: {
       hp: "HP", attack: "Attack", defense: "Defense", "special-attack": "Sp. Atk", "special-defense": "Sp. Def", speed: "Speed"
     }
@@ -56,6 +60,7 @@ export default {
     type: "Type",
     height: "Height",
     weight: "Weight",
+    categoryFallback: "{{type}}-type Pokémon",
     encounter: {
       label: "Encounter", kicker: "Unknown specimen", title1: "Random", title2: "Encounter",
       description: "Pull an unidentified entry from the current Kanto archive.", action: "Initiate scan ↗"
@@ -124,6 +129,8 @@ export default {
     fieldRecord: "Field Record / {{number}}",
     height: "Height", weight: "Weight", habitat: "Habitat", generation: "Generation", abilities: "Abilities", hidden: "hidden",
     registered: "Registered specimen",
+    categoryFallback: "{{type}}-type Pokémon",
+    sourceFallback: "Source text: {{language}}",
     statsTitle: "Base Stat Analysis", statsSubtitle: "Species baseline values · scale 0–255",
     bstAria: "Base stat total",
     vocalization: "Vocalization", vocalizationSubtitle: "Recorded species cry",

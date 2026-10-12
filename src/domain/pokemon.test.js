@@ -141,6 +141,49 @@ describe("Pokémon transformations", () => {
     expect(result.isDefaultForm).toBe(false);
   });
 
+  it("derives BST, habitat identity and one representative historical sprite per generation", () => {
+    const data = {
+      ...pokemon(6),
+      sprites: {
+        ...pokemon(6).sprites,
+        versions: {
+          "generation-i": {
+            "red-blue": { front_default: "https://example.test/gen1.png" },
+            yellow: { front_default: "https://example.test/yellow.png" },
+          },
+          "generation-ii": {
+            crystal: { front_default: "https://example.test/gen2.png" },
+          },
+          "generation-viii": {
+            icons: { front_default: "https://example.test/icon.png" },
+          },
+        },
+      },
+    };
+    const result = formatPokemon(data, {
+      id: 6,
+      habitat: { name: "mountain" },
+      genera: [],
+      flavor_text_entries: [],
+    });
+    expect(result.baseStatTotal).toBe(330);
+    expect(result.habitatSlug).toBe("mountain");
+    expect(result.historicalSprites).toEqual([
+      {
+        key: "generation-i",
+        label: "Gen I",
+        version: "Red Blue",
+        image: "https://example.test/gen1.png",
+      },
+      {
+        key: "generation-ii",
+        label: "Gen II",
+        version: "Crystal",
+        image: "https://example.test/gen2.png",
+      },
+    ]);
+  });
+
   it("random encounters stay in scope without repeating the current specimen", () => {
     for (const current of [1, 25, 151])
       for (const value of [0, 0.5, 0.999]) {

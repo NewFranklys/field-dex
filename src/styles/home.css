@@ -1760,10 +1760,3 @@
   }
 
 }
-
-/* TESTE — MOBILE ESTREITO */
-@media (max-width: 360px) {
-  .home-page {
-    outline: 5px solid red !important;
-  }
-}

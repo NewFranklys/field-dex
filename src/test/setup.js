@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom/vitest";
 import { cleanup } from "@testing-library/react";
 import { afterEach, beforeEach, vi } from "vitest";
+import i18n, { LOCALE_STORAGE_KEY } from "../i18n";
 import { clearApiCache } from "../services/pokeapi";
 
 afterEach(() => {
@@ -9,6 +10,7 @@ afterEach(() => {
   vi.unstubAllGlobals();
   vi.useRealTimers();
 });
+
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: vi.fn((query) => ({
@@ -27,6 +29,9 @@ window.IntersectionObserver = class {
   disconnect() {}
 };
 
-beforeEach(() => {
+beforeEach(async () => {
+  window.localStorage.removeItem(LOCALE_STORAGE_KEY);
+  await i18n.changeLanguage("en");
+  document.documentElement.lang = "en";
   vi.spyOn(HTMLMediaElement.prototype, "pause").mockImplementation(() => {});
 });

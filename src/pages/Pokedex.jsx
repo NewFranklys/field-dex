@@ -1,18 +1,16 @@
 import Artwork from "../components/Artwork";
-
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import { getTypeMeta, pokemonTypes } from "../data/pokemonTypes";
-import {
-  formatName as formatPokemonName,
-  filterPokemon,
-} from "../domain/pokemon";
+import { filterPokemon } from "../domain/pokemon";
 import { getArchive } from "../services/pokemon";
 import { useResource } from "../hooks/useResource";
 import ResourceState from "../components/ResourceState";
 
 function Pokedex() {
   const navigate = useNavigate();
+  const { t } = useTranslation(["pokedex", "common"]);
   const [searchParams, setSearchParams] = useSearchParams();
   const typeFromUrl = searchParams.get("type");
   const selectedType = pokemonTypes.some((type) => type.slug === typeFromUrl)
@@ -41,6 +39,8 @@ function Pokedex() {
     setSearchParams(next);
   }
 
+  const typeName = (slug) => t(`common:types.${slug}`);
+
   return (
     <main
       id="main-content"
@@ -52,50 +52,42 @@ function Pokedex() {
       }}
     >
       <header className="pokedex-header">
-        <button
-          className="pokedex-logo"
-          onClick={() => {
-            navigate("/");
-          }}
-        >
+        <button className="pokedex-logo" onClick={() => navigate("/")}>
           FIELD DEX
         </button>
         <div className="pokedex-archive">
-          <span>Current Archive</span>
-          <strong>Kanto / 001—151</strong>
+          <span>{t("pokedex:currentArchive")}</span>
+          <strong>{t("pokedex:range")}</strong>
         </div>
       </header>
 
       <section className="pokedex-intro">
-        <span>Species Research / Kanto</span>
-        <h1>Kanto Species Archive</h1>
-        <p>
-          Browse the 151 species currently available in FIELD DEX. Kanto is the
-          first archive scope, not the long-term limit of the platform.
-        </p>
+        <span>{t("pokedex:eyebrow")}</span>
+        <h1>{t("pokedex:title")}</h1>
+        <p>{t("pokedex:description")}</p>
         <div className="archive-current-state">
-          <span>Current Classification</span>
+          <span>{t("pokedex:currentClassification")}</span>
           <strong>
-            {selectedType === "all" ? "All Species" : selectedTypeMeta?.name}
+            {selectedType === "all"
+              ? t("pokedex:allSpecies")
+              : typeName(selectedType)}
           </strong>
         </div>
       </section>
 
       <section className="pokedex-tools">
         <div className="pokedex-search-area">
-          <label htmlFor="pokedex-search">Search Species</label>
+          <label htmlFor="pokedex-search">{t("pokedex:searchSpecies")}</label>
           <input
             id="pokedex-search"
             type="text"
-            placeholder="Name or #"
+            placeholder={t("pokedex:nameOrNumber")}
             value={searchTerm}
-            onChange={(event) => {
-              setSearchTerm(event.target.value);
-            }}
+            onChange={(event) => setSearchTerm(event.target.value)}
           />
         </div>
         <div className="pokedex-results" role="status" aria-live="polite">
-          <span>Active Records</span>
+          <span>{t("pokedex:activeRecords")}</span>
           <strong>{loading ? 0 : filteredPokemon.length}</strong>
         </div>
       </section>
@@ -103,7 +95,7 @@ function Pokedex() {
       <div
         className="pokedex-type-filters"
         role="group"
-        aria-label="Filter by type"
+        aria-label={t("pokedex:filterAria")}
       >
         <button
           aria-pressed={selectedType === "all"}
@@ -112,11 +104,9 @@ function Pokedex() {
               ? "pokedex-type-filter active"
               : "pokedex-type-filter"
           }
-          onClick={() => {
-            selectType("all");
-          }}
+          onClick={() => selectType("all")}
         >
-          All Types
+          {t("pokedex:allTypes")}
         </button>
         {pokemonTypes.map((type) => (
           <button
@@ -127,11 +117,9 @@ function Pokedex() {
                 ? "pokedex-type-filter active"
                 : "pokedex-type-filter"
             }
-            onClick={() => {
-              selectType(type.slug);
-            }}
+            onClick={() => selectType(type.slug)}
           >
-            {type.name}
+            {typeName(type.slug)}
           </button>
         ))}
       </div>
@@ -139,20 +127,15 @@ function Pokedex() {
       {loading && (
         <div className="archive-loading" role="status">
           <span />
-          <p>Indexing species archive...</p>
+          <p>{t("pokedex:indexing")}</p>
         </div>
       )}
       {!loading && error && <ResourceState error={error} retry={retry} />}
       {!loading && !error && filteredPokemon.length === 0 && (
         <div className="resource-state" role="status">
-          <h2>No matching records</h2>
-          <p>
-            Try another name, number or type. The current archive covers Kanto
-            species 001–151.
-          </p>
-          <button onClick={() => setSearchParams({})}>
-            Clear search and filters
-          </button>
+          <h2>{t("pokedex:noMatches")}</h2>
+          <p>{t("pokedex:noMatchesBody")}</p>
+          <button onClick={() => setSearchParams({})}>{t("pokedex:clear")}</button>
         </div>
       )}
 
@@ -166,48 +149,26 @@ function Pokedex() {
                 <motion.button
                   layout
                   key={pokemon.id}
-                  className="
-                      pokedex-entry
-                      archive-record
-                    "
+                  className="pokedex-entry archive-record"
                   style={{
                     "--entry-accent": primaryTypeMeta?.accent || "#77736a",
                     "--entry-soft": primaryTypeMeta?.soft || "#ebe9e2",
                   }}
-                  initial={{
-                    opacity: 0,
-                    y: 14,
-                    scale: 0.985,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                    scale: 1,
-                  }}
-                  exit={{
-                    opacity: 0,
-                    scale: 0.96,
-                    y: -8,
-                  }}
+                  initial={{ opacity: 0, y: 14, scale: 0.985 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96, y: -8 }}
                   transition={{
-                    layout: {
-                      duration: 0.42,
-                      ease: [0.16, 1, 0.3, 1],
-                    },
-                    opacity: {
-                      duration: 0.18,
-                    },
-                    scale: {
-                      duration: 0.25,
-                    },
+                    layout: { duration: 0.42, ease: [0.16, 1, 0.3, 1] },
+                    opacity: { duration: 0.18 },
+                    scale: { duration: 0.25 },
                   }}
-                  onClick={() => {
+                  onClick={() =>
                     navigate(`/pokemon/${pokemon.id}`, {
                       state: { archive: `/pokedex?${searchParams}` },
-                    });
-                  }}
+                    })
+                  }
                 >
-                  <span className="record-label">Entry</span>
+                  <span className="record-label">{t("pokedex:entry")}</span>
                   <span className="pokedex-entry-number">
                     #{pokemon.id.toString().padStart(3, "0")}
                   </span>
@@ -227,9 +188,7 @@ function Pokedex() {
                     />
                   </span>
                   <span className="record-information">
-                    <strong className="pokedex-entry-name">
-                      {pokemon.name}
-                    </strong>
+                    <strong className="pokedex-entry-name">{pokemon.name}</strong>
                     <span className="pokedex-entry-types">
                       {pokemon.types.map((type) => {
                         const typeMeta = getTypeMeta(type);
@@ -241,13 +200,13 @@ function Pokedex() {
                               "--type-color": typeMeta?.accent || "#77736a",
                             }}
                           >
-                            {typeMeta?.name || formatPokemonName(type)}
+                            {typeName(type)}
                           </span>
                         );
                       })}
                     </span>
                     <span className="record-open">
-                      View field record
+                      {t("pokedex:viewRecord")}
                       <b>↗</b>
                     </span>
                   </span>

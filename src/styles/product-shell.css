@@ -8,7 +8,7 @@
 
 .product-shell-inner {
   display: grid;
-  grid-template-columns: minmax(180px, 1fr) auto minmax(180px, 1fr);
+  grid-template-columns: minmax(180px, 1fr) auto minmax(220px, 1fr);
   align-items: center;
   gap: 28px;
   min-height: 68px;
@@ -79,10 +79,16 @@
   text-decoration: none;
 }
 
+.product-shell-tools {
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  gap: 16px;
+}
+
 .product-shell-status {
   display: flex;
   flex-direction: column;
-  justify-self: end;
   gap: 2px;
   text-align: right;
   text-transform: uppercase;
@@ -100,6 +106,31 @@
   letter-spacing: 0.1em;
 }
 
+.language-switcher {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  border: 1px solid #d0cdc4;
+  background: #efede7;
+}
+
+.language-switcher button {
+  min-width: 38px;
+  padding: 6px 7px;
+  border: 0;
+  background: transparent;
+  color: #77736a;
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.language-switcher button[aria-pressed="true"] {
+  background: #191919;
+  color: #f6f4ee;
+}
+
 .home-scope-note {
   margin-top: 20px;
   color: #67645d;
@@ -109,29 +140,49 @@
   text-transform: uppercase;
 }
 
+@media (max-width: 900px) {
+  .product-shell-inner {
+    grid-template-columns: minmax(150px, 1fr) auto auto;
+    gap: 18px;
+    padding-inline: 24px;
+  }
+
+  .product-shell-status {
+    display: none;
+  }
+}
+
 @media (max-width: 760px) {
   .product-shell-inner {
-    grid-template-columns: 1fr auto;
-    gap: 18px;
+    grid-template-columns: auto 1fr;
+    gap: 14px;
     min-height: 62px;
     padding: 9px 18px;
   }
 
-  .product-shell-brand span,
-  .product-shell-status {
+  .product-shell-brand span {
     display: none;
   }
 
   .product-shell .section-nav {
-    justify-content: flex-end;
+    order: 3;
+    grid-column: 1 / -1;
+    justify-content: flex-start;
     gap: 18px;
+    width: 100%;
+    border-top: 1px solid #dedbd3;
+    padding-top: 5px;
     font-size: 10px;
+  }
+
+  .product-shell-tools {
+    justify-self: end;
   }
 }
 
 @media (max-width: 420px) {
   .product-shell-inner {
-    gap: 12px;
+    gap: 10px;
   }
 
   .product-shell-brand strong {
@@ -141,5 +192,11 @@
   .product-shell .section-nav {
     gap: 12px;
     font-size: 9px;
+  }
+
+  .language-switcher button {
+    min-width: 34px;
+    padding-inline: 5px;
+    font-size: 8px;
   }
 }

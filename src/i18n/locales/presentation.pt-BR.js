@@ -1,0 +1,37 @@
+export default {
+  media: {
+    imageUnavailable: "Imagem indisponível",
+    imageUnavailableFor: "{{name}}: imagem indisponível",
+  },
+  data: {
+    categoryUnavailable: "Categoria indisponível",
+    fieldNotesUnavailable: "Nenhuma nota de campo disponível.",
+    unknown: "Desconhecido",
+  },
+  typeDescriptions: {
+    normal: "Espécies adaptáveis com características variadas.",
+    fire: "Espécies associadas ao calor, às chamas e à combustão.",
+    water: "Espécies aquáticas adaptadas a rios, mares e lagos.",
+    electric: "Espécies capazes de gerar energia elétrica.",
+    grass: "Espécies intimamente ligadas às plantas e à natureza.",
+    ice: "Espécies adaptadas ao frio extremo e a habitats congelados.",
+    fighting: "Espécies especializadas em combate físico.",
+    poison: "Espécies que utilizam toxinas, venenos e compostos tóxicos.",
+    ground: "Espécies associadas ao solo, à areia e à terra.",
+    flying: "Espécies adaptadas ao movimento aéreo e ao voo.",
+    psychic: "Espécies capazes de habilidades mentais extraordinárias.",
+    bug: "Espécies inspiradas em insetos e outras pequenas criaturas.",
+    rock: "Espécies com corpos ligados a pedras e minerais.",
+    ghost: "Espécies misteriosas associadas a espíritos e sombras.",
+    dragon: "Espécies raras que possuem extraordinário poder dracônico.",
+    dark: "Espécies conhecidas por astúcia e táticas pouco convencionais.",
+    steel: "Espécies protegidas por corpos metálicos e armaduras.",
+    fairy: "Espécies associadas a uma misteriosa energia mágica.",
+  },
+  evolution: {
+    level: "Nv. {{level}}",
+    attackLessDefense: "Ataque < Defesa",
+    attackEqualDefense: "Ataque = Defesa",
+    attackGreaterDefense: "Ataque > Defesa",
+  },
+};

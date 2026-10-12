@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function CryPlayer({ src }) {
+  const { t } = useTranslation("record");
   const audioRef = useRef(null);
   const active = useRef(true);
   const [playing, setPlaying] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(false);
+
   useEffect(() => {
     active.current = true;
     const audio = audioRef.current;
@@ -14,6 +17,7 @@ export default function CryPlayer({ src }) {
       audio?.pause();
     };
   }, []);
+
   async function toggle() {
     const audio = audioRef.current;
     if (playing) {
@@ -33,7 +37,10 @@ export default function CryPlayer({ src }) {
       if (active.current) setPending(false);
     }
   }
-  if (!src) return <p className="record-no-data">No recorded cry available.</p>;
+
+  if (!src)
+    return <p className="record-no-data">{t("cry.unavailable")}</p>;
+
   return (
     <>
       <audio
@@ -55,7 +62,7 @@ export default function CryPlayer({ src }) {
         className="record-cry-control"
         onClick={toggle}
         disabled={pending}
-        aria-label={playing ? "Pause cry" : "Play cry"}
+        aria-label={playing ? t("cry.pause") : t("cry.play")}
         aria-pressed={playing}
       >
         <span className="record-cry-play" aria-hidden="true">
@@ -79,12 +86,16 @@ export default function CryPlayer({ src }) {
           ))}
         </span>
         <strong>
-          {pending ? "Loading…" : playing ? "Playing" : "Play Cry"}
+          {pending
+            ? t("cry.loading")
+            : playing
+              ? t("cry.playing")
+              : t("cry.playLabel")}
         </strong>
       </button>
       {error && (
         <p role="status" className="record-no-data">
-          Cry playback unavailable. You can try playing again.
+          {t("cry.error")}
         </p>
       )}
     </>

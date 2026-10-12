@@ -113,8 +113,9 @@ export function calculateMatchups(types) {
       for (const { name } of type.damage_relations[relation])
         multipliers[name] = (multipliers[name] ?? 1) * factor;
     }
-  const values = Object.entries(multipliers).map(([type, multiplier]) => ({
-    type: formatName(type),
+  const values = Object.entries(multipliers).map(([typeSlug, multiplier]) => ({
+    type: formatName(typeSlug),
+    typeSlug,
     multiplier,
   }));
   return {
@@ -128,7 +129,15 @@ export function calculateMatchups(types) {
   };
 }
 
-export function formatPokemon(data, species) {
+function localizedEntry(entries = [], locale = "en") {
+  return (
+    entries.find((entry) => entry.language?.name === locale) ||
+    entries.find((entry) => entry.language?.name === "en") ||
+    null
+  );
+}
+
+export function formatPokemon(data, species, { locale = "en" } = {}) {
   const labels = {
     hp: "HP",
     attack: "Attack",
@@ -138,6 +147,9 @@ export function formatPokemon(data, species) {
     speed: "Speed",
   };
   const speciesId = species?.id || speciesIdFromPokemon(data);
+  const genus = localizedEntry(species?.genera, locale)?.genus;
+  const flavor = localizedEntry(species?.flavor_text_entries, locale)?.flavor_text;
+  const typeSlugs = data.types.map((x) => x.type.name);
 
   return {
     // `id` remains the public species-record identity for current callers.
@@ -147,14 +159,13 @@ export function formatPokemon(data, species) {
     pokemonId: data.id,
     isDefaultForm: data.is_default !== false,
     name: formatName(data.name),
-    category:
-      species?.genera?.find((x) => x.language.name === "en")?.genus ||
-      "Category unavailable",
+    category: genus || "Category unavailable",
     description:
-      species?.flavor_text_entries
-        ?.find((x) => x.language.name === "en")
-        ?.flavor_text.replace(/[\f\n\r]+/g, " ") || "No field notes available.",
+      flavor?.replace(/[\f\n\r]+/g, " ") || "No field notes available.",
     habitat: formatName(species?.habitat?.name) || "Unknown",
+    generationCode: species?.generation?.name
+      ? species.generation.name.replace("generation-", "").toUpperCase()
+      : null,
     generation: species?.generation?.name
       ? `Generation ${species.generation.name.replace("generation-", "").toUpperCase()}`
       : "Unknown",
@@ -165,7 +176,12 @@ export function formatPokemon(data, species) {
       data.sprites?.front_default ||
       null,
     cry: data.cries?.latest || data.cries?.legacy || null,
-    types: data.types.map((x) => formatName(x.type.name)),
+    typeSlugs,
+    types: typeSlugs.map(formatName),
+    abilitiesDetailed: data.abilities.map((x) => ({
+      name: formatName(x.ability.name),
+      isHidden: x.is_hidden,
+    })),
     abilities: data.abilities.map(
       (x) => `${formatName(x.ability.name)}${x.is_hidden ? " (hidden)" : ""}`,
     ),

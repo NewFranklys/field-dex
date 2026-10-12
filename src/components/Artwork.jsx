@@ -1,15 +1,21 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Artwork({ src, alt, className, ...props }) {
   const [failed, setFailed] = useState(null);
+  const { t } = useTranslation("presentation");
   if (!src || failed === src)
     return (
       <span
         className={`${className || ""} artwork-fallback`}
         role="img"
-        aria-label={alt ? `${alt}: image unavailable` : "Image unavailable"}
+        aria-label={
+          alt
+            ? t("media.imageUnavailableFor", { name: alt })
+            : t("media.imageUnavailable")
+        }
       >
-        Image unavailable
+        {t("media.imageUnavailable")}
       </span>
     );
   return (

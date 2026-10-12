@@ -59,58 +59,65 @@ async function getCore(query, archive = CURRENT_ARCHIVE) {
     !normalized ||
     (/^\d+$/.test(normalized) && !inArchive(Number(normalized), archive))
   ) {
-    throw new ApiError(scopeMessage(archive), 404);
+    throw new ApiError(scopeMessage(archive), 404, "outOfScope");
   }
 
   const data = await request(`pokemon/${encodeURIComponent(normalized)}`);
   const speciesId = idFromUrl(data.species?.url) || data.id;
 
   if (!inArchive(speciesId, archive)) {
-    throw new ApiError(scopeMessage(archive), 404);
+    throw new ApiError(scopeMessage(archive), 404, "outOfScope");
   }
 
-  // FIELD DEX currently exposes species records, not alternate Pokémon forms.
-  // Keep species identity separate now so Phase 2 can add forms intentionally.
   if (data.is_default === false) {
     throw new ApiError(
       "This alternate form is not exposed in the current species archive.",
       404,
+      "alternateForm",
     );
   }
 
   return { data, speciesId };
 }
 
-export async function getFeatured(id, archive = CURRENT_ARCHIVE) {
+export async function getFeatured(
+  id,
+  archive = CURRENT_ARCHIVE,
+  locale = "en",
+) {
   const { data, speciesId } = await getCore(id, archive);
   const species = await request(`pokemon-species/${speciesId}`).catch(() => null);
-  return formatPokemon(data, species);
+  return formatPokemon(data, species, { locale });
 }
 
-export async function getRecord(query, archive = CURRENT_ARCHIVE) {
+export async function getRecord(
+  query,
+  archive = CURRENT_ARCHIVE,
+  locale = "en",
+) {
   const { data, speciesId } = await getCore(query, archive);
   const warnings = [];
 
-  async function optional(label, promise) {
+  async function optional(code, promise) {
     try {
       return await promise;
     } catch {
-      warnings.push(`${label} unavailable.`);
+      warnings.push(code);
       return null;
     }
   }
 
   const [species, types, index] = await Promise.all([
-    optional("Species notes", request(`pokemon-species/${speciesId}`)),
+    optional("speciesNotes", request(`pokemon-species/${speciesId}`)),
     optional(
-      "Type response",
+      "typeResponse",
       Promise.all(data.types.map((x) => request(x.type.url))),
     ),
     getIndex(archive).catch(() => null),
   ]);
 
   const evolution = species?.evolution_chain?.url
-    ? await optional("Evolution family", request(species.evolution_chain.url))
+    ? await optional("evolutionFamily", request(species.evolution_chain.url))
     : null;
   const family = evolution ? evolutionFamily(evolution.chain) : [];
 
@@ -126,7 +133,7 @@ export async function getRecord(query, archive = CURRENT_ARCHIVE) {
       : null;
 
   return {
-    ...formatPokemon(data, species),
+    ...formatPokemon(data, species, { locale }),
     warnings,
     evolutions: family.filter((x) => inArchive(x.id, archive)),
     hasExtendedFamily: family.some((x) => !inArchive(x.id, archive)),

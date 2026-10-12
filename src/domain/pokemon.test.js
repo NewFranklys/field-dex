@@ -65,12 +65,12 @@ describe("Pokémon transformations", () => {
         relations(["rock"], ["grass", "water"], ["ground"]),
       ]),
     ).toEqual({
-      weaknesses: [{ type: "Rock", multiplier: 4 }],
+      weaknesses: [{ type: "Rock", typeSlug: "rock", multiplier: 4 }],
       resistances: [
-        { type: "Grass", multiplier: 0.25 },
-        { type: "Fire", multiplier: 0.5 },
+        { type: "Grass", typeSlug: "grass", multiplier: 0.25 },
+        { type: "Fire", typeSlug: "fire", multiplier: 0.5 },
       ],
-      immunities: [{ type: "Ground", multiplier: 0 }],
+      immunities: [{ type: "Ground", typeSlug: "ground", multiplier: 0 }],
     });
   });
 
@@ -83,6 +83,41 @@ describe("Pokémon transformations", () => {
     expect(result.cry).toBeNull();
     expect(result.category).toBe("Category unavailable");
     expect(result.abilities).toContain("Lightning Rod (hidden)");
+  });
+
+  it("selects upstream pt-BR species text and falls back to English", () => {
+    const data = pokemon(25);
+    const localized = formatPokemon(
+      data,
+      {
+        id: 25,
+        genera: [
+          { language: { name: "en" }, genus: "Mouse Pokémon" },
+          { language: { name: "pt-BR" }, genus: "Pokémon Rato" },
+        ],
+        flavor_text_entries: [
+          { language: { name: "en" }, flavor_text: "English notes." },
+          { language: { name: "pt-BR" }, flavor_text: "Notas em português." },
+        ],
+      },
+      { locale: "pt-BR" },
+    );
+    expect(localized.category).toBe("Pokémon Rato");
+    expect(localized.description).toBe("Notas em português.");
+
+    const fallback = formatPokemon(
+      data,
+      {
+        id: 25,
+        genera: [{ language: { name: "en" }, genus: "Mouse Pokémon" }],
+        flavor_text_entries: [
+          { language: { name: "en" }, flavor_text: "English notes." },
+        ],
+      },
+      { locale: "pt-BR" },
+    );
+    expect(fallback.category).toBe("Mouse Pokémon");
+    expect(fallback.description).toBe("English notes.");
   });
 
   it("keeps species identity distinct from an alternate pokemon form id", () => {

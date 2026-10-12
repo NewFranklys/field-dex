@@ -1,4 +1,8 @@
+import { useTranslation } from "react-i18next";
+
 function PokemonSearch({ searchTerm, onSearchTermChange, onSearch }) {
+  const { t } = useTranslation("common");
+
   return (
     <form className="pokemon-search" onSubmit={onSearch}>
       <input
@@ -6,11 +10,11 @@ function PokemonSearch({ searchTerm, onSearchTermChange, onSearch }) {
         onChange={(event) => {
           onSearchTermChange(event.target.value);
         }}
-        placeholder="Search name or #"
-        aria-label="Search Pokémon"
+        placeholder={t("search.placeholder")}
+        aria-label={t("search.pokemon")}
         autoComplete="off"
       />
-      <button type="submit">Search</button>
+      <button type="submit">{t("search.button")}</button>
     </form>
   );
 }

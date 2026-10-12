@@ -1,219 +1,407 @@
 # FIELD DEX — Product Vision
 
-## 1. What FIELD DEX is
+## 1. Product definition
 
-FIELD DEX is intended to become a personal Pokémon companion platform, not just a species encyclopedia.
+FIELD DEX is a Pokémon companion platform built around five connected ideas:
 
-The Pokédex is the first module and the identity anchor. Over time, FIELD DEX should connect four kinds of knowledge around the same Pokémon/species identity:
+**knowledge + context + collection + play + community**.
 
-1. species and biological/game data;
-2. game-specific context;
-3. Pokémon TCG cards and the user's own collection;
-4. deck knowledge from the user, community and competitive play.
+The Pokédex is the first module and the species identity anchor, but it is not the final product. FIELD DEX should eventually connect a Pokémon to the games where it exists, the cards that represent it, the decks that use those cards, guides and community knowledge, while also understanding the user's own collection and preferences.
 
-The core product idea is context. A normal Pokédex answers "what is this Pokémon?" FIELD DEX should eventually also answer "how does this Pokémon exist in the game I am playing?" and "what can I build with the cards I actually own?"
+A normal Pokédex answers:
 
----
+> What is this Pokémon?
 
-## 2. Current release — V1 Pokédex Core
+FIELD DEX should eventually also answer:
 
-The current implementation is intentionally focused on Kanto (001–151). V1 should finish this experience before the project expands into the larger platform.
+> How does this Pokémon exist in the game I am playing?
+>
+> Which cards of this Pokémon exist in the TCG?
+>
+> Which of those cards do I own?
+>
+> What decks can I actually build with the cards I already have?
 
-### V1 goals
-
-- polished Home experience;
-- Kanto Pokédex browsing;
-- search by Pokémon name and National Dex number;
-- useful type filters;
-- individual Pokémon records;
-- species description/category;
-- types;
-- height and weight;
-- abilities;
-- base stats;
-- evolution family and evolution method where available;
-- weaknesses, resistances and immunities;
-- Pokémon cry where available;
-- previous/next Pokémon navigation;
-- type reference experience;
-- reliable loading, empty and failure states;
-- desktop, tablet and mobile responsiveness;
-- basic accessibility and keyboard/focus behavior;
-- production-quality README;
-- automated tests for important behavior;
-- passing lint, tests and production build.
-
-### V1 architectural goal
-
-Kanto is a release boundary, not the long-term data model. The implementation should avoid spreading `151` assumptions and direct API calls across unrelated UI components where they can be centralized cleanly.
-
-V1 should leave the codebase in a condition where future modules can be added without rebuilding the application from scratch.
+The product should feel like one connected Pokémon research system rather than several unrelated databases.
 
 ---
 
-## 3. Future module — Games
+## 2. Product principles
 
-FIELD DEX should eventually let the user choose a Pokémon game/version and view Pokémon in that context.
+1. **Useful context over raw data.** Raw API fields should become understandable information.
+2. **Stable identity first.** Pokémon, forms, games, cards and users must be identified by stable IDs, not translated display names.
+3. **Connected, not monolithic.** Species, games, TCG, users, collections, decks and community content connect through explicit relationships while remaining separate domains.
+4. **Personal relevance.** Long-term value comes from knowing the user's game context, preferences and owned cards.
+5. **Explain recommendations.** Future deck intelligence must explain why a deck was suggested, what is owned, what is missing and what can substitute.
+6. **International by design.** English is the default/fallback UI language and Brazilian Portuguese is an official supported language. Future locales should not require architectural rewrites.
+7. **Community content keeps authorship.** User-created content remains in its authored language by default; optional translation is a separate future capability.
+8. **Preserve FIELD DEX identity.** Avoid turning the product into a generic dashboard or generic Pokédex clone.
+9. **Finish layers before expanding.** Each phase should become stable before the next major dependency is built on top of it.
+10. **Objective data and community opinion are different.** Official/source-backed facts must remain distinguishable from user strategy, commentary and recommendations.
 
-Example questions the module should be able to answer in the future:
+---
+
+## 3. Current completed release — V1 Kanto Research Archive
+
+V1 established a production-quality first module around Kanto species 001–151.
+
+It includes Home, archive browsing, normalized search, type filtering, individual field records, category/description, types, height/weight, abilities, base stats, evolution families, matchup information, cry playback, previous/next navigation, Types reference, resilient loading/error/partial-data states, responsive behavior, accessibility improvements, tests and CI.
+
+Kanto is a historical release boundary, not the long-term Pokédex model.
+
+The V1 architecture already separates reusable domain/data/service logic from page orchestration so later regions and modules do not have to rebuild the application from scratch.
+
+---
+
+## 4. Platform Foundation
+
+Before major product expansion, FIELD DEX needs a stable platform layer that future modules can share.
+
+This foundation includes:
+
+- internationalization with English default/fallback and Brazilian Portuguese;
+- shared navigation patterns suitable for multiple product modules;
+- stable identity rules for species, forms, games and future TCG cards;
+- clear domain boundaries;
+- reusable error/loading/data-state conventions;
+- documentation for localized and user-generated content;
+- architecture that can expand beyond Kanto without treating 151 as a global limit.
+
+This phase should not prematurely implement Accounts, TCG Collection, Deck Intelligence or Community.
+
+---
+
+## 5. Pokédex — National Dex
+
+The Pokédex should expand from the V1 Kanto archive to the supported National Dex rather than remaining permanently limited to 151 species.
+
+Expected capabilities include:
+
+- National Dex browsing;
+- generation filtering;
+- region filtering where meaningful;
+- search across all supported species;
+- navigation across the configured National Dex release;
+- species pages that remain the canonical identity anchor for cross-module relationships;
+- explicit handling of forms and varieties without incorrectly assigning new National Dex identities.
+
+### Species vs forms
+
+Species identity and form identity must remain distinct.
+
+Examples:
+
+- Charizard remains National Dex #006;
+- Mega Charizard X is a form/variety related to Charizard, not a new National Dex species;
+- regional forms remain linked to the underlying species identity;
+- form-specific typing, stats, abilities or appearance can be modeled separately when supported.
+
+The exact set of supported forms can expand iteratively, but the data model must not confuse forms with species.
+
+---
+
+## 6. Regions and Generations
+
+Kanto should become one browse context among several rather than the identity of the entire product.
+
+FIELD DEX should eventually support structured navigation through regions/generations such as Kanto, Johto, Hoenn, Sinnoh, Unova and later regions.
+
+Region/generation browsing is a discovery layer over species identity. It must not be confused with a game's exact regional Pokédex, because different games in the same broad region may have different availability and rules.
+
+---
+
+## 7. Games
+
+Games are one of FIELD DEX's major differentiators.
+
+The user should eventually be able to choose a Pokémon game/version and view Pokémon in that specific context.
+
+Example questions:
 
 - Is this Pokémon available in Pokémon Platinum?
-- Where can I catch it in this game?
-- At what levels/areas can it appear?
-- How does it evolve in this specific version?
-- Which moves can it learn in this game?
+- Where can I catch it in this version?
+- At what levels and in which areas can it appear?
+- How does it evolve in this game?
+- Which moves can it learn here?
 - Is it part of this game's regional Pokédex?
 - Which important trainers use it?
 
-Possible game experiences include regional Pokédex browsing, locations, encounters, movesets, evolution context, important trainers, Elite Four/Champion teams and related guides.
+Potential game experiences include:
 
-Game-specific data must remain conceptually separate from global species data.
+- game/version directory;
+- game-specific Pokédex;
+- encounters and locations;
+- level ranges and encounter methods;
+- learnsets/moves where reliable data exists;
+- version-specific evolution requirements;
+- important trainers;
+- Elite Four and Champion teams;
+- related guides.
+
+Game-specific data must remain separate from global species data. A global Pokémon page can link to game contexts, but game rules must not overwrite canonical species identity.
 
 ---
 
-## 4. Future module — Pokémon TCG Catalog
+## 8. Accounts and Profiles
 
-FIELD DEX should include a searchable catalog of Pokémon TCG cards.
+Accounts are the foundation for personalization and later community systems.
 
-The catalog may eventually support fields such as:
+Future profile concepts may include:
 
-- card name;
-- Pokémon/species relation;
+- username/display name;
+- avatar;
+- preferred FIELD DEX UI language;
+- additional languages understood;
+- favorite Pokémon;
+- favorite games or TCG preferences;
+- public/private profile settings;
+- future collection/deck/community relationships.
+
+Authentication and the user database should be introduced only when the product phase explicitly requires them.
+
+---
+
+## 9. Pokémon TCG Catalog
+
+FIELD DEX should include a searchable Pokémon TCG catalog as a separate domain connected to Pokémon/species identity.
+
+Expected fields may include:
+
+- stable card identifier;
 - expansion/set;
-- card number;
-- rarity;
+- collector/card number;
+- localized display name where available;
+- Pokémon/species relation where applicable;
 - card type/subtype;
+- rarity;
 - artwork/image;
 - illustrator;
-- legality/format information where reliable data exists.
+- rules/text where legally and technically appropriate;
+- legality/format information where reliable data exists;
+- printing/language metadata where supported.
 
-A Pokémon record should eventually be able to link naturally to cards featuring that Pokémon, but species data and TCG card data remain distinct domains.
+### Card identity rule
+
+A card must never be identified internally only by its localized name.
+
+The same logical or related printing may appear in English, Portuguese, Japanese or other languages. Stable identifiers, set identity and collector/card number must drive relationships. Localized names are presentation data.
 
 ---
 
-## 5. Future module — My Collection
+## 10. My Collection
 
-A signed-in user should eventually be able to mark which physical TCG cards they own.
+Signed-in users should eventually be able to catalog the physical TCG cards they own.
 
-The primary purpose is not merely collection display. The collection becomes input for deck intelligence.
+The collection is not merely a gallery. It is the primary input for future deck intelligence.
 
 Expected concepts include:
 
-- owned card;
+- owned card/printing;
 - quantity owned;
-- exact printing/set when relevant;
-- collection browsing and filtering;
-- collection completion/coverage information where useful.
+- exact set/printing where relevant;
+- card language where relevant;
+- collection filtering and browsing;
+- collection coverage against decks.
 
-Potential later metadata such as card language, condition or trade status should not be assumed in the first implementation unless product requirements explicitly call for it.
+Later optional metadata may include condition, trade status or acquisition details, but those should not block the first useful collection implementation.
 
 ---
 
-## 6. Future module — Decks
+## 11. Decks
 
-Decks are a major product pillar.
-
-FIELD DEX should support both deck construction and deck discovery.
+Decks are a major product pillar and should support both construction and discovery.
 
 ### Personal deck builder
 
-Users should be able to construct and save decks using cards from the catalog and understand which cards they actually own.
+Users should be able to build and save decks from the TCG catalog and understand which cards they actually own.
 
-### Collection-aware deck recommendations
+A deck view should be able to show:
 
-This is one of the product's key differentiators.
+- required quantity per card;
+- owned quantity;
+- missing quantity;
+- legality/format where reliable data exists;
+- deck notes or authored description;
+- collection completion percentage.
 
-The system should eventually be able to inspect the user's collection and answer questions such as:
+### Deck profiles
+
+Decks can eventually be published as profiles by community members or represented from reliable competitive sources.
+
+Deck profiles may be categorized broadly as casual/for-fun, budget, competitive, tournament list or other useful product categories.
+
+---
+
+## 12. Collection-aware Deck Intelligence
+
+This is one of FIELD DEX's strongest intended differentiators.
+
+The system should eventually be able to inspect the user's collection and answer:
 
 - What is the best deck I can build using only cards I already own?
 - Which playable archetypes am I closest to completing?
 - Which deck can I build with no additional purchases?
 - Which stronger deck becomes available if I obtain only a few missing cards?
-- Which substitutions can I use from my collection when I am missing a recommended card?
+- Which substitutions can I use from my collection when a recommended card is missing?
 
-A deck recommendation should be explainable. The user should understand why the deck was recommended, how many required cards are already owned, what is missing, and what substitutions are being proposed.
+Possible recommendation modes include:
 
-### Recommendation modes
-
-Future recommendation modes may include:
-
-- **For Fun** — prioritizes enjoyable themes, favorite Pokémon and interesting combinations;
-- **Best With My Collection** — optimizes around cards already owned;
-- **Competitive** — compares the collection against viable competitive archetypes;
-- **Budget Upgrade** — identifies small additions that create a meaningful improvement;
+- **For Fun** — prioritizes themes, favorites and interesting combinations;
+- **Best With My Collection** — optimizes around owned cards;
+- **Competitive** — compares the collection against viable archetypes;
+- **Budget Upgrade** — identifies small additions with meaningful improvement;
 - **Inspired By** — adapts an existing community or competitive deck profile to the user's collection.
 
-Do not implement purchase or pricing logic unless explicitly requested and backed by an appropriate data source.
+Recommendations must be explainable rather than opaque.
+
+Pricing/purchasing logic is not required unless a later phase explicitly chooses a reliable data source and product direction for it.
 
 ---
 
-## 7. Future module — Community and Competitive Deck Profiles
+## 13. Community
 
-Users should eventually be able to publish and explore deck profiles.
+FIELD DEX can eventually become a multilingual Pokémon community layer around the structured product data.
 
-Profiles can include broad categories such as casual/for-fun and competitive. Competitive lists may eventually reference notable tournament or player decklists when the source and attribution are reliable.
+Potential community features include:
 
-A core interaction should be collection comparison. When opening a deck, the user should be able to see something like:
+- public profiles;
+- published decks;
+- deck descriptions and strategy notes;
+- guides;
+- follows/bookmarks or similar discovery relationships if justified;
+- language-aware discovery;
+- comments or discussion only if the moderation/product cost is explicitly accepted.
 
-- cards owned vs total deck requirement;
-- cards missing;
-- legal substitutions already present in the collection;
-- how close the user is to building the deck.
+### Language rule for community content
 
-Community opinion and strategy should be presented separately from objective game/card data.
+System UI follows the user's selected FIELD DEX locale.
+
+User-generated content remains in the language authored by its creator and should carry language metadata where practical. Automatic translation can be offered later as an explicit feature; it should not silently replace the original text.
+
+Community strategy/opinion must remain distinguishable from objective card/game data.
 
 ---
 
-## 8. Long-term information architecture
+## 14. Competitive layer
 
-The exact navigation may evolve, but the conceptual product areas are:
+A later competitive layer may connect reliable tournament/player decklists to FIELD DEX.
+
+Potential experiences include:
+
+- notable decklists;
+- tournament/event context;
+- archetype discovery;
+- player/deck references when attribution is reliable;
+- collection comparison against a competitive list;
+- metagame/trend information if a reliable source and update strategy exist.
+
+A key interaction is still personal relevance:
+
+> You own 52/60 cards in this list. These are the missing cards.
+
+Competitive ingestion must have explicit source attribution and must not be presented as official FIELD DEX data when it originates from external/community sources.
+
+---
+
+## 15. Guides and Knowledge
+
+Guides should be connected to the entities they discuss instead of becoming an isolated wiki.
+
+Examples:
+
+- a Pokémon record can link to evolution or game-specific guides;
+- a game can link to progression or mechanic guides;
+- a deck can link to a strategy guide;
+- a card can link to deck profiles that use it.
+
+Guides may be editorial, community-authored or source-backed, but authorship and provenance should remain clear.
+
+---
+
+## 16. Long-term information architecture
+
+The exact navigation can evolve, but the conceptual product areas are:
 
 - Pokédex
+- Regions / Generations
 - Games
 - TCG Catalog
 - My Collection
 - Decks
-- Community / Deck Profiles
+- Deck Intelligence
+- Community
+- Competitive
 - Guides
+- Account / Profile
 
-A Pokémon/species identity can connect these modules without collapsing them into one data model.
-
-Example future Pokémon record:
+A future Pokémon record may expose connected views such as:
 
 - Overview
+- Forms
 - Evolutions
 - Stats and matchups
 - Games
 - TCG cards
 - Related guides
-- Relevant decks
+- Relevant decks/community references
+
+These are connected views over shared identity, not one giant data object.
 
 ---
 
-## 9. What should NOT happen during the current V1
+## 17. Domain model at a glance
 
-Do not prematurely build the entire roadmap while finishing the Pokédex.
+FIELD DEX should evolve around the following conceptual domains:
 
-Specifically, unless a task explicitly expands scope, do not add:
+```text
+FIELD DEX
+│
+├── Pokémon Domain
+│   ├── Species
+│   ├── Forms
+│   ├── Types
+│   └── Evolutions
+│
+├── Games Domain
+│   ├── Games / Versions
+│   ├── Regional Dexes
+│   ├── Encounters / Locations
+│   ├── Learnsets / Rules
+│   └── Trainers
+│
+├── TCG Domain
+│   ├── Sets
+│   ├── Cards
+│   ├── Printings
+│   └── Localized card data
+│
+├── User Domain
+│   ├── Account
+│   ├── Profile
+│   ├── Preferences
+│   └── Collection
+│
+├── Deck Domain
+│   ├── Decks
+│   ├── Deck entries
+│   ├── Deck profiles
+│   └── Recommendations
+│
+└── Community Domain
+    ├── Published decks
+    ├── Guides
+    ├── Authored content
+    └── Social/discovery relationships
+```
 
-- authentication;
-- a production user database;
-- card collection persistence;
-- deck recommendation algorithms;
-- community posting;
-- tournament ingestion;
-- card pricing/purchasing features;
-- game walkthrough systems.
-
-The correct V1 outcome is a strong Pokédex core with code boundaries that do not block these later modules.
+Detailed identity/boundary rules live in `docs/DOMAIN_MODEL.md`.
 
 ---
 
-## 10. Product principles
+## 18. Delivery strategy
 
-1. **Useful context over raw data.** Raw API fields should become understandable user information.
-2. **Personal relevance.** Long-term value comes from knowing the user's game context and owned cards.
-3. **Connected, not monolithic.** Species, games, TCG, collections and decks connect through identities but remain clean domains.
-4. **Explain recommendations.** Future deck intelligence should show why it recommends something.
-5. **Preserve FIELD DEX identity.** Avoid turning the product into a generic dashboard or generic Pokédex clone.
-6. **Finish one layer before expanding.** The current Pokédex should be release-ready before the larger roadmap is implemented.
+Do not build the entire vision in one pass.
+
+Each phase should have an explicit product boundary, tests and definition of done. Dependencies matter: for example, collection-aware recommendations depend on a stable TCG catalog, user identity, collection representation and deck representation.
+
+The canonical implementation order is maintained in `docs/ROADMAP.md`.

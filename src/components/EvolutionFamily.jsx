@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import Artwork from "./Artwork";
 import { inArchive } from "../data/archive";
@@ -38,7 +39,7 @@ export default function EvolutionFamily({ pokemon, onSelectPokemon }) {
               tp,
             );
             return (
-              <div className="evolution-flow-item" key={evolution.id}>
+              <Fragment key={evolution.id}>
                 {index > 0 && (
                   <div className="evolution-link" aria-label={localizedMethod}>
                     <span className="evolution-link-line" />
@@ -53,8 +54,9 @@ export default function EvolutionFamily({ pokemon, onSelectPokemon }) {
                   onSelectPokemon={onSelectPokemon}
                   t={t}
                   tp={tp}
+                  showMethod={index === 0}
                 />
-              </div>
+              </Fragment>
             );
           })}
         </div>
@@ -68,6 +70,7 @@ export default function EvolutionFamily({ pokemon, onSelectPokemon }) {
               onSelectPokemon={onSelectPokemon}
               t={t}
               tp={tp}
+              showMethod
             />
           ))}
         </div>
@@ -79,7 +82,14 @@ export default function EvolutionFamily({ pokemon, onSelectPokemon }) {
   );
 }
 
-function EvolutionCard({ evolution, pokemon, onSelectPokemon, t, tp }) {
+function EvolutionCard({
+  evolution,
+  pokemon,
+  onSelectPokemon,
+  t,
+  tp,
+  showMethod,
+}) {
   const parentOutside = evolution.parent && !inArchive(evolution.parent.id);
   const localizedMethod = localizeEvolutionMethod(evolution.method, t, tp);
   return (
@@ -108,10 +118,12 @@ function EvolutionCard({ evolution, pokemon, onSelectPokemon, t, tp }) {
             })
           : t("familyOrigin")}
       </small>
-      <span className="evolution-card-method">
-        <EvolutionMethodIcon method={localizedMethod} />
-        <small>{localizedMethod}</small>
-      </span>
+      {showMethod && (
+        <span className="evolution-card-method">
+          <EvolutionMethodIcon method={localizedMethod} />
+          <small>{localizedMethod}</small>
+        </span>
+      )}
     </button>
   );
 }

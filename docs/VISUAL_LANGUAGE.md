@@ -8,6 +8,17 @@ The 18 type symbols use the vector recreation from [`partywhale/pokemon-type-ico
 
 Type names remain localized (`en` / `pt-BR`); type slugs remain stable internal identifiers.
 
+## Evolution methods
+
+Evolution transitions use structured method data rather than parsing localized labels whenever upstream metadata is available.
+
+- item-based evolutions display the specific PokéAPI item sprite (`moon-stone`, `fire-stone`, `water-stone`, `thunder-stone`, `leaf-stone`, `sun-stone`, `ice-stone`, `dawn-stone`, `dusk-stone`, `shiny-stone`, held trade items and future item slugs);
+- level-up, trade, friendship, day/night, known move, location, gender, rain and stat-condition evolutions use restrained FIELD DEX vector glyphs;
+- missing item artwork falls back to the corresponding method glyph instead of breaking the evolution flow;
+- the human-readable method label remains visible beside the icon, so the symbol supplements rather than replaces information.
+
+This is the final planned visual-language expansion before National Dex work. New visual systems should be added only when a future product module requires them.
+
 ## Species record visual modules
 
 - type-symbol badges and subtle type watermark;
@@ -15,7 +26,7 @@ Type names remain localized (`en` / `pt-BR`); type slugs remain stable internal 
 - Base Stat Total plus strongest/weakest stat emphasis;
 - type-symbol matchup chips;
 - connected evolution flow for linear families while preserving branching families;
-- evolution method glyphs;
+- structured evolution method/item icons;
 - height comparison against a neutral 1.75 m human reference;
 - historical sprite strip derived from PokéAPI `sprites.versions` data.
 

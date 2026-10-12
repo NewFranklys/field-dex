@@ -10,6 +10,7 @@ import {
 import { getArchive } from "../services/pokemon";
 import { useResource } from "../hooks/useResource";
 import ResourceState from "../components/ResourceState";
+
 function Pokedex() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,11 +20,13 @@ function Pokedex() {
     : "all";
   const { data: pokemonList, loading, error, retry } = useResource(getArchive);
   const searchTerm = searchParams.get("q") || "";
+
   function setSearchTerm(value) {
     const next = new URLSearchParams(searchParams);
     value ? next.set("q", value) : next.delete("q");
     setSearchParams(next, { replace: true });
   }
+
   const filteredPokemon = filterPokemon(
     pokemonList || [],
     searchTerm,
@@ -31,11 +34,13 @@ function Pokedex() {
   );
   const selectedTypeMeta =
     selectedType === "all" ? null : getTypeMeta(selectedType);
+
   function selectType(typeSlug) {
     const next = new URLSearchParams(searchParams);
     typeSlug === "all" ? next.delete("type") : next.set("type", typeSlug);
     setSearchParams(next);
   }
+
   return (
     <main
       id="main-content"
@@ -56,16 +61,17 @@ function Pokedex() {
           FIELD DEX
         </button>
         <div className="pokedex-archive">
-          <span>Kanto Archive</span>
-          <strong>001—151</strong>
+          <span>Current Archive</span>
+          <strong>Kanto / 001—151</strong>
         </div>
       </header>
+
       <section className="pokedex-intro">
-        <span>National Pokédex / Generation I</span>
-        <h1>Species Archive</h1>
+        <span>Species Research / Kanto</span>
+        <h1>Kanto Species Archive</h1>
         <p>
-          Browse all currently registered species from the Kanto research
-          archive.
+          Browse the 151 species currently available in FIELD DEX. Kanto is the
+          first archive scope, not the long-term limit of the platform.
         </p>
         <div className="archive-current-state">
           <span>Current Classification</span>
@@ -74,6 +80,7 @@ function Pokedex() {
           </strong>
         </div>
       </section>
+
       <section className="pokedex-tools">
         <div className="pokedex-search-area">
           <label htmlFor="pokedex-search">Search Species</label>
@@ -92,6 +99,7 @@ function Pokedex() {
           <strong>{loading ? 0 : filteredPokemon.length}</strong>
         </div>
       </section>
+
       <div
         className="pokedex-type-filters"
         role="group"
@@ -127,6 +135,7 @@ function Pokedex() {
           </button>
         ))}
       </div>
+
       {loading && (
         <div className="archive-loading" role="status">
           <span />
@@ -138,13 +147,15 @@ function Pokedex() {
         <div className="resource-state" role="status">
           <h2>No matching records</h2>
           <p>
-            Try another name, number or type. V1 covers Kanto species 001–151.
+            Try another name, number or type. The current archive covers Kanto
+            species 001–151.
           </p>
           <button onClick={() => setSearchParams({})}>
             Clear search and filters
           </button>
         </div>
       )}
+
       {!loading && !error && (
         <section className="pokedex-grid archive-grid">
           <AnimatePresence mode="popLayout">
@@ -249,4 +260,5 @@ function Pokedex() {
     </main>
   );
 }
+
 export default Pokedex;

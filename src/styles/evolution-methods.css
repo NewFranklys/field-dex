@@ -1,0 +1,80 @@
+/* Final evolution-method visual pass. */
+
+.evolution-method-icon {
+  width:32px;
+  height:32px;
+  overflow:visible;
+  background:color-mix(in srgb,#f5f2ea 88%,var(--soft-color));
+  box-shadow:0 0 0 4px #f5f2ea;
+}
+
+.evolution-method-icon svg {
+  width:17px;
+  height:17px;
+  display:block;
+}
+
+.evolution-method-icon.has-item {
+  width:42px;
+  height:42px;
+  border-color:color-mix(in srgb,var(--accent-color) 42%,rgba(0,0,0,.16));
+  background:color-mix(in srgb,#f5f2ea 74%,var(--soft-color));
+  box-shadow:0 0 0 5px #f5f2ea,0 8px 18px rgba(0,0,0,.06);
+}
+
+.evolution-method-item {
+  display:block;
+  width:34px;
+  height:34px;
+  object-fit:contain;
+  image-rendering:auto;
+  filter:drop-shadow(0 3px 3px rgba(0,0,0,.12));
+}
+
+.evolution-link:has(.evolution-method-icon.has-item) .evolution-link-line {
+  margin-bottom:-21px;
+}
+
+.evolution-link:has(.evolution-method-icon.has-item) strong {
+  margin-top:7px;
+}
+
+.evolution-card-method .evolution-method-icon {
+  width:24px;
+  height:24px;
+  box-shadow:none;
+}
+
+.evolution-card-method .evolution-method-icon svg {
+  width:13px;
+  height:13px;
+}
+
+.evolution-card-method .evolution-method-icon.has-item {
+  width:30px;
+  height:30px;
+}
+
+.evolution-card-method .evolution-method-item {
+  width:25px;
+  height:25px;
+}
+
+.evolution-method-trade,
+.evolution-method-friendship,
+.evolution-method-day,
+.evolution-method-night,
+.evolution-method-move,
+.evolution-method-location,
+.evolution-method-gender,
+.evolution-method-rain,
+.evolution-method-stats {
+  color:color-mix(in srgb,var(--accent-color) 82%,#2c2a26);
+}
+
+@media (max-width:640px) {
+  .evolution-method-icon { width:29px; height:29px; }
+  .evolution-method-icon.has-item { width:38px; height:38px; }
+  .evolution-method-item { width:31px; height:31px; }
+  .evolution-link:has(.evolution-method-icon.has-item) .evolution-link-line { margin-bottom:-19px; }
+}

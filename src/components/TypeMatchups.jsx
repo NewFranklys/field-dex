@@ -1,18 +1,22 @@
+import { useTranslation } from "react-i18next";
+
 export default function TypeMatchups({ matchups }) {
+  const { t } = useTranslation(["record", "common"]);
+
   if (!matchups)
-    return <p className="record-no-data">Type response data unavailable.</p>;
+    return <p className="record-no-data">{t("record:typeUnavailable")}</p>;
+
+  const groups = [
+    ["weaknesses", t("record:weakTo"), "weakness"],
+    ["resistances", t("record:resists"), "resistance"],
+    ["immunities", t("record:immuneTo"), "immunity"],
+  ];
+
   return (
     <>
-      <p className="record-no-data">
-        Current type chart. Abilities, moves and battle conditions are not
-        included.
-      </p>
+      <p className="record-no-data">{t("record:typeContext")}</p>
       <div className="record-matchups">
-        {[
-          ["weaknesses", "Weak To", "weakness"],
-          ["resistances", "Resists", "resistance"],
-          ["immunities", "Immune To", "immunity"],
-        ].map(([key, label, style]) => (
+        {groups.map(([key, label, style]) => (
           <div className="record-matchup-column" key={key}>
             <span>{label}</span>
             <div>
@@ -20,14 +24,16 @@ export default function TypeMatchups({ matchups }) {
                 matchups[key].map((item) => (
                   <span
                     className={`record-matchup-chip ${style}`}
-                    key={item.type}
+                    key={item.typeSlug || item.type}
                   >
-                    {item.type}
+                    {item.typeSlug
+                      ? t(`common:types.${item.typeSlug}`)
+                      : item.type}
                     <strong>{item.multiplier}×</strong>
                   </span>
                 ))
               ) : (
-                <span className="record-no-data">None</span>
+                <span className="record-no-data">{t("record:none")}</span>
               )}
             </div>
           </div>

@@ -94,10 +94,30 @@ export function evolutionMethod(details = {}) {
   );
 }
 
+export function evolutionMethodMetadata(details = {}) {
+  return {
+    trigger: details.trigger?.name || null,
+    item: details.item?.name || null,
+    heldItem: details.held_item?.name || null,
+    minLevel: details.min_level ?? null,
+    minHappiness: details.min_happiness ?? null,
+    minAffection: details.min_affection ?? null,
+    minBeauty: details.min_beauty ?? null,
+    timeOfDay: details.time_of_day || null,
+    gender: details.gender ?? null,
+    location: details.location?.name || null,
+    knownMove: details.known_move?.name || null,
+    knownMoveType: details.known_move_type?.name || null,
+    relativePhysicalStats: details.relative_physical_stats ?? null,
+    rain: Boolean(details.needs_overworld_rain),
+  };
+}
+
 // Keep parent identity: siblings must never masquerade as successive evolutions.
 export function evolutionFamily(node, parent = null) {
   const id = idFromUrl(node.species.url);
   const name = formatName(node.species.name);
+  const details = node.evolution_details || [];
   return [
     {
       id,
@@ -105,10 +125,12 @@ export function evolutionFamily(node, parent = null) {
       parent,
       image: artwork(id),
       method: parent
-        ? [...new Set(node.evolution_details.map(evolutionMethod))].join(
-            " / ",
-          ) || "Method not recorded"
+        ? [...new Set(details.map(evolutionMethod))].join(" / ") ||
+          "Method not recorded"
         : "Base form",
+      methodDetails: parent
+        ? details.map(evolutionMethodMetadata)
+        : [{ trigger: "base" }],
     },
     ...node.evolves_to.flatMap((child) => evolutionFamily(child, { id, name })),
   ];

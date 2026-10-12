@@ -28,14 +28,21 @@
   left:50%;
   top:50%;
   display:block;
-  width:30px;
-  height:30px;
+  width:27px;
+  height:27px;
   object-fit:contain;
   object-position:center;
-  transform:translate(calc(-50% + 1px),calc(-50% + 1px));
+  transform:translate(-50%,-50%);
   transform-origin:center;
   image-rendering:auto;
   filter:drop-shadow(0 3px 3px rgba(0,0,0,.12));
+}
+
+/* Item evolutions are visually heavier than glyph methods because their labels
+   and arrows live below the circle. Offset the whole connector slightly so the
+   item circle, not the complete text stack, sits on the card-to-card axis. */
+.evolution-link:has(.evolution-method-icon.has-item) {
+  transform:translateY(13px);
 }
 
 .evolution-link:has(.evolution-method-icon.has-item) .evolution-link-line {
@@ -120,7 +127,10 @@
 @media (max-width:640px) {
   .evolution-method-icon { width:29px; height:29px; }
   .evolution-method-icon.has-item { width:38px; height:38px; }
-  .evolution-method-item { width:27px; height:27px; }
+  .evolution-method-item { width:25px; height:25px; }
+  .evolution-link:has(.evolution-method-icon.has-item) {
+    transform:translateY(11px);
+  }
   .evolution-link:has(.evolution-method-icon.has-item) .evolution-link-line { margin-bottom:-19px; }
   .evolution-origin-line { gap:4px; }
 }

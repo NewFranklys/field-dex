@@ -13,6 +13,7 @@ Type names remain localized (`en` / `pt-BR`); type slugs remain stable internal 
 Evolution transitions use structured method data rather than parsing localized labels whenever upstream metadata is available.
 
 - item-based evolutions display the specific PokéAPI item sprite (`moon-stone`, `fire-stone`, `water-stone`, `thunder-stone`, `leaf-stone`, `sun-stone`, `ice-stone`, `dawn-stone`, `dusk-stone`, `shiny-stone`, held trade items and future item slugs);
+- the canonical item slug remains the stable identity used by rendering and tests, independent from the localized display label;
 - level-up, trade, friendship, day/night, known move, location, gender, rain and stat-condition evolutions use restrained FIELD DEX vector glyphs;
 - missing item artwork falls back to the corresponding method glyph instead of breaking the evolution flow;
 - the human-readable method label remains visible beside the icon, so the symbol supplements rather than replaces information.

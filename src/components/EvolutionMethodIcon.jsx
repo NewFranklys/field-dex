@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-
-export const evolutionItemSprite = (itemSlug = "") =>
+const evolutionItemSprite = (itemSlug = "") =>
   itemSlug
     ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${itemSlug}.png`
     : null;
@@ -122,25 +120,32 @@ export default function EvolutionMethodIcon({ method = "", details = [] }) {
     details.find((entry) => entry?.item)?.item ||
     details.find((entry) => entry?.heldItem)?.heldItem ||
     null;
-  const [itemFailed, setItemFailed] = useState(false);
   const kind = methodKind(details, method);
-
-  useEffect(() => setItemFailed(false), [itemSlug]);
 
   return (
     <span
-      className={`evolution-method-icon evolution-method-${kind}${itemSlug && !itemFailed ? " has-item" : ""}`}
+      className={`evolution-method-icon evolution-method-${kind}${itemSlug ? " has-item" : ""}`}
       data-method-kind={kind}
       aria-hidden="true"
     >
-      {itemSlug && !itemFailed ? (
-        <img
-          className="evolution-method-item"
-          src={evolutionItemSprite(itemSlug)}
-          alt=""
-          loading="lazy"
-          onError={() => setItemFailed(true)}
-        />
+      {itemSlug ? (
+        <>
+          <img
+            className="evolution-method-item"
+            src={evolutionItemSprite(itemSlug)}
+            alt=""
+            loading="lazy"
+            onError={(event) => {
+              event.currentTarget.hidden = true;
+              event.currentTarget.parentElement?.classList.remove("has-item");
+              const fallback = event.currentTarget.nextElementSibling;
+              if (fallback) fallback.hidden = false;
+            }}
+          />
+          <span className="evolution-method-fallback" hidden>
+            <MethodGlyph kind={kind} />
+          </span>
+        </>
       ) : (
         <MethodGlyph kind={kind} />
       )}

@@ -1,0 +1,66 @@
+import { expect, it, vi } from "vitest";
+import { request } from "./pokeapi";
+import { getArchive, getRecord, getTypes } from "./pokemon";
+import { mockApi, response } from "../test/fixtures";
+
+it("shares requests across consumers and reuses type data across modules", async () => {
+  const fetch = mockApi();
+  await Promise.all([getArchive(), getTypes()]);
+  expect(fetch).toHaveBeenCalledTimes(19);
+  await getArchive();
+  expect(fetch).toHaveBeenCalledTimes(19);
+});
+it("preserves primary/secondary type slots", async () => {
+  mockApi();
+  const archive = await getArchive();
+  expect(archive.find((p) => p.id === 1).types).toEqual(["grass", "poison"]);
+});
+it("evicts failures so retry can recover", async () => {
+  const fetch = mockApi();
+  fetch.mockRejectedValueOnce(new Error("Offline"));
+  await expect(request("pokemon/25")).rejects.toThrow("Check your connection");
+  await expect(request("pokemon/25")).resolves.toHaveProperty("id", 25);
+});
+it("times out hanging requests and allows retry", async () => {
+  vi.useFakeTimers();
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(
+      (url, { signal }) =>
+        new Promise((resolve, reject) =>
+          signal.addEventListener("abort", () => reject(new Error("aborted"))),
+        ),
+    ),
+  );
+  const result = expect(request("pokemon/25")).rejects.toThrow("took too long");
+  await vi.advanceTimersByTimeAsync(12000);
+  await result;
+});
+it("distinguishes not found from server failure", async () => {
+  mockApi((url) =>
+    url.endsWith("/missing") ? response({}, 404) : response({}, 503),
+  );
+  await expect(request("pokemon/missing")).rejects.toMatchObject({
+    status: 404,
+  });
+  await expect(request("pokemon/25")).rejects.toMatchObject({ status: 503 });
+});
+it("renders available core data when species and type services fail", async () => {
+  mockApi((url) =>
+    /pokemon-species|\/type\//.test(url) ? response({}, 503) : undefined,
+  );
+  const record = await getRecord("25");
+  expect(record.name).toBe("Pikachu");
+  expect(record.warnings).toHaveLength(2);
+  expect(record.matchups).toBeNull();
+  expect(record.evolutions).toEqual([]);
+});
+it("restricts navigation and evolution links to the configured release", async () => {
+  mockApi();
+  expect((await getRecord("1")).navigation.previous).toBeNull();
+  expect((await getRecord("151")).navigation.next).toBeNull();
+  const eevee = await getRecord("133");
+  expect(eevee.evolutions.map((x) => x.id)).toEqual([133, 134, 135, 136]);
+  expect(eevee.hasExtendedFamily).toBe(true);
+  await expect(getRecord("152")).rejects.toMatchObject({ status: 404 });
+});

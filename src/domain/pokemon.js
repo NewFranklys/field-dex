@@ -5,6 +5,18 @@ const specialNames = {
   "nidoran-m": "Nidoran♂",
 };
 
+const HISTORICAL_SPRITE_GENERATIONS = [
+  { key: "generation-i", label: "Gen I", preferred: ["yellow", "red-blue"] },
+  { key: "generation-ii", label: "Gen II", preferred: ["crystal", "gold", "silver"] },
+  { key: "generation-iii", label: "Gen III", preferred: ["emerald", "firered-leafgreen", "ruby-sapphire"] },
+  { key: "generation-iv", label: "Gen IV", preferred: ["platinum", "heartgold-soulsilver", "diamond-pearl"] },
+  { key: "generation-v", label: "Gen V", preferred: ["black-white"] },
+  { key: "generation-vi", label: "Gen VI", preferred: ["x-y", "omegaruby-alphasapphire"] },
+  { key: "generation-vii", label: "Gen VII", preferred: ["ultra-sun-ultra-moon"] },
+  { key: "generation-viii", label: "Gen VIII", preferred: ["sword-shield"] },
+  { key: "generation-ix", label: "Gen IX", preferred: ["scarlet-violet"] },
+];
+
 export const formatName = (name = "") =>
   specialNames[name] ||
   name
@@ -139,22 +151,20 @@ function localizedEntry(entries = [], locale = "en") {
 
 function historicalSpriteArchive(sprites = {}) {
   const generations = sprites.versions || {};
-  return Object.entries(generations).flatMap(([generation, versions]) => {
-    const versionEntries = Object.entries(versions || {}).filter(
-      ([version]) => version !== "icons",
+
+  return HISTORICAL_SPRITE_GENERATIONS.flatMap(({ key, label, preferred }) => {
+    const versions = generations[key] || {};
+    const selectedVersion = preferred.find((version) =>
+      Boolean(versions[version]?.front_default),
     );
-    const selected = versionEntries.find(([, spriteSet]) =>
-      Boolean(spriteSet?.front_default),
-    );
-    if (!selected) return [];
-    const [version, spriteSet] = selected;
-    const roman = generation.replace("generation-", "").toUpperCase();
+    if (!selectedVersion) return [];
+
     return [
       {
-        key: generation,
-        label: `Gen ${roman}`,
-        version: formatName(version),
-        image: spriteSet.front_default,
+        key,
+        label,
+        version: formatName(selectedVersion),
+        image: versions[selectedVersion].front_default,
       },
     ];
   });
@@ -170,8 +180,10 @@ export function formatPokemon(data, species, { locale = "en" } = {}) {
     speed: "Speed",
   };
   const speciesId = species?.id || speciesIdFromPokemon(data);
-  const genus = localizedEntry(species?.genera, locale)?.genus;
-  const flavor = localizedEntry(species?.flavor_text_entries, locale)?.flavor_text;
+  const genusEntry = localizedEntry(species?.genera, locale);
+  const flavorEntry = localizedEntry(species?.flavor_text_entries, locale);
+  const genus = genusEntry?.genus;
+  const flavor = flavorEntry?.flavor_text;
   const typeSlugs = data.types.map((x) => x.type.name);
   const stats = data.stats.map((x) => ({
     name: x.stat.name,
@@ -188,8 +200,10 @@ export function formatPokemon(data, species, { locale = "en" } = {}) {
     isDefaultForm: data.is_default !== false,
     name: formatName(data.name),
     category: genus || "Category unavailable",
+    categoryLanguage: genusEntry?.language?.name || null,
     description:
       flavor?.replace(/[\f\n\r]+/g, " ") || "No field notes available.",
+    descriptionLanguage: flavorEntry?.language?.name || null,
     habitatSlug: species?.habitat?.name || null,
     habitat: formatName(species?.habitat?.name) || "Unknown",
     generationCode: species?.generation?.name

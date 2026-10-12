@@ -34,6 +34,10 @@ export default {
       fighting: "Lutador", poison: "Venenoso", ground: "Terrestre", flying: "Voador", psychic: "Psíquico", bug: "Inseto",
       rock: "Pedra", ghost: "Fantasma", dragon: "Dragão", dark: "Sombrio", steel: "Aço", fairy: "Fada"
     },
+    habitats: {
+      cave: "Caverna", forest: "Floresta", grassland: "Campo", mountain: "Montanha", rare: "Raro",
+      "rough-terrain": "Terreno acidentado", sea: "Mar", urban: "Urbano", "waters-edge": "Margem d'água"
+    },
     stats: {
       hp: "HP", attack: "Ataque", defense: "Defesa", "special-attack": "Atq. Esp.", "special-defense": "Def. Esp.", speed: "Velocidade"
     }
@@ -56,6 +60,7 @@ export default {
     type: "Tipo",
     height: "Altura",
     weight: "Peso",
+    categoryFallback: "Pokémon do tipo {{type}}",
     encounter: {
       label: "Encontro", kicker: "Espécime desconhecido", title1: "Encontro", title2: "Aleatório",
       description: "Puxe uma entrada não identificada do arquivo atual de Kanto.", action: "Iniciar varredura ↗"
@@ -99,7 +104,7 @@ export default {
     database: "Banco de Pesquisa",
     indexing: "Indexando",
     offline: "Offline",
-    classesOnline: "18 Classes Online",
+    classesOnline: "18 Classes Ativas",
     navAria: "Tipos de Pokémon",
     loading: "Indexando pesquisa de tipos...",
     classification: "Classificação / {{index}}",
@@ -124,6 +129,8 @@ export default {
     fieldRecord: "Registro de Campo / {{number}}",
     height: "Altura", weight: "Peso", habitat: "Habitat", generation: "Geração", abilities: "Habilidades", hidden: "oculta",
     registered: "Espécime registrado",
+    categoryFallback: "Pokémon do tipo {{type}}",
+    sourceFallback: "Texto de referência em {{language}}",
     statsTitle: "Análise de Atributos Base", statsSubtitle: "Valores base da espécie · escala 0–255",
     bstAria: "Total de atributos base",
     vocalization: "Vocalização", vocalizationSubtitle: "Som registrado da espécie",

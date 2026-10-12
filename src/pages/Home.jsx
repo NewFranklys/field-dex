@@ -1,4 +1,5 @@
 import Artwork from "../components/Artwork";
+import TypeIcon from "../components/TypeIcon";
 import { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -8,6 +9,8 @@ import { normalizeQuery } from "../domain/pokemon";
 import { getFeatured } from "../services/pokemon";
 import { useResource } from "../hooks/useResource";
 import ResourceState from "../components/ResourceState";
+
+const HOME_TYPE_SAMPLE = ["grass", "fire", "water", "electric", "psychic", "ghost"];
 
 function Home() {
   const navigate = useNavigate();
@@ -28,11 +31,19 @@ function Home() {
   } = useResource(loadFeatured, featuredId);
   const featuredPokemon = data || previousData;
   const specimenRef = useRef(null);
+  const featuredTypeSlugs = featuredPokemon?.typeSlugs || [];
   const primaryTypeSlug =
-    featuredPokemon?.typeSlugs?.[0] ||
+    featuredTypeSlugs[0] ||
     featuredPokemon?.types?.[0]?.toLowerCase() ||
     "normal";
   const featuredTypeMeta = getTypeMeta(primaryTypeSlug);
+  const primaryTypeName = t(`common:types.${primaryTypeSlug}`);
+  const categoryUsesEnglishFallback =
+    locale.toLowerCase().startsWith("pt") &&
+    featuredPokemon?.categoryLanguage === "en";
+  const featuredCategory = categoryUsesEnglishFallback
+    ? t("home:categoryFallback", { type: primaryTypeName })
+    : featuredPokemon?.category;
 
   function scanNewPokemon() {
     if (!featuredLoading) setFeaturedId(randomArchiveId(featuredId));
@@ -65,11 +76,6 @@ function Home() {
   function openRandomPokemon() {
     navigate(`/pokemon/${randomArchiveId()}`);
   }
-
-  const localizedTypes = (pokemon) =>
-    (pokemon.typeSlugs || []).length
-      ? pokemon.typeSlugs.map((slug) => t(`common:types.${slug}`)).join(" / ")
-      : pokemon.types.join(" / ");
 
   return (
     <main id="main-content" tabIndex={-1} className="home-page">
@@ -158,14 +164,19 @@ function Home() {
                     })}
                   </span>
                   <strong className="specimen-name">{featuredPokemon.name}</strong>
-                  <span className="specimen-category">
-                    {featuredPokemon.category}
-                  </span>
+                  <span className="specimen-category">{featuredCategory}</span>
                 </div>
                 <div className="specimen-data">
                   <div>
                     <span>{t("home:type")}</span>
-                    <strong>{localizedTypes(featuredPokemon)}</strong>
+                    <strong className="specimen-type-list">
+                      {featuredTypeSlugs.map((typeSlug) => (
+                        <span key={typeSlug}>
+                          <TypeIcon type={typeSlug} size="sm" />
+                          {t(`common:types.${typeSlug}`)}
+                        </span>
+                      ))}
+                    </strong>
                   </div>
                   <div>
                     <span>{t("home:height")}</span>
@@ -232,8 +243,10 @@ function Home() {
             <strong className="module-title">{t("home:typeModule.title1")}<br />{t("home:typeModule.title2")}</strong>
             <p>{t("home:typeModule.description")}</p>
           </div>
-          <div className="type-module-visual">
-            <span className="mini-type grass">GR</span><span className="mini-type fire">FI</span><span className="mini-type water">WA</span><span className="mini-type electric">EL</span><span className="mini-type psychic">PS</span><span className="mini-type ghost">GH</span>
+          <div className="type-module-visual" aria-hidden="true">
+            {HOME_TYPE_SAMPLE.map((typeSlug) => (
+              <TypeIcon key={typeSlug} type={typeSlug} size="sm" />
+            ))}
           </div>
           <span className="module-action">{t("home:typeModule.action")}</span>
         </button>

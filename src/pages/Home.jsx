@@ -1,8 +1,9 @@
 import Artwork from "../components/Artwork";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { getTypeMeta } from "../data/pokemonTypes";
-import { randomArchiveId } from "../data/archive";
+import { CURRENT_ARCHIVE, randomArchiveId } from "../data/archive";
 import { normalizeQuery } from "../domain/pokemon";
 import { getFeatured } from "../services/pokemon";
 import { useResource } from "../hooks/useResource";
@@ -10,19 +11,27 @@ import ResourceState from "../components/ResourceState";
 
 function Home() {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation(["home", "common"]);
+  const locale = i18n.resolvedLanguage || i18n.language || "en";
   const [searchTerm, setSearchTerm] = useState("");
   const [featuredId, setFeaturedId] = useState(() => randomArchiveId());
+  const loadFeatured = useCallback(
+    (id) => getFeatured(id, CURRENT_ARCHIVE, locale),
+    [locale],
+  );
   const {
     data,
     previousData,
     loading: featuredLoading,
     error,
     retry,
-  } = useResource(getFeatured, featuredId);
+  } = useResource(loadFeatured, featuredId);
   const featuredPokemon = data || previousData;
   const specimenRef = useRef(null);
   const primaryTypeSlug =
-    featuredPokemon?.types?.[0]?.toLowerCase() || "normal";
+    featuredPokemon?.typeSlugs?.[0] ||
+    featuredPokemon?.types?.[0]?.toLowerCase() ||
+    "normal";
   const featuredTypeMeta = getTypeMeta(primaryTypeSlug);
 
   function scanNewPokemon() {
@@ -57,53 +66,48 @@ function Home() {
     navigate(`/pokemon/${randomArchiveId()}`);
   }
 
+  const localizedTypes = (pokemon) =>
+    (pokemon.typeSlugs || []).length
+      ? pokemon.typeSlugs.map((slug) => t(`common:types.${slug}`)).join(" / ")
+      : pokemon.types.join(" / ");
+
   return (
     <main id="main-content" tabIndex={-1} className="home-page">
       <header className="home-header">
         <div>
           <h1 className="home-logo">FIELD DEX</h1>
-          <p className="home-eyebrow">Pokémon Companion Platform</p>
+          <p className="home-eyebrow">{t("home:eyebrow")}</p>
         </div>
         <div className="home-version">
-          <span>Current Archive</span>
-          <strong>Kanto / 001—151</strong>
+          <span>{t("home:currentArchive")}</span>
+          <strong>{t("home:kantoRange")}</strong>
         </div>
       </header>
 
       <section className="home-stage">
         <div className="home-intro">
-          <span className="home-section-label">Species Research</span>
+          <span className="home-section-label">{t("home:sectionLabel")}</span>
           <h2 className="home-title">
-            Explore the world
+            {t("home:title1")}
             <br />
-            <span>one species at a time.</span>
+            <span>{t("home:title2")}</span>
           </h2>
-          <p className="home-description">
-            Begin with the Kanto archive: search species, study their biology,
-            compare base stats and trace their evolutionary families.
-          </p>
-          <p className="home-scope-note">
-            Current public dataset · Kanto species 001—151
-          </p>
+          <p className="home-description">{t("home:description")}</p>
+          <p className="home-scope-note">{t("home:scopeNote")}</p>
           <form className="home-search" onSubmit={handleSearch}>
             <input
-              aria-label="Search Pokémon"
+              aria-label={t("common:search.pokemon")}
               type="text"
               value={searchTerm}
-              placeholder="Search Pokémon name or #"
-              onChange={(event) => {
-                setSearchTerm(event.target.value);
-              }}
+              placeholder={t("common:search.placeholder")}
+              onChange={(event) => setSearchTerm(event.target.value)}
             />
-            <button type="submit">Search →</button>
+            <button type="submit">{t("common:search.button")} →</button>
           </form>
         </div>
 
         <div
-          className={`
-            featured-specimen
-            ${featuredLoading ? "is-scanning" : ""}
-          `}
+          className={`featured-specimen ${featuredLoading ? "is-scanning" : ""}`}
           ref={specimenRef}
           style={{
             "--specimen-accent": featuredTypeMeta?.accent || "#77736a",
@@ -114,13 +118,13 @@ function Home() {
         >
           <span className="specimen-type-field" />
           <div className="specimen-topline">
-            <span>Featured Specimen</span>
+            <span>{t("home:featured")}</span>
             <button
               type="button"
               disabled={featuredLoading}
               onClick={scanNewPokemon}
             >
-              {featuredLoading ? "Scanning..." : "Rescan ↻"}
+              {featuredLoading ? t("home:scanning") : t("home:rescan")}
             </button>
           </div>
 
@@ -132,9 +136,7 @@ function Home() {
               <button
                 type="button"
                 className="specimen-visual"
-                onClick={() => {
-                  navigate(`/pokemon/${featuredPokemon.id}`);
-                }}
+                onClick={() => navigate(`/pokemon/${featuredPokemon.id}`)}
               >
                 <span className="specimen-orbit" />
                 <span className="specimen-axis horizontal" />
@@ -145,157 +147,99 @@ function Home() {
                   alt={featuredPokemon.name}
                   className="specimen-image"
                 />
-                <span className="specimen-view">View record →</span>
+                <span className="specimen-view">{t("home:viewRecord")}</span>
               </button>
 
               <div className="specimen-identification">
                 <div className="specimen-main-data">
                   <span className="specimen-id">
-                    Specimen / {featuredPokemon.id.toString().padStart(3, "0")}
+                    {t("home:specimen", {
+                      number: featuredPokemon.id.toString().padStart(3, "0"),
+                    })}
                   </span>
-                  <strong className="specimen-name">
-                    {featuredPokemon.name}
-                  </strong>
+                  <strong className="specimen-name">{featuredPokemon.name}</strong>
                   <span className="specimen-category">
                     {featuredPokemon.category}
                   </span>
                 </div>
                 <div className="specimen-data">
                   <div>
-                    <span>Type</span>
-                    <strong>{featuredPokemon.types.join(" / ")}</strong>
+                    <span>{t("home:type")}</span>
+                    <strong>{localizedTypes(featuredPokemon)}</strong>
                   </div>
                   <div>
-                    <span>Height</span>
+                    <span>{t("home:height")}</span>
                     <strong>{featuredPokemon.height} M</strong>
                   </div>
                   <div>
-                    <span>Weight</span>
+                    <span>{t("home:weight")}</span>
                     <strong>{featuredPokemon.weight} KG</strong>
                   </div>
                 </div>
               </div>
             </div>
           ) : (
-            <ResourceState
-              loading={featuredLoading}
-              error={error}
-              retry={retry}
-            />
+            <ResourceState loading={featuredLoading} error={error} retry={retry} />
           )}
 
           {featuredLoading && featuredPokemon && (
             <div className="specimen-scan-overlay" role="status">
               <span />
-              <strong>Searching archive</strong>
+              <strong>{t("home:searchingArchive")}</strong>
             </div>
           )}
         </div>
       </section>
 
       <section className="home-research-modules">
-        <button
-          className="
-            research-module
-            encounter-module
-          "
-          onClick={openRandomPokemon}
-        >
+        <button className="research-module encounter-module" onClick={openRandomPokemon}>
           <div className="module-topline">
             <span>01</span>
-            <span>Encounter</span>
+            <span>{t("home:encounter.label")}</span>
           </div>
           <div className="module-content">
-            <span className="module-kicker">Unknown specimen</span>
+            <span className="module-kicker">{t("home:encounter.kicker")}</span>
             <strong className="module-title">
-              Random
+              {t("home:encounter.title1")}
               <br />
-              Encounter
+              {t("home:encounter.title2")}
             </strong>
-            <p>Pull an unidentified entry from the current Kanto archive.</p>
+            <p>{t("home:encounter.description")}</p>
           </div>
           <div className="encounter-visual">
-            <span>001</span>
-            <span className="encounter-line" />
-            <strong>???</strong>
-            <span className="encounter-line" />
-            <span>151</span>
+            <span>001</span><span className="encounter-line" /><strong>???</strong><span className="encounter-line" /><span>151</span>
           </div>
-          <span className="module-action">Initiate scan ↗</span>
+          <span className="module-action">{t("home:encounter.action")}</span>
         </button>
 
-        <button
-          className="
-            research-module
-            archive-module
-          "
-          onClick={() => {
-            navigate("/pokedex");
-          }}
-        >
-          <div className="module-topline">
-            <span>02</span>
-            <span>Species Archive</span>
-          </div>
+        <button className="research-module archive-module" onClick={() => navigate("/pokedex")}>
+          <div className="module-topline"><span>02</span><span>{t("home:archive.label")}</span></div>
           <div className="module-content">
-            <span className="module-kicker">Current archive</span>
-            <strong className="module-title">
-              Browse
-              <br />
-              Pokédex
-            </strong>
-            <p>Browse the 151 catalogued Kanto species in the current release.</p>
+            <span className="module-kicker">{t("home:archive.kicker")}</span>
+            <strong className="module-title">{t("home:archive.title1")}<br />{t("home:archive.title2")}</strong>
+            <p>{t("home:archive.description")}</p>
           </div>
           <div className="archive-visual">
-            <span>001</span>
-            <span>025</span>
-            <span>050</span>
-            <span>075</span>
-            <span>100</span>
-            <span>125</span>
-            <span>151</span>
-            <i />
+            <span>001</span><span>025</span><span>050</span><span>075</span><span>100</span><span>125</span><span>151</span><i />
           </div>
-          <span className="module-action">Open archive ↗</span>
+          <span className="module-action">{t("home:archive.action")}</span>
         </button>
 
-        <button
-          className="
-            research-module
-            type-module
-          "
-          onClick={() => {
-            navigate("/types");
-          }}
-        >
-          <div className="module-topline">
-            <span>03</span>
-            <span>Classification</span>
-          </div>
+        <button className="research-module type-module" onClick={() => navigate("/types")}>
+          <div className="module-topline"><span>03</span><span>{t("home:typeModule.label")}</span></div>
           <div className="module-content">
-            <span className="module-kicker">18 elemental classes</span>
-            <strong className="module-title">
-              Explore
-              <br />
-              Types
-            </strong>
-            <p>Study the current type system using Kanto representatives.</p>
+            <span className="module-kicker">{t("home:typeModule.kicker")}</span>
+            <strong className="module-title">{t("home:typeModule.title1")}<br />{t("home:typeModule.title2")}</strong>
+            <p>{t("home:typeModule.description")}</p>
           </div>
           <div className="type-module-visual">
-            <span className="mini-type grass">GR</span>
-            <span className="mini-type fire">FI</span>
-            <span className="mini-type water">WA</span>
-            <span className="mini-type electric">EL</span>
-            <span className="mini-type psychic">PS</span>
-            <span className="mini-type ghost">GH</span>
+            <span className="mini-type grass">GR</span><span className="mini-type fire">FI</span><span className="mini-type water">WA</span><span className="mini-type electric">EL</span><span className="mini-type psychic">PS</span><span className="mini-type ghost">GH</span>
           </div>
-          <span className="module-action">View classes ↗</span>
+          <span className="module-action">{t("home:typeModule.action")}</span>
         </button>
       </section>
 
-      <footer className="home-footer">
-        <span>FIELD DEX · Current archive: Kanto / 001—151</span>
-      </footer>
+      <footer className="home-footer"><span>{t("home:footer")}</span></footer>
     </main>
   );
 }

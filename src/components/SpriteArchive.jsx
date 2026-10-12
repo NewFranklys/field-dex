@@ -16,14 +16,26 @@ export default function SpriteArchive({ sprites = [], pokemonName }) {
       </div>
       <div className="sprite-archive-strip">
         {sprites.map((sprite) => (
-          <figure className="sprite-era" key={sprite.key}>
+          <figure
+            className={`sprite-era${sprite.available ? "" : " is-unavailable"}`}
+            key={sprite.key}
+          >
             <div className="sprite-frame">
-              <span className="sprite-scanline" aria-hidden="true" />
-              <Artwork
-                src={sprite.image}
-                alt={`${pokemonName} · ${sprite.label}`}
-                loading="lazy"
-              />
+              {sprite.available ? (
+                <>
+                  <span className="sprite-scanline" aria-hidden="true" />
+                  <Artwork
+                    src={sprite.image}
+                    alt={`${pokemonName} · ${sprite.label}`}
+                    loading="lazy"
+                  />
+                </>
+              ) : (
+                <div className="sprite-unavailable" aria-label={t("spriteUnavailable")}>
+                  <span aria-hidden="true">—</span>
+                  <small>{t("spriteUnavailable")}</small>
+                </div>
+              )}
             </div>
             <figcaption>
               <strong>{sprite.label}</strong>

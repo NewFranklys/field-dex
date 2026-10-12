@@ -3,6 +3,11 @@ export default {
     imageUnavailable: "Imagem indisponível",
     imageUnavailableFor: "{{name}}: imagem indisponível",
   },
+  data: {
+    categoryUnavailable: "Categoria indisponível",
+    fieldNotesUnavailable: "Nenhuma nota de campo disponível.",
+    unknown: "Desconhecido",
+  },
   typeDescriptions: {
     normal: "Espécies adaptáveis com características variadas.",
     fire: "Espécies associadas ao calor, às chamas e à combustão.",

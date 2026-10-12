@@ -2,6 +2,8 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import en from "./locales/en";
 import ptBR from "./locales/pt-BR";
+import presentationEn from "./locales/presentation.en";
+import presentationPtBR from "./locales/presentation.pt-BR";
 
 export const DEFAULT_LOCALE = "en";
 export const SUPPORTED_LOCALES = ["en", "pt-BR"];
@@ -25,14 +27,14 @@ function syncDocumentLanguage(locale) {
 
 void i18n.use(initReactI18next).init({
   resources: {
-    en,
-    "pt-BR": ptBR,
+    en: { ...en, presentation: presentationEn },
+    "pt-BR": { ...ptBR, presentation: presentationPtBR },
   },
   lng: storedLocale(),
   fallbackLng: DEFAULT_LOCALE,
   supportedLngs: SUPPORTED_LOCALES,
   defaultNS: "common",
-  ns: ["common", "home", "pokedex", "typesPage", "record"],
+  ns: ["common", "home", "pokedex", "typesPage", "record", "presentation"],
   interpolation: {
     escapeValue: false,
   },

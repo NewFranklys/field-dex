@@ -1,14 +1,8 @@
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import EvolutionMethodIcon, { evolutionItemSprite } from "./EvolutionMethodIcon";
+import EvolutionMethodIcon from "./EvolutionMethodIcon";
 
 describe("EvolutionMethodIcon", () => {
-  it("builds the canonical PokéAPI item sprite path", () => {
-    expect(evolutionItemSprite("moon-stone")).toBe(
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/moon-stone.png",
-    );
-  });
-
   it("renders the specific evolution item when metadata provides one", () => {
     const { container } = render(
       <EvolutionMethodIcon
@@ -20,7 +14,9 @@ describe("EvolutionMethodIcon", () => {
     const root = container.querySelector(".evolution-method-icon");
     const image = container.querySelector(".evolution-method-item");
     expect(root?.dataset.methodKind).toBe("item");
-    expect(image?.getAttribute("src")).toContain("/moon-stone.png");
+    expect(image?.getAttribute("src")).toBe(
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/moon-stone.png",
+    );
   });
 
   it("uses a semantic glyph for non-item methods", () => {

@@ -149,6 +149,7 @@ export default {
     humanReference: "Human reference",
     spriteArchiveTitle: "Specimen Archive",
     spriteArchiveSubtitle: "Historical in-game sprite representations by generation",
+    spriteUnavailable: "No archived sprite",
     adjacentAria: "Adjacent Pokémon records", previous: "← Previous Record", next: "Next Record →",
     cry: {
       unavailable: "No recorded cry available.", pause: "Pause cry", play: "Play cry", loading: "Loading…", playing: "Playing", playLabel: "Play Cry",

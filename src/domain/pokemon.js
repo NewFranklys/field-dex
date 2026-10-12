@@ -149,25 +149,31 @@ function localizedEntry(entries = [], locale = "en") {
   );
 }
 
-function historicalSpriteArchive(sprites = {}) {
+function historicalSpriteArchive(sprites = {}, introducedGeneration = null) {
   const generations = sprites.versions || {};
+  const introducedIndex = Math.max(
+    0,
+    HISTORICAL_SPRITE_GENERATIONS.findIndex(
+      (generation) => generation.key === introducedGeneration,
+    ),
+  );
 
-  return HISTORICAL_SPRITE_GENERATIONS.flatMap(({ key, label, preferred }) => {
-    const versions = generations[key] || {};
-    const selectedVersion = preferred.find((version) =>
-      Boolean(versions[version]?.front_default),
-    );
-    if (!selectedVersion) return [];
+  return HISTORICAL_SPRITE_GENERATIONS.slice(introducedIndex).map(
+    ({ key, label, preferred }) => {
+      const versions = generations[key] || {};
+      const selectedVersion = preferred.find((version) =>
+        Boolean(versions[version]?.front_default),
+      );
 
-    return [
-      {
+      return {
         key,
         label,
-        version: formatName(selectedVersion),
-        image: versions[selectedVersion].front_default,
-      },
-    ];
-  });
+        version: formatName(selectedVersion || preferred[0]),
+        image: selectedVersion ? versions[selectedVersion].front_default : null,
+        available: Boolean(selectedVersion),
+      };
+    },
+  );
 }
 
 export function formatPokemon(data, species, { locale = "en" } = {}) {
@@ -219,7 +225,10 @@ export function formatPokemon(data, species, { locale = "en" } = {}) {
       data.sprites?.front_default ||
       null,
     cry: data.cries?.latest || data.cries?.legacy || null,
-    historicalSprites: historicalSpriteArchive(data.sprites),
+    historicalSprites: historicalSpriteArchive(
+      data.sprites,
+      species?.generation?.name || null,
+    ),
     typeSlugs,
     types: typeSlugs.map(formatName),
     abilitiesDetailed: data.abilities.map((x) => ({

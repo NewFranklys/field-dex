@@ -145,7 +145,7 @@ describe("Pokémon transformations", () => {
     expect(result.isDefaultForm).toBe(false);
   });
 
-  it("derives BST, habitat identity and chronologically ordered representative sprites", () => {
+  it("keeps the historical archive chronological and exposes missing source generations", () => {
     const data = {
       ...pokemon(6),
       sprites: {
@@ -173,31 +173,70 @@ describe("Pokémon transformations", () => {
     const result = formatPokemon(data, {
       id: 6,
       habitat: { name: "mountain" },
+      generation: { name: "generation-i" },
       genera: [],
       flavor_text_entries: [],
     });
+
     expect(result.baseStatTotal).toBe(330);
     expect(result.habitatSlug).toBe("mountain");
-    expect(result.historicalSprites).toEqual([
-      {
-        key: "generation-i",
-        label: "Gen I",
-        version: "Yellow",
-        image: "https://example.test/yellow.png",
-      },
-      {
-        key: "generation-ii",
-        label: "Gen II",
-        version: "Crystal",
-        image: "https://example.test/gen2.png",
-      },
-      {
-        key: "generation-v",
-        label: "Gen V",
-        version: "Black White",
-        image: "https://example.test/gen5.png",
-      },
+    expect(result.historicalSprites.map((sprite) => sprite.key)).toEqual([
+      "generation-i",
+      "generation-ii",
+      "generation-iii",
+      "generation-iv",
+      "generation-v",
+      "generation-vi",
+      "generation-vii",
+      "generation-viii",
+      "generation-ix",
     ]);
+    expect(result.historicalSprites[0]).toMatchObject({
+      version: "Yellow",
+      image: "https://example.test/yellow.png",
+      available: true,
+    });
+    expect(result.historicalSprites[2]).toMatchObject({
+      version: "Emerald",
+      image: null,
+      available: false,
+    });
+    expect(result.historicalSprites[4]).toMatchObject({
+      version: "Black White",
+      image: "https://example.test/gen5.png",
+      available: true,
+    });
+    expect(result.historicalSprites[7]).toMatchObject({
+      version: "Sword Shield",
+      image: null,
+      available: false,
+    });
+    expect(result.historicalSprites[8]).toMatchObject({
+      version: "Scarlet Violet",
+      image: null,
+      available: false,
+    });
+  });
+
+  it("starts historical sprites at the species introduction generation", () => {
+    const laterSpeciesData = {
+      ...pokemon(6),
+      id: 448,
+      name: "lucario",
+      species: {
+        name: "lucario",
+        url: "https://pokeapi.co/api/v2/pokemon-species/448/",
+      },
+    };
+    const result = formatPokemon(laterSpeciesData, {
+      id: 448,
+      generation: { name: "generation-iv" },
+      genera: [],
+      flavor_text_entries: [],
+    });
+
+    expect(result.historicalSprites[0].key).toBe("generation-iv");
+    expect(result.historicalSprites.at(-1).key).toBe("generation-ix");
   });
 
   it("random encounters stay in scope without repeating the current specimen", () => {

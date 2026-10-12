@@ -149,6 +149,7 @@ export default {
     humanReference: "Referência humana",
     spriteArchiveTitle: "Arquivo do Espécime",
     spriteArchiveSubtitle: "Representações históricas nos jogos por geração",
+    spriteUnavailable: "Sem sprite arquivado",
     adjacentAria: "Registros de Pokémon adjacentes", previous: "← Registro Anterior", next: "Próximo Registro →",
     cry: {
       unavailable: "Nenhum som registrado disponível.", pause: "Pausar som", play: "Reproduzir som", loading: "Carregando…", playing: "Reproduzindo", playLabel: "Reproduzir Som",

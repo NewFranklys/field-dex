@@ -61,7 +61,7 @@
   min-width:112px;
 }
 
-/* Scale the visual itself, not the label container. Wide Pokémon no longer shrink artificially. */
+/* Scale the visible artwork, not the transparent source canvas. */
 .size-figure {
   height:214px;
   max-height:none;
@@ -81,13 +81,16 @@
 .size-figure-visual img {
   flex:none;
   width:auto;
-  height:100%;
   min-height:0;
   max-height:none;
   object-fit:contain;
 }
-.size-figure.human .size-figure-visual svg { max-width:86px; }
-.size-figure.pokemon .size-figure-visual img { max-width:250px; }
+.size-figure.human .size-figure-visual svg { width:auto; height:100%; max-width:86px; }
+.size-figure.pokemon .size-figure-visual img {
+  max-width:none;
+  transform-origin:center bottom;
+  filter:drop-shadow(0 12px 8px rgba(0,0,0,.1));
+}
 .size-height-marker {
   position:absolute;
   z-index:0;
@@ -112,6 +115,39 @@
 .size-height-marker::after { right:0; }
 .size-baseline { bottom:29px; }
 
+/* Keep absent source sprites visible as known gaps in the archive. */
+.sprite-era.is-unavailable .sprite-frame {
+  background:linear-gradient(135deg,rgba(255,255,255,.24),rgba(0,0,0,.012));
+  border-style:dashed;
+}
+.sprite-unavailable {
+  position:relative;
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  width:100%;
+  height:100%;
+  color:#6d6960;
+  text-align:center;
+}
+.sprite-unavailable > span {
+  font-size:22px;
+  font-weight:300;
+  opacity:.35;
+}
+.sprite-unavailable small {
+  max-width:72px;
+  font-size:7px;
+  line-height:1.35;
+  text-transform:uppercase;
+  letter-spacing:.9px;
+  opacity:.62;
+}
+.sprite-era.is-unavailable figcaption { opacity:.6; }
+
 @media (max-width:980px) {
   .evolution-flow.is-linear > .evolution-timeline-stage {
     flex-basis:245px;
@@ -131,5 +167,4 @@
   .size-figure.human .size-figure-visual { width:70px; }
   .size-figure.pokemon .size-figure-visual { width:190px; }
   .size-figure.human .size-figure-visual svg { max-width:70px; }
-  .size-figure.pokemon .size-figure-visual img { max-width:190px; }
 }

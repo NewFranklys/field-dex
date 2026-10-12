@@ -11,7 +11,8 @@ import SizeComparison from "./SizeComparison";
 import SpriteArchive from "./SpriteArchive";
 
 function PokemonHero({ pokemon, onSelectPokemon }) {
-  const { t } = useTranslation(["record", "common"]);
+  const { t, i18n } = useTranslation(["record", "common"]);
+  const currentLocale = i18n.resolvedLanguage || i18n.language || "en";
   const fadeUp = {
     hidden: { opacity: 0, y: 14 },
     visible: { opacity: 1, y: 0 },
@@ -23,6 +24,19 @@ function PokemonHero({ pokemon, onSelectPokemon }) {
   const statValues = pokemon.stats.map((stat) => stat.value);
   const strongestStat = Math.max(...statValues);
   const weakestStat = Math.min(...statValues);
+  const localizedTypeNames = typeSlugs.map((typeSlug, index) =>
+    t(`common:types.${typeSlug}`, { defaultValue: pokemon.types[index] }),
+  );
+  const categoryUsesEnglishFallback =
+    currentLocale.toLowerCase().startsWith("pt") && pokemon.categoryLanguage === "en";
+  const descriptionUsesEnglishFallback =
+    currentLocale.toLowerCase().startsWith("pt") && pokemon.descriptionLanguage === "en";
+  const displayCategory = categoryUsesEnglishFallback
+    ? t("record:categoryFallback", { type: localizedTypeNames.join(" / ") })
+    : pokemon.category;
+  const displayHabitat = pokemon.habitatSlug
+    ? t(`common:habitats.${pokemon.habitatSlug}`, { defaultValue: pokemon.habitat })
+    : pokemon.habitat;
 
   return (
     <section className="field-record">
@@ -61,10 +75,23 @@ function PokemonHero({ pokemon, onSelectPokemon }) {
               {pokemon.name}
             </motion.h1>
           </div>
-          <motion.p className="record-category" variants={fadeUp}>
-            {pokemon.category}
+          <motion.p
+            className="record-category"
+            variants={fadeUp}
+            lang={categoryUsesEnglishFallback ? undefined : pokemon.categoryLanguage || undefined}
+          >
+            {displayCategory}
           </motion.p>
-          <motion.p className="record-description" variants={fadeUp}>
+          {descriptionUsesEnglishFallback && (
+            <motion.span className="record-source-language" variants={fadeUp}>
+              {t("record:sourceFallback", { language: "EN" })}
+            </motion.span>
+          )}
+          <motion.p
+            className="record-description"
+            variants={fadeUp}
+            lang={pokemon.descriptionLanguage || undefined}
+          >
             {pokemon.description}
           </motion.p>
           <motion.div className="record-types" variants={fadeUp}>
@@ -75,9 +102,7 @@ function PokemonHero({ pokemon, onSelectPokemon }) {
                   label={pokemon.types[index]}
                   size="sm"
                 />
-                {t(`common:types.${typeSlug}`, {
-                  defaultValue: pokemon.types[index],
-                })}
+                {localizedTypeNames[index]}
               </span>
             ))}
           </motion.div>
@@ -93,7 +118,7 @@ function PokemonHero({ pokemon, onSelectPokemon }) {
             <div className="record-habitat-cell">
               <HabitatGlyph habitat={pokemon.habitatSlug} />
               <span>{t("record:habitat")}</span>
-              <strong>{pokemon.habitat}</strong>
+              <strong>{displayHabitat}</strong>
             </div>
             <div>
               <span>{t("record:generation")}</span>
@@ -234,9 +259,7 @@ function PokemonHero({ pokemon, onSelectPokemon }) {
             {typeSlugs.map((typeSlug, index) => (
               <span key={typeSlug}>
                 <TypeIcon type={typeSlug} size="sm" />
-                {t(`common:types.${typeSlug}`, {
-                  defaultValue: pokemon.types[index],
-                })}
+                {localizedTypeNames[index]}
               </span>
             ))}
           </span>

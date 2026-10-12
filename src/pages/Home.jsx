@@ -7,6 +7,7 @@ import { normalizeQuery } from "../domain/pokemon";
 import { getFeatured } from "../services/pokemon";
 import { useResource } from "../hooks/useResource";
 import ResourceState from "../components/ResourceState";
+
 function Home() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,62 +24,66 @@ function Home() {
   const primaryTypeSlug =
     featuredPokemon?.types?.[0]?.toLowerCase() || "normal";
   const featuredTypeMeta = getTypeMeta(primaryTypeSlug);
+
   function scanNewPokemon() {
     if (!featuredLoading) setFeaturedId(randomArchiveId(featuredId));
   }
+
   function handleSpecimenMouseMove(event) {
     const specimen = specimenRef.current;
-    if (!specimen) {
-      return;
-    }
+    if (!specimen) return;
     const rect = specimen.getBoundingClientRect();
     const x = (event.clientX - rect.left) / rect.width - 0.5;
     const y = (event.clientY - rect.top) / rect.height - 0.5;
     specimen.style.setProperty("--mouse-x", x);
     specimen.style.setProperty("--mouse-y", y);
   }
+
   function handleSpecimenMouseLeave() {
     const specimen = specimenRef.current;
-    if (!specimen) {
-      return;
-    }
+    if (!specimen) return;
     specimen.style.setProperty("--mouse-x", 0);
     specimen.style.setProperty("--mouse-y", 0);
   }
+
   function handleSearch(event) {
     event.preventDefault();
     const cleanedSearch = normalizeQuery(searchTerm);
-    if (!cleanedSearch) {
-      return;
-    }
+    if (!cleanedSearch) return;
     navigate(`/pokemon/${encodeURIComponent(cleanedSearch)}`);
   }
+
   function openRandomPokemon() {
     navigate(`/pokemon/${randomArchiveId()}`);
   }
+
   return (
     <main id="main-content" tabIndex={-1} className="home-page">
       <header className="home-header">
         <div>
           <h1 className="home-logo">FIELD DEX</h1>
-          <p className="home-eyebrow">Pokémon Research Archive</p>
+          <p className="home-eyebrow">Pokémon Companion Platform</p>
         </div>
         <div className="home-version">
-          <span>Kanto Archive</span>
-          <strong>001—151</strong>
+          <span>Current Archive</span>
+          <strong>Kanto / 001—151</strong>
         </div>
       </header>
+
       <section className="home-stage">
         <div className="home-intro">
-          <span className="home-section-label">Research Database</span>
+          <span className="home-section-label">Species Research</span>
           <h2 className="home-title">
             Explore the world
             <br />
             <span>one species at a time.</span>
           </h2>
           <p className="home-description">
-            Search species, study their biology, compare base stats and trace
-            their evolutionary families.
+            Begin with the Kanto archive: search species, study their biology,
+            compare base stats and trace their evolutionary families.
+          </p>
+          <p className="home-scope-note">
+            Current public dataset · Kanto species 001—151
           </p>
           <form className="home-search" onSubmit={handleSearch}>
             <input
@@ -93,6 +98,7 @@ function Home() {
             <button type="submit">Search →</button>
           </form>
         </div>
+
         <div
           className={`
             featured-specimen
@@ -117,6 +123,7 @@ function Home() {
               {featuredLoading ? "Scanning..." : "Rescan ↻"}
             </button>
           </div>
+
           {featuredPokemon ? (
             <div className="specimen-record" key={featuredPokemon.id}>
               <span className="specimen-background-number">
@@ -140,6 +147,7 @@ function Home() {
                 />
                 <span className="specimen-view">View record →</span>
               </button>
+
               <div className="specimen-identification">
                 <div className="specimen-main-data">
                   <span className="specimen-id">
@@ -175,6 +183,7 @@ function Home() {
               retry={retry}
             />
           )}
+
           {featuredLoading && featuredPokemon && (
             <div className="specimen-scan-overlay" role="status">
               <span />
@@ -183,6 +192,7 @@ function Home() {
           )}
         </div>
       </section>
+
       <section className="home-research-modules">
         <button
           className="
@@ -202,7 +212,7 @@ function Home() {
               <br />
               Encounter
             </strong>
-            <p>Pull an unidentified entry from the Kanto archive.</p>
+            <p>Pull an unidentified entry from the current Kanto archive.</p>
           </div>
           <div className="encounter-visual">
             <span>001</span>
@@ -213,6 +223,7 @@ function Home() {
           </div>
           <span className="module-action">Initiate scan ↗</span>
         </button>
+
         <button
           className="
             research-module
@@ -227,13 +238,13 @@ function Home() {
             <span>Species Archive</span>
           </div>
           <div className="module-content">
-            <span className="module-kicker">Indexed records</span>
+            <span className="module-kicker">Current archive</span>
             <strong className="module-title">
               Browse
               <br />
               Pokédex
             </strong>
-            <p>Access all 151 catalogued species from Generation I.</p>
+            <p>Browse the 151 catalogued Kanto species in the current release.</p>
           </div>
           <div className="archive-visual">
             <span>001</span>
@@ -247,6 +258,7 @@ function Home() {
           </div>
           <span className="module-action">Open archive ↗</span>
         </button>
+
         <button
           className="
             research-module
@@ -267,7 +279,7 @@ function Home() {
               <br />
               Types
             </strong>
-            <p>Study species through their elemental classifications.</p>
+            <p>Study the current type system using Kanto representatives.</p>
           </div>
           <div className="type-module-visual">
             <span className="mini-type grass">GR</span>
@@ -280,10 +292,12 @@ function Home() {
           <span className="module-action">View classes ↗</span>
         </button>
       </section>
+
       <footer className="home-footer">
-        <span>151 species in current archive</span>
+        <span>FIELD DEX · Current archive: Kanto / 001—151</span>
       </footer>
     </main>
   );
 }
+
 export default Home;

@@ -5,6 +5,10 @@ import { artwork as getPokemonArtwork } from "../domain/pokemon";
 import CryPlayer from "./CryPlayer";
 import EvolutionFamily from "./EvolutionFamily";
 import TypeMatchups from "./TypeMatchups";
+import TypeIcon from "./TypeIcon";
+import HabitatGlyph from "./HabitatGlyph";
+import SizeComparison from "./SizeComparison";
+import SpriteArchive from "./SpriteArchive";
 
 function PokemonHero({ pokemon, onSelectPokemon }) {
   const { t } = useTranslation(["record", "common"]);
@@ -16,6 +20,9 @@ function PokemonHero({ pokemon, onSelectPokemon }) {
   const abilities =
     pokemon.abilitiesDetailed ||
     pokemon.abilities.map((name) => ({ name, isHidden: false }));
+  const statValues = pokemon.stats.map((stat) => stat.value);
+  const strongestStat = Math.max(...statValues);
+  const weakestStat = Math.min(...statValues);
 
   return (
     <section className="field-record">
@@ -63,6 +70,11 @@ function PokemonHero({ pokemon, onSelectPokemon }) {
           <motion.div className="record-types" variants={fadeUp}>
             {typeSlugs.map((typeSlug, index) => (
               <span className="record-type-chip" key={typeSlug}>
+                <TypeIcon
+                  type={typeSlug}
+                  label={pokemon.types[index]}
+                  size="sm"
+                />
                 {t(`common:types.${typeSlug}`, {
                   defaultValue: pokemon.types[index],
                 })}
@@ -78,7 +90,8 @@ function PokemonHero({ pokemon, onSelectPokemon }) {
               <span>{t("record:weight")}</span>
               <strong>{pokemon.weight} KG</strong>
             </div>
-            <div>
+            <div className="record-habitat-cell">
+              <HabitatGlyph habitat={pokemon.habitatSlug} />
               <span>{t("record:habitat")}</span>
               <strong>{pokemon.habitat}</strong>
             </div>
@@ -109,6 +122,11 @@ function PokemonHero({ pokemon, onSelectPokemon }) {
           <span className="record-specimen-number">
             {pokemon.number.toString().padStart(3, "0")}
           </span>
+          <div className="record-type-watermark" aria-hidden="true">
+            {typeSlugs.map((typeSlug) => (
+              <TypeIcon key={typeSlug} type={typeSlug} size="xl" />
+            ))}
+          </div>
           <motion.span
             className="field-record-orbit"
             initial={{ opacity: 0, scale: 0.72, rotate: -12 }}
@@ -147,13 +165,23 @@ function PokemonHero({ pokemon, onSelectPokemon }) {
               <h2>{t("record:statsTitle")}</h2>
               <small>{t("record:statsSubtitle")}</small>
             </div>
+            <div className="record-bst" aria-label={t("record:bstAria")}>
+              <span>BST</span>
+              <strong>{pokemon.baseStatTotal ?? statValues.reduce((sum, value) => sum + value, 0)}</strong>
+            </div>
           </div>
           <div className="record-stats">
             {pokemon.stats.map((stat, index) => {
               const statPercentage = Math.min((stat.value / 255) * 100, 100);
+              const emphasis =
+                stat.value === strongestStat
+                  ? " strongest"
+                  : stat.value === weakestStat
+                    ? " weakest"
+                    : "";
               return (
                 <motion.div
-                  className="record-stat"
+                  className={`record-stat${emphasis}`}
                   key={stat.name}
                   initial={{ opacity: 0, y: 8 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -203,19 +231,27 @@ function PokemonHero({ pokemon, onSelectPokemon }) {
             </div>
           </div>
           <span className="record-type-analysis-code">
-            {typeSlugs
-              .map((typeSlug, index) =>
-                t(`common:types.${typeSlug}`, {
+            {typeSlugs.map((typeSlug, index) => (
+              <span key={typeSlug}>
+                <TypeIcon type={typeSlug} size="sm" />
+                {t(`common:types.${typeSlug}`, {
                   defaultValue: pokemon.types[index],
-                }),
-              )
-              .join(" / ")}
+                })}
+              </span>
+            ))}
           </span>
         </div>
         <TypeMatchups matchups={pokemon.matchups} />
       </section>
 
       <EvolutionFamily pokemon={pokemon} onSelectPokemon={onSelectPokemon} />
+      <div className="record-visual-context">
+        <SizeComparison pokemon={pokemon} />
+        <SpriteArchive
+          sprites={pokemon.historicalSprites}
+          pokemonName={pokemon.name}
+        />
+      </div>
 
       <nav className="record-navigation" aria-label={t("record:adjacentAria")}>
         {pokemon.navigation.previous ? (

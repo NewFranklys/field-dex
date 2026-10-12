@@ -273,3 +273,27 @@ it("handles absent and rejected cry playback and stops audio on unmount", async 
   render(<CryPlayer />);
   expect(screen.getByText("No recorded cry available.")).toBeInTheDocument();
 });
+it("keeps the featured specimen visible during a subsequent scan", async () => {
+  let finish;
+  vi.spyOn(Math, "random").mockReturnValue(0);
+  mockApi((url) =>
+    url.endsWith("/pokemon/2")
+      ? new Promise((resolve) => {
+          finish = () => resolve(apiFixture(url));
+        })
+      : undefined,
+  );
+  const user = userEvent.setup();
+  open();
+  await screen.findByRole("img", { name: "Bulbasaur" });
+  await user.click(screen.getByRole("button", { name: "Rescan ↻" }));
+  await waitFor(() => expect(finish).toBeTypeOf("function"));
+  expect(screen.getByRole("img", { name: "Bulbasaur" })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Scanning..." })).toBeDisabled();
+  await act(async () => {
+    finish();
+  });
+  expect(
+    await screen.findByRole("img", { name: "Ivysaur" }),
+  ).toBeInTheDocument();
+});

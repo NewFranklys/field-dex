@@ -22,6 +22,7 @@ export function useResource(loader, key = "") {
   const current = state?.key === key && state?.attempt === attempt;
   return {
     data: current ? state.data : null,
+    previousData: state?.data ?? null,
     error: current ? state.error : null,
     loading: !current,
     retry: () => setAttempt((value) => value + 1),

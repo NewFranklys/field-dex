@@ -12,11 +12,13 @@ function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [featuredId, setFeaturedId] = useState(() => randomArchiveId());
   const {
-    data: featuredPokemon,
+    data,
+    previousData,
     loading: featuredLoading,
     error,
     retry,
   } = useResource(getFeatured, featuredId);
+  const featuredPokemon = data || previousData;
   const specimenRef = useRef(null);
   const primaryTypeSlug =
     featuredPokemon?.types?.[0]?.toLowerCase() || "normal";
@@ -174,7 +176,7 @@ function Home() {
             />
           )}
           {featuredLoading && featuredPokemon && (
-            <div className="specimen-scan-overlay">
+            <div className="specimen-scan-overlay" role="status">
               <span />
               <strong>Searching archive</strong>
             </div>

@@ -1,0 +1,32 @@
+export default {
+  media: {
+    imageUnavailable: "Image unavailable",
+    imageUnavailableFor: "{{name}}: image unavailable",
+  },
+  typeDescriptions: {
+    normal: "Adaptable species with broad characteristics.",
+    fire: "Species associated with heat, flames and combustion.",
+    water: "Aquatic species adapted to rivers, seas and lakes.",
+    electric: "Species capable of generating electrical energy.",
+    grass: "Species closely connected to plants and nature.",
+    ice: "Species adapted to extreme cold and frozen habitats.",
+    fighting: "Species specialized in physical combat.",
+    poison: "Species that use toxins, venom and poisonous compounds.",
+    ground: "Species associated with soil, sand and the earth.",
+    flying: "Species adapted for aerial movement and flight.",
+    psychic: "Species capable of extraordinary mental abilities.",
+    bug: "Species inspired by insects and other small creatures.",
+    rock: "Species with bodies connected to stone and minerals.",
+    ghost: "Mysterious species associated with spirits and shadows.",
+    dragon: "Rare species possessing extraordinary draconic power.",
+    dark: "Species known for cunning and unconventional tactics.",
+    steel: "Species protected by metallic bodies and armor.",
+    fairy: "Species associated with mysterious magical energy.",
+  },
+  evolution: {
+    level: "Lv. {{level}}",
+    attackLessDefense: "Attack < Defense",
+    attackEqualDefense: "Attack = Defense",
+    attackGreaterDefense: "Attack > Defense",
+  },
+};

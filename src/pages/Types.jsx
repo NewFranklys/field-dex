@@ -1,4 +1,5 @@
 import Artwork from "../components/Artwork";
+import TypeIcon from "../components/TypeIcon";
 import { useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
@@ -18,13 +19,17 @@ function RelationChips({ types }) {
     <div className="obs-relation-chips">
       {types.map((typeSlug) => {
         const typeMeta = getTypeMeta(typeSlug);
+        const name = t(`types.${typeSlug}`, {
+          defaultValue: typeMeta?.name || typeSlug,
+        });
         return (
           <span
             className="obs-relation-chip"
             key={typeSlug}
             style={{ "--chip-accent": typeMeta?.accent || "#77736a" }}
           >
-            {t(`types.${typeSlug}`, { defaultValue: typeMeta?.name || typeSlug })}
+            <TypeIcon type={typeSlug} label={name} size="sm" />
+            {name}
           </span>
         );
       })}
@@ -107,7 +112,7 @@ function Types() {
               <span className="rail-index">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <span className="rail-dot" />
+              <TypeIcon type={type.slug} size="sm" />
               <strong>{typeName(type.slug)}</strong>
               {isSelected && (
                 <motion.span
@@ -160,7 +165,10 @@ function Types() {
                       index: String(selectedIndex + 1).padStart(2, "0"),
                     })}
                   </span>
-                  <h2>{selectedName}</h2>
+                  <div className="obs-type-title-lockup">
+                    <TypeIcon type={selectedType} label={selectedName} size="lg" />
+                    <h2>{selectedName}</h2>
+                  </div>
                   <p>
                     {t(`presentation:typeDescriptions.${selectedType}`, {
                       defaultValue: selectedMeta.description,
@@ -182,7 +190,7 @@ function Types() {
 
                 <div className="observatory-visual">
                   <span className="observatory-sigil">
-                    <span>{selectedName.slice(0, 2).toUpperCase()}</span>
+                    <TypeIcon type={selectedType} label={selectedName} size="xl" />
                   </span>
                   <span className="obs-stage-scanner" />
                   {selectedResearch?.representatives.length > 0 ? (

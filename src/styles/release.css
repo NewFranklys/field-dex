@@ -1,0 +1,250 @@
+/* V1 interaction and recovery layer; page compositions retain their own styles. */
+:root {
+  color-scheme: light;
+}
+a {
+  color: inherit;
+}
+button,
+input {
+  font: inherit;
+}
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+:focus-visible {
+  outline: 3px solid #335d78;
+  outline-offset: 5px;
+}
+main:focus {
+  outline: none;
+}
+.skip-link {
+  position: fixed;
+  top: -80px;
+  left: 16px;
+  z-index: 100;
+  padding: 14px;
+  background: #191919;
+  color: #fff;
+}
+.skip-link:focus {
+  top: 12px;
+}
+.section-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 14px 40px;
+  border-bottom: 1px solid #d6d3cb;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+.section-nav a {
+  padding: 8px 0;
+  text-decoration: none;
+}
+.section-nav a.active {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+.section-nav > span {
+  margin-left: auto;
+  color: #67645d;
+  font-size: 10px;
+}
+.logo-button {
+  display: inline-block;
+  text-decoration: none;
+}
+.archive-return {
+  align-self: flex-start;
+  margin-top: 24px;
+  font-size: 13px;
+  text-underline-offset: 4px;
+}
+.resource-state {
+  padding: 40px 24px;
+  line-height: 1.6;
+  max-width: 760px;
+}
+.resource-state button {
+  padding: 12px 18px;
+  background: #191919;
+  color: #f4f2ec;
+  border: 0;
+  cursor: pointer;
+}
+.resource-state p {
+  letter-spacing: normal;
+  text-transform: none;
+}
+.featured-specimen .resource-state {
+  position: relative;
+  z-index: 3;
+}
+.artwork-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80px;
+  color: #59574f;
+  font-size: 12px;
+  text-align: center;
+}
+.record-section-heading h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+.record-pokemon-name {
+  margin: 0;
+}
+.pokemon-record-page .pokemon-search {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  border-bottom: 1px solid #77736a;
+}
+input:focus-visible,
+.pokemon-record-page .pokemon-search input:focus-visible {
+  outline: 3px solid #335d78;
+  outline-offset: 3px;
+}
+.record-eyebrow,
+.record-type-chip,
+.record-matchup-chip strong {
+  color: #3d3b34;
+}
+.record-section-heading small,
+.record-field-data span,
+.record-abilities > span,
+.record-stat > span,
+.record-matchup-column > span {
+  font-size: 10px;
+  opacity: 0.75;
+}
+.record-matchup-chip,
+.record-matchup-chip strong {
+  font-size: 10px;
+}
+.evolution-family-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 24px;
+  margin-top: 28px;
+}
+.evolution-family .evolution-timeline-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  width: 100%;
+  min-width: 0;
+  padding: 20px 12px;
+  border: 1px solid #d0cec5;
+}
+.evolution-family .evolution-timeline-stage[aria-current] {
+  border-color: var(--accent-color);
+  background: #ffffff30;
+}
+.evolution-family .timeline-artwork {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 190px;
+}
+.evolution-family .timeline-artwork img {
+  position: relative;
+  object-fit: contain;
+  max-height: 180px;
+  max-width: 100%;
+}
+.evolution-family .evolution-timeline-stage small {
+  white-space: normal;
+  line-height: 1.6;
+  font-size: 11px;
+}
+.evolution-family .timeline-pokemon-id {
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+.evolution-family .timeline-background-number {
+  position: absolute;
+  font-size: 95px;
+  font-weight: 800;
+  opacity: 0.06;
+  color: var(--accent-color);
+}
+.evolution-family .evolution-timeline-stage strong {
+  font-size: 22px;
+}
+.evolution-family .evolution-timeline-stage:hover {
+  background: var(--soft-color);
+}
+.record-no-data {
+  line-height: 1.6;
+  font-size: 12px;
+  opacity: 0.75;
+}
+.record-stat-track {
+  overflow: hidden;
+}
+.record-cry-control:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+.observatory-color-field {
+  max-width: 100%;
+}
+.observatory-motion-layer {
+  position: relative;
+  inset: auto;
+}
+@media (max-width: 600px) {
+  .home-title {
+    font-size: clamp(36px, 10vw, 52px);
+  }
+  .section-nav {
+    gap: 20px;
+    padding: 10px 18px;
+  }
+  .section-nav > span {
+    display: none;
+  }
+  .evolution-family-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .evolution-family .timeline-artwork {
+    height: 140px;
+  }
+  .evolution-family .timeline-artwork img {
+    max-height: 135px;
+  }
+  .evolution-family .evolution-timeline-stage strong {
+    font-size: 18px;
+  }
+  .evolution-family .timeline-background-number {
+    font-size: 64px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .specimen-image {
+    transform: none !important;
+  }
+}

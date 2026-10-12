@@ -219,7 +219,16 @@ describe("Pokémon transformations", () => {
   });
 
   it("starts historical sprites at the species introduction generation", () => {
-    const result = formatPokemon(pokemon(448), {
+    const laterSpeciesData = {
+      ...pokemon(6),
+      id: 448,
+      name: "lucario",
+      species: {
+        name: "lucario",
+        url: "https://pokeapi.co/api/v2/pokemon-species/448/",
+      },
+    };
+    const result = formatPokemon(laterSpeciesData, {
       id: 448,
       generation: { name: "generation-iv" },
       genera: [],

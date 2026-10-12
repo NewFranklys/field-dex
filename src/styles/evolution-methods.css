@@ -28,8 +28,8 @@
   left:50%;
   top:50%;
   display:block;
-  width:27px;
-  height:27px;
+  width:24px;
+  height:24px;
   object-fit:contain;
   object-position:center;
   transform:translate(-50%,-50%);
@@ -38,19 +38,48 @@
   filter:drop-shadow(0 3px 3px rgba(0,0,0,.12));
 }
 
-/* Item evolutions are visually heavier than glyph methods because their labels
-   and arrows live below the circle. Offset the whole connector slightly so the
-   item circle, not the complete text stack, sits on the card-to-card axis. */
+/* Item evolutions use the circle itself as the connector's anchor. The circle
+   and horizontal rule are pinned to the exact vertical midpoint between cards;
+   label and arrow are positioned beneath it independently, so their height can
+   no longer pull the item upward. */
 .evolution-link:has(.evolution-method-icon.has-item) {
-  transform:translateY(13px);
+  position:relative;
+  display:block;
 }
 
 .evolution-link:has(.evolution-method-icon.has-item) .evolution-link-line {
-  margin-bottom:-21px;
+  position:absolute;
+  left:10%;
+  top:50%;
+  width:80%;
+  margin:0;
+  transform:translateY(-50%);
 }
 
-.evolution-link:has(.evolution-method-icon.has-item) strong {
-  margin-top:7px;
+.evolution-link:has(.evolution-method-icon.has-item) > .evolution-method-icon {
+  position:absolute;
+  left:50%;
+  top:50%;
+  z-index:2;
+  transform:translate(-50%,-50%);
+}
+
+.evolution-link:has(.evolution-method-icon.has-item) > strong {
+  position:absolute;
+  left:50%;
+  top:calc(50% + 31px);
+  width:110px;
+  margin:0;
+  transform:translateX(-50%);
+  text-align:center;
+}
+
+.evolution-link:has(.evolution-method-icon.has-item) > .evolution-link-arrow {
+  position:absolute;
+  left:50%;
+  top:calc(50% + 51px);
+  margin:0;
+  transform:translateX(-50%);
 }
 
 .evolution-card-method .evolution-method-icon {
@@ -127,10 +156,8 @@
 @media (max-width:640px) {
   .evolution-method-icon { width:29px; height:29px; }
   .evolution-method-icon.has-item { width:38px; height:38px; }
-  .evolution-method-item { width:25px; height:25px; }
-  .evolution-link:has(.evolution-method-icon.has-item) {
-    transform:translateY(11px);
-  }
-  .evolution-link:has(.evolution-method-icon.has-item) .evolution-link-line { margin-bottom:-19px; }
+  .evolution-method-item { width:22px; height:22px; }
+  .evolution-link:has(.evolution-method-icon.has-item) > strong { top:calc(50% + 28px); }
+  .evolution-link:has(.evolution-method-icon.has-item) > .evolution-link-arrow { top:calc(50% + 47px); }
   .evolution-origin-line { gap:4px; }
 }

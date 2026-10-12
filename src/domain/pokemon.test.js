@@ -85,7 +85,7 @@ describe("Pokémon transformations", () => {
     expect(result.abilities).toContain("Lightning Rod (hidden)");
   });
 
-  it("selects upstream pt-BR species text and falls back to English", () => {
+  it("selects upstream pt-BR species text and exposes English fallback source", () => {
     const data = pokemon(25);
     const localized = formatPokemon(
       data,
@@ -104,6 +104,8 @@ describe("Pokémon transformations", () => {
     );
     expect(localized.category).toBe("Pokémon Rato");
     expect(localized.description).toBe("Notas em português.");
+    expect(localized.categoryLanguage).toBe("pt-BR");
+    expect(localized.descriptionLanguage).toBe("pt-BR");
 
     const fallback = formatPokemon(
       data,
@@ -118,6 +120,8 @@ describe("Pokémon transformations", () => {
     );
     expect(fallback.category).toBe("Mouse Pokémon");
     expect(fallback.description).toBe("English notes.");
+    expect(fallback.categoryLanguage).toBe("en");
+    expect(fallback.descriptionLanguage).toBe("en");
   });
 
   it("keeps species identity distinct from an alternate pokemon form id", () => {
@@ -141,12 +145,15 @@ describe("Pokémon transformations", () => {
     expect(result.isDefaultForm).toBe(false);
   });
 
-  it("derives BST, habitat identity and one representative historical sprite per generation", () => {
+  it("derives BST, habitat identity and chronologically ordered representative sprites", () => {
     const data = {
       ...pokemon(6),
       sprites: {
         ...pokemon(6).sprites,
         versions: {
+          "generation-v": {
+            "black-white": { front_default: "https://example.test/gen5.png" },
+          },
           "generation-i": {
             "red-blue": { front_default: "https://example.test/gen1.png" },
             yellow: { front_default: "https://example.test/yellow.png" },
@@ -156,6 +163,9 @@ describe("Pokémon transformations", () => {
           },
           "generation-viii": {
             icons: { front_default: "https://example.test/icon.png" },
+          },
+          "generation-ix": {
+            champions: { front_default: "https://example.test/champions.png" },
           },
         },
       },
@@ -172,14 +182,20 @@ describe("Pokémon transformations", () => {
       {
         key: "generation-i",
         label: "Gen I",
-        version: "Red Blue",
-        image: "https://example.test/gen1.png",
+        version: "Yellow",
+        image: "https://example.test/yellow.png",
       },
       {
         key: "generation-ii",
         label: "Gen II",
         version: "Crystal",
         image: "https://example.test/gen2.png",
+      },
+      {
+        key: "generation-v",
+        label: "Gen V",
+        version: "Black White",
+        image: "https://example.test/gen5.png",
       },
     ]);
   });

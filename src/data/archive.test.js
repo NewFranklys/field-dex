@@ -23,6 +23,11 @@ it("models archive boundaries independently from Kanto", () => {
   expect(randomArchiveId(27, () => 0.999, scope)).toBe(26);
 });
 
+it("falls back to the current release scope for non-scope loader keys", () => {
+  expect(archiveListPath("")).toBe("pokemon?offset=0&limit=151");
+  expect(inArchive(151, "")).toBe(true);
+});
+
 it("rejects invalid archive ranges", () => {
   expect(() =>
     createArchiveScope({ key: "bad", label: "Bad", first: 10, last: 1 }),

@@ -43,7 +43,10 @@ export default function EvolutionFamily({ pokemon, onSelectPokemon }) {
                 {index > 0 && (
                   <div className="evolution-link" aria-label={localizedMethod}>
                     <span className="evolution-link-line" />
-                    <EvolutionMethodIcon method={localizedMethod} />
+                    <EvolutionMethodIcon
+                      method={localizedMethod}
+                      details={evolution.methodDetails}
+                    />
                     <strong>{localizedMethod}</strong>
                     <span className="evolution-link-arrow">→</span>
                   </div>
@@ -120,7 +123,10 @@ function EvolutionCard({
       </small>
       {showMethod && (
         <span className="evolution-card-method">
-          <EvolutionMethodIcon method={localizedMethod} />
+          <EvolutionMethodIcon
+            method={localizedMethod}
+            details={evolution.methodDetails}
+          />
           <small>{localizedMethod}</small>
         </span>
       )}

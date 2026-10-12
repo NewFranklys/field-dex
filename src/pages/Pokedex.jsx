@@ -1,4 +1,5 @@
 import Artwork from "../components/Artwork";
+import TypeIcon from "../components/TypeIcon";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { useTranslation } from "react-i18next";
@@ -68,9 +69,14 @@ function Pokedex() {
         <div className="archive-current-state">
           <span>{t("pokedex:currentClassification")}</span>
           <strong>
-            {selectedType === "all"
-              ? t("pokedex:allSpecies")
-              : typeName(selectedType)}
+            {selectedType === "all" ? (
+              t("pokedex:allSpecies")
+            ) : (
+              <>
+                <TypeIcon type={selectedType} size="sm" />
+                {typeName(selectedType)}
+              </>
+            )}
           </strong>
         </div>
       </section>
@@ -119,6 +125,7 @@ function Pokedex() {
             }
             onClick={() => selectType(type.slug)}
           >
+            <TypeIcon type={type.slug} label={typeName(type.slug)} size="sm" />
             {typeName(type.slug)}
           </button>
         ))}
@@ -200,6 +207,7 @@ function Pokedex() {
                               "--type-color": typeMeta?.accent || "#77736a",
                             }}
                           >
+                            <TypeIcon type={type} size="sm" />
                             {typeName(type)}
                           </span>
                         );

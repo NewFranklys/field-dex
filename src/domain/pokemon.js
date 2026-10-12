@@ -137,6 +137,29 @@ function localizedEntry(entries = [], locale = "en") {
   );
 }
 
+function historicalSpriteArchive(sprites = {}) {
+  const generations = sprites.versions || {};
+  return Object.entries(generations).flatMap(([generation, versions]) => {
+    const versionEntries = Object.entries(versions || {}).filter(
+      ([version]) => version !== "icons",
+    );
+    const selected = versionEntries.find(([, spriteSet]) =>
+      Boolean(spriteSet?.front_default),
+    );
+    if (!selected) return [];
+    const [version, spriteSet] = selected;
+    const roman = generation.replace("generation-", "").toUpperCase();
+    return [
+      {
+        key: generation,
+        label: `Gen ${roman}`,
+        version: formatName(version),
+        image: spriteSet.front_default,
+      },
+    ];
+  });
+}
+
 export function formatPokemon(data, species, { locale = "en" } = {}) {
   const labels = {
     hp: "HP",
@@ -150,6 +173,11 @@ export function formatPokemon(data, species, { locale = "en" } = {}) {
   const genus = localizedEntry(species?.genera, locale)?.genus;
   const flavor = localizedEntry(species?.flavor_text_entries, locale)?.flavor_text;
   const typeSlugs = data.types.map((x) => x.type.name);
+  const stats = data.stats.map((x) => ({
+    name: x.stat.name,
+    label: labels[x.stat.name] || formatName(x.stat.name),
+    value: x.base_stat,
+  }));
 
   return {
     // `id` remains the public species-record identity for current callers.
@@ -162,6 +190,7 @@ export function formatPokemon(data, species, { locale = "en" } = {}) {
     category: genus || "Category unavailable",
     description:
       flavor?.replace(/[\f\n\r]+/g, " ") || "No field notes available.",
+    habitatSlug: species?.habitat?.name || null,
     habitat: formatName(species?.habitat?.name) || "Unknown",
     generationCode: species?.generation?.name
       ? species.generation.name.replace("generation-", "").toUpperCase()
@@ -176,6 +205,7 @@ export function formatPokemon(data, species, { locale = "en" } = {}) {
       data.sprites?.front_default ||
       null,
     cry: data.cries?.latest || data.cries?.legacy || null,
+    historicalSprites: historicalSpriteArchive(data.sprites),
     typeSlugs,
     types: typeSlugs.map(formatName),
     abilitiesDetailed: data.abilities.map((x) => ({
@@ -185,10 +215,7 @@ export function formatPokemon(data, species, { locale = "en" } = {}) {
     abilities: data.abilities.map(
       (x) => `${formatName(x.ability.name)}${x.is_hidden ? " (hidden)" : ""}`,
     ),
-    stats: data.stats.map((x) => ({
-      name: x.stat.name,
-      label: labels[x.stat.name] || formatName(x.stat.name),
-      value: x.base_stat,
-    })),
+    stats,
+    baseStatTotal: stats.reduce((total, stat) => total + stat.value, 0),
   };
 }

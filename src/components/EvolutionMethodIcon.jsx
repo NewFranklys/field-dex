@@ -126,6 +126,7 @@ export default function EvolutionMethodIcon({ method = "", details = [] }) {
     <span
       className={`evolution-method-icon evolution-method-${kind}${itemSlug ? " has-item" : ""}`}
       data-method-kind={kind}
+      data-item-slug={itemSlug || undefined}
       aria-hidden="true"
     >
       {itemSlug ? (

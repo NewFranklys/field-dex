@@ -1,0 +1,230 @@
+/* Species Record 2.0 visual language */
+
+.type-icon {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+  line-height:1;
+}
+.type-icon img { display:block; width:100%; height:100%; object-fit:contain; }
+.type-icon-sm { width:18px; height:18px; }
+.type-icon-md { width:26px; height:26px; }
+.type-icon-lg { width:52px; height:52px; }
+.type-icon-xl { width:132px; height:132px; }
+.type-icon-fallback {
+  display:flex; align-items:center; justify-content:center;
+  width:100%; height:100%; border:1px solid currentColor; border-radius:50%;
+  font-size:7px; font-weight:700; letter-spacing:.04em;
+}
+
+.record-type-chip,
+.pokedex-entry-type,
+.pokedex-type-filter,
+.obs-relation-chip {
+  gap:6px;
+}
+.record-type-chip { padding:4px 10px 4px 5px; }
+.pokedex-type-filter { display:inline-flex; align-items:center; }
+.pokedex-entry-type { display:inline-flex; align-items:center; }
+.archive-current-state strong { display:inline-flex; align-items:center; gap:8px; }
+
+.record-type-watermark {
+  position:absolute;
+  z-index:-3;
+  top:9%; left:5%;
+  display:flex;
+  gap:12px;
+  opacity:.055;
+  filter:grayscale(.55);
+  pointer-events:none;
+}
+.record-type-watermark .type-icon:nth-child(2) { transform:translate(42px,88px) scale(.72); }
+
+.record-habitat-cell { position:relative; padding-left:25px; }
+.habitat-glyph { position:absolute; left:0; top:1px; width:18px; height:18px; color:var(--accent-color); opacity:.72; }
+.habitat-glyph svg { width:100%; height:100%; fill:currentColor; }
+
+.record-section-heading { width:100%; }
+.record-bst {
+  margin-left:auto;
+  display:flex !important;
+  flex-direction:row !important;
+  align-items:baseline;
+  gap:8px !important;
+  padding-left:18px;
+  border-left:1px solid rgba(0,0,0,.14);
+}
+.record-bst span { font-size:9px; letter-spacing:1.2px; opacity:.55; }
+.record-bst strong { font-size:26px !important; line-height:1; color:var(--accent-color); }
+.record-stat.strongest > strong { color:var(--accent-color); }
+.record-stat.strongest .record-stat-track { box-shadow:0 0 0 1px color-mix(in srgb,var(--accent-color) 18%,transparent); }
+.record-stat.weakest { opacity:.72; }
+
+.record-type-analysis-code {
+  position:static;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:inherit;
+  opacity:1;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:.9px;
+  text-transform:uppercase;
+  pointer-events:auto;
+}
+.record-type-analysis-code > span { display:inline-flex; align-items:center; gap:5px; padding:4px 8px 4px 4px; border:1px solid rgba(0,0,0,.12); border-radius:999px; background:#f7f4edbb; }
+.record-matchup-chip { padding-left:5px; }
+.record-matchup-chip > span:not(.type-icon) { white-space:nowrap; }
+.record-matchup-chip strong { margin-left:2px; font-size:10px; }
+
+.evolution-flow.is-linear {
+  display:flex;
+  align-items:stretch;
+  gap:0;
+  margin-top:30px;
+  overflow-x:auto;
+  padding:4px 0 12px;
+}
+.evolution-flow-item { display:flex; align-items:center; flex:1 0 280px; min-width:280px; }
+.evolution-flow-item:first-child { flex:0 0 280px; }
+.evolution-flow .evolution-timeline-stage { flex:1; min-width:210px; }
+.evolution-link {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 112px;
+  min-width:112px;
+  color:var(--accent-color);
+  text-align:center;
+}
+.evolution-link-line { width:70%; height:1px; background:currentColor; opacity:.25; margin-bottom:-14px; }
+.evolution-link-arrow { font-size:18px; line-height:1; margin-top:3px; }
+.evolution-link strong { max-width:105px; margin-top:5px; font-size:8px; line-height:1.3; text-transform:uppercase; letter-spacing:.8px; color:#35332d; }
+.evolution-method-icon {
+  position:relative; z-index:2;
+  display:inline-flex; align-items:center; justify-content:center;
+  width:28px; height:28px;
+  border:1px solid color-mix(in srgb,var(--accent-color) 55%,#c8c5bd);
+  border-radius:50%; background:#f5f2ea; color:var(--accent-color);
+  font-size:14px; font-weight:700;
+}
+.evolution-card-method { display:inline-flex; align-items:center; gap:7px; margin-top:4px; }
+.evolution-card-method .evolution-method-icon { width:21px; height:21px; font-size:11px; }
+.evolution-card-method small { margin:0 !important; }
+.branching-family .evolution-timeline-stage { position:relative; }
+.branching-family .evolution-timeline-stage::before { content:''; position:absolute; top:-13px; left:50%; width:1px; height:13px; background:var(--accent-color); opacity:.3; }
+
+.record-visual-context {
+  display:grid;
+  grid-template-columns:minmax(360px,.8fr) minmax(0,1.2fr);
+  border-bottom:1px solid rgba(0,0,0,.15);
+}
+.record-size-comparison,
+.record-sprite-archive { padding:32px; min-height:340px; }
+.record-sprite-archive { border-left:1px solid rgba(0,0,0,.15); background:color-mix(in srgb,var(--soft-color) 12%,transparent); }
+.record-size-heading { display:flex; align-items:flex-start; gap:13px; }
+.record-size-heading > span { padding-top:2px; font-size:8px; letter-spacing:1px; opacity:.55; }
+.record-size-heading h2 { margin:0; font-size:15px; }
+.record-size-heading small { display:block; margin-top:4px; font-size:9px; line-height:1.35; text-transform:uppercase; letter-spacing:1.05px; opacity:.62; }
+.size-comparison-stage {
+  position:relative;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  gap:58px;
+  height:235px;
+  margin-top:25px;
+  overflow:hidden;
+}
+.size-grid { position:absolute; inset:0; background:repeating-linear-gradient(to top, rgba(0,0,0,.055) 0 1px, transparent 1px 47px); }
+.size-baseline { position:absolute; left:5%; right:5%; bottom:26px; height:1px; background:rgba(0,0,0,.22); }
+.size-figure { position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; max-height:190px; min-height:42px; }
+.size-figure svg,.size-figure img { flex:1; min-height:0; max-width:120px; width:auto; object-fit:contain; }
+.size-figure svg { fill:#292824; opacity:.72; }
+.size-figure.pokemon img { filter:drop-shadow(0 12px 8px rgba(0,0,0,.1)); }
+.size-figure strong { margin-top:5px; font-size:10px; }
+.size-figure span { margin-top:2px; font-size:7px; text-transform:uppercase; letter-spacing:1px; opacity:.55; }
+
+.sprite-archive-strip {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(86px,1fr));
+  gap:10px;
+  margin-top:26px;
+}
+.sprite-era { margin:0; min-width:0; }
+.sprite-frame {
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  aspect-ratio:1;
+  overflow:hidden;
+  border:1px solid rgba(0,0,0,.13);
+  background:linear-gradient(135deg,rgba(255,255,255,.34),rgba(0,0,0,.02));
+}
+.sprite-frame::before { content:''; position:absolute; inset:14%; border:1px dashed color-mix(in srgb,var(--accent-color) 22%,transparent); border-radius:50%; }
+.sprite-frame img { position:relative; z-index:2; width:76%; height:76%; image-rendering:pixelated; object-fit:contain; }
+.sprite-scanline { position:absolute; z-index:3; left:0; right:0; height:1px; background:var(--accent-color); opacity:.12; animation:sprite-scan 3.4s linear infinite; }
+@keyframes sprite-scan { from{top:12%} to{top:88%} }
+.sprite-era figcaption { display:flex; flex-direction:column; gap:2px; padding-top:8px; }
+.sprite-era figcaption strong { font-size:9px; text-transform:uppercase; letter-spacing:.8px; }
+.sprite-era figcaption span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:8px; opacity:.55; }
+
+.type-rail-item { gap:7px; }
+.type-rail-item .type-icon { transition:transform 180ms ease,filter 180ms ease; }
+.type-rail-item:hover .type-icon,.type-rail-item.is-selected .type-icon { transform:scale(1.12); }
+.obs-type-title-lockup { display:flex; align-items:center; gap:16px; }
+.obs-type-title-lockup h2 { margin:0; }
+.observatory-sigil { display:flex !important; align-items:center; justify-content:center; }
+.observatory-sigil > .type-icon { width:min(18vw,180px); height:min(18vw,180px); opacity:.28; filter:saturate(.72); }
+.obs-relation-chip { display:inline-flex; align-items:center; padding-left:4px; }
+
+/* Improve low-contrast microcopy without losing the archive aesthetic. */
+.record-category,
+.record-description,
+.record-field-data span,
+.record-abilities > span,
+.record-stat > span,
+.record-matchup-column > span,
+.record-specimen-label,
+.types-eyebrow,
+.obs-classification,
+.pokedex-intro > span { opacity:.68; }
+.record-description { color:#34322d; }
+
+.language-switcher button { min-width:38px; min-height:28px; padding:0 8px; }
+
+@media (min-width:1900px) {
+  .pokemon-record-page .field-record,
+  .pokedex-page > *,
+  .types-page > * { max-width:1900px; margin-left:auto; margin-right:auto; }
+}
+
+@media (max-width:980px) {
+  .record-visual-context { grid-template-columns:1fr; }
+  .record-sprite-archive { border-left:0; border-top:1px solid rgba(0,0,0,.15); }
+  .evolution-flow-item { flex-basis:245px; min-width:245px; }
+  .evolution-flow-item:first-child { flex-basis:245px; }
+  .evolution-link { flex-basis:88px; min-width:88px; }
+  .record-type-watermark { display:none; }
+}
+
+@media (max-width:640px) {
+  .type-icon-xl { width:84px; height:84px; }
+  .record-type-analysis-heading { gap:18px; }
+  .record-type-analysis-code { flex-wrap:wrap; justify-content:flex-end; }
+  .record-bst { padding-left:10px; }
+  .record-bst strong { font-size:20px !important; }
+  .record-size-comparison,.record-sprite-archive { padding:24px 18px; }
+  .size-comparison-stage { gap:26px; height:210px; }
+  .sprite-archive-strip { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .pokedex-type-filter .type-icon { width:16px; height:16px; }
+  .type-rail-item { min-width:95px; }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .sprite-scanline { animation:none; }
+}

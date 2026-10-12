@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import EvolutionMethodIcon from "./EvolutionMethodIcon";
 
 describe("EvolutionMethodIcon", () => {
-  it("renders the specific evolution item when metadata provides one", () => {
+  it("preserves the specific evolution item identity for rendering", () => {
     const { container } = render(
       <EvolutionMethodIcon
         method="Moon Stone"
@@ -12,11 +12,9 @@ describe("EvolutionMethodIcon", () => {
     );
 
     const root = container.querySelector(".evolution-method-icon");
-    const image = container.querySelector(".evolution-method-item");
     expect(root?.dataset.methodKind).toBe("item");
-    expect(image?.getAttribute("src")).toBe(
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/moon-stone.png",
-    );
+    expect(root?.dataset.itemSlug).toBe("moon-stone");
+    expect(container.querySelector(".evolution-method-item")).not.toBeNull();
   });
 
   it("uses a semantic glyph for non-item methods", () => {

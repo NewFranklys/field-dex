@@ -13,6 +13,7 @@
 @import './styles/base.css';
 @import './styles/home.css';
 @import './styles/pokedex.css';
+@import './styles/national-dex.css';
 @import './styles/types.css';
 @import './styles/pokemon-record.css';
 @import './styles/responsive.css';

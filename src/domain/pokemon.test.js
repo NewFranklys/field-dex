@@ -9,6 +9,7 @@ import {
 } from "./pokemon";
 import { eeveeFamily, pokemon } from "../test/fixtures";
 import { randomArchiveId } from "../data/archive";
+import { NATIONAL_DEX_LAST_ID } from "../data/generations";
 
 describe("Pokémon transformations", () => {
   it.each([
@@ -239,13 +240,13 @@ describe("Pokémon transformations", () => {
     expect(result.historicalSprites.at(-1).key).toBe("generation-ix");
   });
 
-  it("random encounters stay in scope without repeating the current specimen", () => {
-    for (const current of [1, 25, 151])
+  it("random encounters stay in National Dex scope without repeating the current specimen", () => {
+    for (const current of [1, 25, 151, 1025])
       for (const value of [0, 0.5, 0.999]) {
         const id = randomArchiveId(current, () => value);
         expect(id).not.toBe(current);
         expect(id).toBeGreaterThanOrEqual(1);
-        expect(id).toBeLessThanOrEqual(151);
+        expect(id).toBeLessThanOrEqual(NATIONAL_DEX_LAST_ID);
       }
   });
 });

@@ -60,6 +60,7 @@ it("searches Home by padded number, opens a record and returns to major sections
     screen.getByRole("heading", { name: "FIELD DEX" }),
   ).toBeInTheDocument();
 });
+
 it("combines search and filters, recovers from empty results and preserves archive context", async () => {
   mockApi();
   const user = userEvent.setup();
@@ -94,6 +95,27 @@ it("combines search and filters, recovers from empty results and preserves archi
     await screen.findByRole("button", { name: /Entry.*Bulbasaur/ }),
   ).toBeInTheDocument();
 });
+
+it("filters the National Dex by generation and keeps the selection in the URL", async () => {
+  mockApi();
+  const user = userEvent.setup();
+  open("/pokedex?gen=gen-ii");
+
+  expect(
+    await screen.findByRole("button", { name: /Entry.*Chikorita/ }),
+  ).toBeInTheDocument();
+  expect(
+    screen.queryByRole("button", { name: /Entry.*Bulbasaur/ }),
+  ).not.toBeInTheDocument();
+  expect(screen.getByLabelText("Location")).toHaveTextContent("gen=gen-ii");
+
+  await user.click(screen.getByRole("button", { name: /I.*Kanto.*001/ }));
+  expect(
+    await screen.findByRole("button", { name: /Entry.*Bulbasaur/ }),
+  ).toBeInTheDocument();
+  expect(screen.getByLabelText("Location")).toHaveTextContent("gen=gen-i");
+});
+
 it("restores type URL selection with browser back and links Types to filtered archive", async () => {
   mockApi();
   const user = userEvent.setup();
@@ -115,6 +137,7 @@ it("restores type URL selection with browser back and links Types to filtered ar
     "/pokedex?type=water",
   );
 });
+
 it.each(["/pokedex", "/types", "/pokemon/25"])(
   "shows actionable network failure and retry on %s",
   async (path) => {
@@ -137,6 +160,7 @@ it.each(["/pokedex", "/types", "/pokemon/25"])(
     else await screen.findByRole("heading", { name: "Pikachu" });
   },
 );
+
 it("retries a failed featured scan instead of leaving Home stuck loading", async () => {
   let offline = true;
   mockApi(() => (offline ? response({}, 503) : undefined));
@@ -150,7 +174,8 @@ it("retries a failed featured scan instead of leaving Home stuck loading", async
     await screen.findByRole("img", { name: "Bulbasaur" }),
   ).toBeInTheDocument();
 });
-it.each(["/pokemon/missing", "/pokemon/152"])(
+
+it.each(["/pokemon/missing", "/pokemon/1026"])(
   "explains nonexistent or out-of-scope record %s",
   async (path) => {
     mockApi();
@@ -164,13 +189,15 @@ it.each(["/pokemon/missing", "/pokemon/152"])(
     ).toHaveAttribute("href", "/pokedex");
   },
 );
+
 it("handles unknown routes with a recovery link", () => {
   open("/missing-page");
   expect(
     screen.getByRole("heading", { name: "Page not found" }),
   ).toBeInTheDocument();
 });
-it("shows partial records with recovery and the correct branching family", async () => {
+
+it("shows partial records with recovery and the complete branching family", async () => {
   let fail = true;
   mockApi((url) =>
     fail && url.includes("/type/normal") ? response({}, 503) : undefined,
@@ -179,10 +206,10 @@ it("shows partial records with recovery and the correct branching family", async
   open("/pokemon/133");
   await screen.findByRole("heading", { name: "Eevee" });
   expect(screen.getByText(/Type response unavailable/)).toBeInTheDocument();
-  expect(screen.getAllByText("From Eevee →")).toHaveLength(3);
+  expect(screen.getAllByText("From Eevee →")).toHaveLength(4);
   expect(
-    screen.queryByRole("button", { name: /Espeon/ }),
-  ).not.toBeInTheDocument();
+    screen.getByRole("button", { name: /Espeon/ }),
+  ).toBeInTheDocument();
   fail = false;
   await user.click(screen.getByRole("button", { name: "Try again" }));
   await waitFor(() =>
@@ -192,7 +219,8 @@ it("shows partial records with recovery and the correct branching family", async
   );
   await screen.findByRole("heading", { name: "Eevee" });
 });
-it("keeps adjacent navigation within 001–151 and resets search for the new record", async () => {
+
+it("keeps adjacent navigation within the National Dex and crosses generation boundaries", async () => {
   mockApi();
   const user = userEvent.setup();
   open("/pokemon/1");
@@ -205,6 +233,7 @@ it("keeps adjacent navigation within 001–151 and resets search for the new rec
   expect(screen.getByRole("textbox", { name: "Search Pokémon" })).toHaveValue(
     "2",
   );
+
   await user.clear(screen.getByRole("textbox", { name: "Search Pokémon" }));
   await user.type(
     screen.getByRole("textbox", { name: "Search Pokémon" }),
@@ -212,9 +241,23 @@ it("keeps adjacent navigation within 001–151 and resets search for the new rec
   );
   await screen.findByRole("heading", { name: "Mew", exact: true });
   expect(
+    screen.getByRole("button", { name: /Next Record.*Chikorita/ }),
+  ).toBeInTheDocument();
+
+  await user.click(screen.getByRole("button", { name: /Next Record.*Chikorita/ }));
+  await screen.findByRole("heading", { name: "Chikorita" });
+
+  await user.clear(screen.getByRole("textbox", { name: "Search Pokémon" }));
+  await user.type(
+    screen.getByRole("textbox", { name: "Search Pokémon" }),
+    "1025{Enter}",
+  );
+  await screen.findByRole("heading", { name: "Pecharunt", exact: true });
+  expect(
     screen.queryByRole("button", { name: /Next Record/ }),
   ).not.toBeInTheDocument();
 });
+
 it("ignores a delayed record response after navigating to another Pokémon", async () => {
   let finish;
   mockApi((url) =>
@@ -240,6 +283,7 @@ it("ignores a delayed record response after navigating to another Pokémon", asy
     screen.queryByRole("heading", { name: "Eevee" }),
   ).not.toBeInTheDocument();
 });
+
 it("provides missing/broken artwork fallbacks and recovers when the source changes", () => {
   const view = render(<Artwork src="/missing.png" alt="Pikachu" />);
   fireEvent.error(screen.getByRole("img"));
@@ -249,6 +293,7 @@ it("provides missing/broken artwork fallbacks and recovers when the source chang
   view.rerender(<Artwork src="/good.png" alt="Eevee" />);
   expect(screen.getByRole("img")).toHaveAttribute("src", "/good.png");
 });
+
 it("handles absent and rejected cry playback and stops audio on unmount", async () => {
   const pause = vi
     .spyOn(HTMLMediaElement.prototype, "pause")
@@ -273,6 +318,7 @@ it("handles absent and rejected cry playback and stops audio on unmount", async 
   render(<CryPlayer />);
   expect(screen.getByText("No recorded cry available.")).toBeInTheDocument();
 });
+
 it("keeps the featured specimen visible during a subsequent scan", async () => {
   let finish;
   vi.spyOn(Math, "random").mockReturnValue(0);

@@ -2,18 +2,20 @@
 
 A Pokémon research archive with a field-record visual identity. The Pokédex is the first module of a larger companion platform: species knowledge is its starting point, with separate game, TCG, collection and deck domains planned for later releases.
 
-## Current release: Kanto species research
+## Current release: National Dex species research
 
-- Home with a featured specimen, rescan and random encounter.
-- Species archive for National Dex **001–151**, with name/number search and combined type filtering.
-- Shareable search/type URLs and preserved archive context when returning from a record.
+- Home with a featured specimen, rescan and random encounter across the current National Dex scope.
+- National Dex species archive **001–1025**, with name/number search plus generation and type filtering.
+- Generation I–IX navigation with National Dex ranges and region labels.
+- Progressive catalogue rendering in batches instead of mounting the entire archive at once.
+- Shareable search/type/generation URLs and preserved archive context when returning from a record.
 - Individual records with category/field notes, types, metric height/weight, habitat, generation, abilities, base stats and cry playback when available.
-- Evolution families with explicit parent relationships and method conditions.
+- Evolution families with explicit parent relationships, item/method conditions and visual evolution-method cues.
 - Defensive weaknesses, resistances and immunities, including dual-type multipliers.
-- An 18-type reference with offensive/defensive relationships and Kanto representatives.
-- Loading, retry, empty, not-found, partial-data and unavailable-media states; keyboard focus, reduced-motion support and responsive layouts.
+- An 18-type reference with offensive/defensive relationships and National Dex representatives.
+- English and Brazilian Portuguese UI, loading/retry/empty/not-found/partial-data states, keyboard focus, reduced-motion support and responsive layouts.
 
-Kanto is the current public archive, not FIELD DEX's permanent product boundary. See [Product Vision](docs/PRODUCT_VISION.md) and [Roadmap](docs/ROADMAP.md).
+The National Dex is the species foundation, not FIELD DEX's final product boundary. Regional/game-specific context, forms, TCG, collection and community modules remain separate roadmap phases. See [Product Vision](docs/PRODUCT_VISION.md) and [Roadmap](docs/ROADMAP.md).
 
 ## Languages
 
@@ -30,7 +32,11 @@ See [Localization](docs/LOCALIZATION.md) for resource organization, contribution
 
 ## Data context
 
-Kanto is the current species boundary, not a Generation I battle simulator. Types, stats and matchups use PokéAPI's current data (including Fairy and Steel). Matchups are type-only; abilities, moves, weather and game/version-specific rules are not applied. Evolution conditions reflect the available API entries rather than a selected game's rules.
+The public species archive currently follows National Pokédex numbering through **#1025**. Generation filters describe when a species was introduced; they are intentionally separate from future regional Pokédex and game/version availability models.
+
+Types, stats and matchups use PokéAPI's current data. Matchups are type-only; abilities, moves, weather and game/version-specific rules are not applied. Evolution conditions reflect the available API entries rather than a selected game's rules.
+
+Alternate Pokémon forms remain distinct from National Dex species numbering. Forms browsing, regional variants and Mega/other form presentation are future work rather than extra National Dex numbers.
 
 Games, TCG Catalog, My Collection, Decks, collection-aware recommendations, Community, Competitive data and Guides remain later roadmap phases. There is no authentication, backend database, collection persistence, deck building, pricing or game-guide UI in the current release.
 
@@ -67,7 +73,7 @@ Open the local URL printed by Vite. On Windows PowerShell, `npm.cmd` can be used
 
 Run `npm run lint`, `npm test` and `npm run build` before opening a PR. GitHub Actions runs installation and all three checks on PRs to `main`.
 
-Tests use controlled PokéAPI fixtures, not the live network. They cover routed search/filter/back navigation, loading/error/partial states, scope boundaries, request races, media failures, evolution branches, type multipliers, species/form identity and locale switching/persistence/fallback behavior.
+Tests use controlled PokéAPI fixtures, not the live network. They cover routed search/filter/generation/back navigation, loading/error/partial states, National Dex boundaries, request races, media failures, evolution branches, type multipliers, species/form identity and locale switching/persistence/fallback behavior.
 
 ## Production hosting
 
@@ -86,17 +92,17 @@ The default Vite base is `/`. Subdirectory deployment additionally requires matc
 ```text
 src/
   components/  Shared shell and record presentation components
-  data/        Release/archive boundaries and visual metadata
+  data/        Archive/generation boundaries and visual metadata
   domain/      Pure species/evolution/matchup transforms
   hooks/       Async resource lifecycle and stale-result protection
   i18n/        Locale initialization, resources and presentation localization
-  pages/       Home, archive, individual record and Types orchestration
+  pages/       Home, National Dex, individual record and Types orchestration
   services/    PokéAPI transport/cache and Pokémon loading
   styles/      Product/page compositions and responsive layers
   test/        Deterministic API fixtures and browser API shims
 ```
 
-`src/data/archive.js` owns the current content boundary. Generic HTTP/species infrastructure is scope-aware and separates species identity from PokéAPI Pokémon/form identity so National Dex and form expansion do not require treating 151 as a permanent rule.
+`src/data/archive.js` owns the current content boundary. `src/data/generations.js` owns National Dex generation metadata. Generic HTTP/species infrastructure remains scope-aware so future regional Pokédexes and game/version views can use their own scopes without redefining species identity.
 
 Future Game, TCG, user, collection and deck domains should remain separate services/models connected through stable identities rather than being folded into PokéAPI transport or large page components.
 

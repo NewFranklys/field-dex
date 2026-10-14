@@ -16,6 +16,7 @@ it("preserves primary/secondary type slots", async () => {
   mockApi();
   const archive = await getArchive();
   expect(archive.find((p) => p.id === 1).types).toEqual(["grass", "poison"]);
+  expect(archive.find((p) => p.id === 1025).types).toEqual(["poison", "ghost"]);
 });
 
 it("supports a configured species scope without rewriting services", async () => {
@@ -98,12 +99,15 @@ it("renders available core data when species and type services fail", async () =
   expect(record.evolutions).toEqual([]);
 });
 
-it("restricts navigation and evolution links to the configured release", async () => {
+it("navigates across the National Dex while preserving configured scope support", async () => {
   mockApi();
   expect((await getRecord("1")).navigation.previous).toBeNull();
-  expect((await getRecord("151")).navigation.next).toBeNull();
+  expect((await getRecord("1025")).navigation.next).toBeNull();
+  expect((await getRecord("152")).speciesId).toBe(152);
+
   const eevee = await getRecord("133");
-  expect(eevee.evolutions.map((x) => x.id)).toEqual([133, 134, 135, 136]);
-  expect(eevee.hasExtendedFamily).toBe(true);
-  await expect(getRecord("152")).rejects.toMatchObject({ status: 404 });
+  expect(eevee.evolutions.map((x) => x.id)).toEqual([133, 134, 135, 136, 196]);
+  expect(eevee.hasExtendedFamily).toBe(false);
+
+  await expect(getRecord("1026")).rejects.toMatchObject({ status: 404 });
 });

@@ -7,7 +7,7 @@ import {
   randomArchiveId,
 } from "./archive";
 
-it("models archive boundaries independently from Kanto", () => {
+it("models archive boundaries independently from a specific region", () => {
   const scope = createArchiveScope({
     key: "sample",
     label: "Sample",
@@ -23,9 +23,10 @@ it("models archive boundaries independently from Kanto", () => {
   expect(randomArchiveId(27, () => 0.999, scope)).toBe(26);
 });
 
-it("falls back to the current release scope for non-scope loader keys", () => {
-  expect(archiveListPath("")).toBe("pokemon?offset=0&limit=151");
-  expect(inArchive(151, "")).toBe(true);
+it("falls back to the current National Dex release scope for non-scope loader keys", () => {
+  expect(archiveListPath("")).toBe("pokemon?offset=0&limit=1025");
+  expect(inArchive(1025, "")).toBe(true);
+  expect(inArchive(1026, "")).toBe(false);
 });
 
 it("rejects invalid archive ranges", () => {

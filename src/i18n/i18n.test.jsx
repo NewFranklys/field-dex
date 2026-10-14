@@ -38,7 +38,7 @@ it("switches to Brazilian Portuguese without losing route context", async () => 
   );
 
   expect(
-    await screen.findByRole("heading", { name: "Arquivo de Espécies de Kanto" }),
+    await screen.findByRole("heading", { name: "National Dex" }),
   ).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "Início" })).toBeInTheDocument();
   expect(screen.getByLabelText("Current route")).toHaveTextContent(

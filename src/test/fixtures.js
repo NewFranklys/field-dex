@@ -13,6 +13,10 @@ const names = {
   136: "flareon",
   150: "mewtwo",
   151: "mew",
+  152: "chikorita",
+  196: "espeon",
+  906: "sprigatito",
+  1025: "pecharunt",
 };
 const speciesTypes = {
   1: ["grass", "poison"],
@@ -26,6 +30,10 @@ const speciesTypes = {
   136: ["fire"],
   150: ["psychic"],
   151: ["psychic"],
+  152: ["grass"],
+  196: ["psychic"],
+  906: ["grass"],
+  1025: ["poison", "ghost"],
 };
 export const index = {
   results: Object.entries(names).map(([id, name]) => ({
@@ -81,13 +89,25 @@ export const eeveeFamily = {
     node(196, [], [{ min_happiness: 220, time_of_day: "day" }]),
   ]),
 };
+const generationForId = (id) => {
+  if (id <= 151) return "generation-i";
+  if (id <= 251) return "generation-ii";
+  if (id <= 386) return "generation-iii";
+  if (id <= 493) return "generation-iv";
+  if (id <= 649) return "generation-v";
+  if (id <= 721) return "generation-vi";
+  if (id <= 809) return "generation-vii";
+  if (id <= 905) return "generation-viii";
+  return "generation-ix";
+};
 export const species = (id) => ({
+  id,
   genera: [{ language: { name: "en" }, genus: "Mouse Pokémon" }],
   flavor_text_entries: [
     { language: { name: "en" }, flavor_text: "Field\nnotes\fhere." },
   ],
   habitat: { name: "forest" },
-  generation: { name: "generation-i" },
+  generation: { name: generationForId(id) },
   evolution_chain: { url: `${base}evolution-chain/${id}/` },
 });
 export const typeData = (name) => ({

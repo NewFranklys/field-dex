@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Artwork from "../components/Artwork";
 import TypeIcon from "../components/TypeIcon";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -37,18 +37,20 @@ function Pokedex() {
   const { data: pokemonList, loading, error, retry } = useResource(getArchive);
   const searchTerm = searchParams.get("q") || "";
 
-  useEffect(() => {
-    setVisibleLimit(PAGE_SIZE);
-  }, [searchTerm, selectedType, selectedGeneration]);
-
   function updateParam(key, value, emptyValue = "all") {
     const next = new URLSearchParams(searchParams);
     value === emptyValue || !value ? next.delete(key) : next.set(key, value);
+    setVisibleLimit(PAGE_SIZE);
     setSearchParams(next, { replace: true });
   }
 
   function setSearchTerm(value) {
     updateParam("q", value, "");
+  }
+
+  function clearFilters() {
+    setVisibleLimit(PAGE_SIZE);
+    setSearchParams({});
   }
 
   const typeFilteredPokemon = filterPokemon(
@@ -142,11 +144,11 @@ function Pokedex() {
       <section className="pokedex-generation-section">
         <div className="pokedex-filter-heading">
           <span>{t("pokedex:generationFilter")}</span>
-          <strong>{
-            selectedGenerationMeta
+          <strong>
+            {selectedGenerationMeta
               ? `${t("pokedex:generationShort")} ${selectedGenerationMeta.roman} · ${selectedGenerationMeta.region}`
-              : t("pokedex:national")
-          }</strong>
+              : t("pokedex:national")}
+          </strong>
         </div>
         <div
           className="pokedex-generation-filters"
@@ -230,7 +232,7 @@ function Pokedex() {
         <div className="resource-state" role="status">
           <h2>{t("pokedex:noMatches")}</h2>
           <p>{t("pokedex:noMatchesBody")}</p>
-          <button onClick={() => setSearchParams({})}>{t("pokedex:clear")}</button>
+          <button onClick={clearFilters}>{t("pokedex:clear")}</button>
         </div>
       )}
 

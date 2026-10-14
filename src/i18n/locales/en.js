@@ -8,7 +8,7 @@ export default {
     language: { label: "Language", en: "English", ptBR: "Português (Brasil)" },
     titles: {
       home: "FIELD DEX | Pokémon Companion Platform",
-      pokedex: "Kanto Species Archive | FIELD DEX",
+      pokedex: "National Dex | FIELD DEX",
       types: "Type Analysis | FIELD DEX",
       record: "Field Record | FIELD DEX",
       notFound: "Page Not Found | FIELD DEX"
@@ -26,7 +26,7 @@ export default {
       unavailable: "The research database is temporarily unavailable.",
       timeout: "The request took too long. Please try again.",
       offline: "Could not reach the research database. Check your connection and try again.",
-      outOfScope: "This record is outside the current Kanto archive (001–151).",
+      outOfScope: "This record is outside the current National Dex scope.",
       alternateForm: "This alternate form is not exposed in the current species archive."
     },
     types: {
@@ -45,12 +45,12 @@ export default {
   home: {
     eyebrow: "Pokémon Companion Platform",
     currentArchive: "Current Archive",
-    kantoRange: "Kanto / 001—151",
+    kantoRange: "National / 001—1025",
     sectionLabel: "Species Research",
     title1: "Explore the world",
     title2: "one species at a time.",
-    description: "Begin with the Kanto archive: search species, study their biology, compare base stats and trace their evolutionary families.",
-    scopeNote: "Current public dataset · Kanto species 001—151",
+    description: "Explore the National Dex: search species from every generation, study their biology, compare base stats and trace evolutionary families.",
+    scopeNote: "Current public dataset · National Dex 001—1025",
     featured: "Featured Specimen",
     scanning: "Scanning...",
     rescan: "Rescan ↻",
@@ -63,34 +63,42 @@ export default {
     categoryFallback: "{{type}}-type Pokémon",
     encounter: {
       label: "Encounter", kicker: "Unknown specimen", title1: "Random", title2: "Encounter",
-      description: "Pull an unidentified entry from the current Kanto archive.", action: "Initiate scan ↗"
+      description: "Pull an unidentified entry from the current National Dex.", action: "Initiate scan ↗"
     },
     archive: {
-      label: "Species Archive", kicker: "Current archive", title1: "Browse", title2: "Pokédex",
-      description: "Browse the 151 catalogued Kanto species in the current release.", action: "Open archive ↗"
+      label: "Species Archive", kicker: "National Dex", title1: "Browse", title2: "Pokédex",
+      description: "Browse catalogued species from Generation I through IX.", action: "Open archive ↗"
     },
     typeModule: {
       label: "Classification", kicker: "18 elemental classes", title1: "Explore", title2: "Types",
-      description: "Study the current type system using Kanto representatives.", action: "View classes ↗"
+      description: "Study the current type system using representatives from across the National Dex.", action: "View classes ↗"
     },
-    footer: "FIELD DEX · Current archive: Kanto / 001—151"
+    footer: "FIELD DEX · Current archive: National Dex / 001—1025"
   },
   pokedex: {
     currentArchive: "Current Archive",
-    range: "Kanto / 001—151",
-    eyebrow: "Species Research / Kanto",
-    title: "Kanto Species Archive",
-    description: "Browse the 151 species currently available in FIELD DEX. Kanto is the first archive scope, not the long-term limit of the platform.",
+    range: "National / 001—1025",
+    eyebrow: "Species Research / National Dex",
+    title: "National Dex",
+    description: "Explore FIELD DEX's national species catalogue. Filter by generation, type, name or number without mounting the full archive at once.",
     currentClassification: "Current Classification",
     allSpecies: "All Species",
     searchSpecies: "Search Species",
     nameOrNumber: "Name or #",
     activeRecords: "Active Records",
+    generationFilter: "Generation",
+    generationFilterAria: "Filter by generation",
+    generationShort: "Generation",
+    generationState: "Generation {{generation}} · {{region}}",
+    national: "National Dex",
+    allGenerations: "All",
+    showing: "Showing {{visible}} of {{total}}",
+    loadMore: "Load more records",
     filterAria: "Filter by type",
     allTypes: "All Types",
-    indexing: "Indexing species archive...",
+    indexing: "Indexing National Dex...",
     noMatches: "No matching records",
-    noMatchesBody: "Try another name, number or type. The current archive covers Kanto species 001–151.",
+    noMatchesBody: "Try another name, number, generation or type.",
     clear: "Clear search and filters",
     entry: "Entry",
     viewRecord: "View field record"
@@ -100,7 +108,7 @@ export default {
     headerValue: "Current Type System",
     eyebrow: "Classification Observatory",
     title: "Type Analysis",
-    description: "Study Kanto species through the current elemental classification system and analyze their battle relationships.",
+    description: "Study National Dex species through the current elemental classification system and analyze their battle relationships.",
     database: "Research Database",
     indexing: "Indexing",
     offline: "Offline",
@@ -108,9 +116,9 @@ export default {
     navAria: "Pokémon types",
     loading: "Indexing type research...",
     classification: "Classification / {{index}}",
-    kantoRecords: "Kanto species\nrecords",
+    kantoRecords: "National Dex species\nrecords",
     viewSpecies: "View {{type}} species",
-    noRecords: "No Kanto species records",
+    noRecords: "No species records",
     battleData: "Battle classification data remains available.",
     attackProfile: "Attack Profile",
     offensive: "Offensive relationships",
@@ -138,10 +146,10 @@ export default {
     typeUnavailable: "Type response data unavailable.",
     typeContext: "Current type chart. Abilities, moves and battle conditions are not included.",
     weakTo: "Weak To", resists: "Resists", immuneTo: "Immune To", none: "None",
-    evolutionTitle: "Evolution Record", evolutionSubtitle: "Registered evolutionary family · Kanto records",
-    extendedFamily: "This family also contains species outside the V1 Kanto archive. Only Kanto records are available here.",
+    evolutionTitle: "Evolution Record", evolutionSubtitle: "Registered evolutionary family · National Dex",
+    extendedFamily: "This family contains species outside the current public scope. Available records are shown below.",
     evolutionUnavailable: "Evolution data unavailable.",
-    currentRecord: "Current record", outsideKanto: "outside Kanto", from: "From {{name}}{{suffix}} →", familyOrigin: "Family origin",
+    currentRecord: "Current record", outsideKanto: "outside archive", from: "From {{name}}{{suffix}} →", familyOrigin: "Family origin",
     noFurther: "No further evolutions recorded.",
     sizeComparisonAria: "Size comparison",
     sizeComparisonTitle: "Scale Reference",

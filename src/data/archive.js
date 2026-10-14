@@ -1,3 +1,5 @@
+import { NATIONAL_DEX_LAST_ID } from "./generations";
+
 // Product/release scope belongs here, never in the HTTP client or species model.
 export function createArchiveScope({ key, label, first, last }) {
   if (
@@ -18,8 +20,16 @@ export const KANTO_ARCHIVE = createArchiveScope({
   last: 151,
 });
 
-// Phase 2 can change the active release/browse scope without rewriting generic services.
-export const CURRENT_ARCHIVE = KANTO_ARCHIVE;
+export const NATIONAL_ARCHIVE = createArchiveScope({
+  key: "national",
+  label: "National Dex",
+  first: 1,
+  last: NATIONAL_DEX_LAST_ID,
+});
+
+// The public species module now uses National Dex scope. Regional/game scopes stay
+// separate so later game-aware browsing does not have to overload National numbering.
+export const CURRENT_ARCHIVE = NATIONAL_ARCHIVE;
 
 export const isArchiveScope = (value) =>
   Boolean(

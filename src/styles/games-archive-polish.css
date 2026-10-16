@@ -1,239 +1,218 @@
 /*
   FIELD DEX — GAME ARCHIVE POLISH
 
-  Second visual pass for the Games directory. This file intentionally
-  overrides games-redesign.css so the first redesign remains easy to audit.
+  Third visual pass for the Games directory.
+  The archive now uses one consistent card geometry regardless of how many
+  records a region contains. Regions no longer resize or feature cards based
+  on record count; every game occupies the same archival slot.
 */
 
 .games-page--redesign .region-quick-nav {
   top: 0;
   z-index: 20;
+  min-height: 46px;
   padding-inline: 40px;
+  border-top: 1px solid #dedbd3;
   background: #f6f4ee;
-  box-shadow: 0 8px 18px rgb(32 29 23 / 3%);
+  box-shadow: 0 10px 22px rgb(32 29 23 / 4%);
   backdrop-filter: none;
 }
 
 .games-page--redesign #game-archive-top,
 .games-page--redesign .region-archive-v2 {
-  scroll-margin-top: 54px;
+  scroll-margin-top: 66px;
 }
 
 .games-page--redesign .region-directory-v2 {
-  padding-top: 0;
+  padding-top: 8px;
 }
 
 .games-page--redesign .region-archive-v2 {
-  padding: 34px 0 46px;
+  padding: 38px 0 50px;
 }
 
 .games-page--redesign .region-archive-v2__header {
-  min-height: 72px;
-  margin-bottom: 18px;
+  min-height: 76px;
+  margin-bottom: 22px;
   overflow: visible;
 }
 
 .games-page--redesign .region-archive-v2__watermark {
-  right: 8px;
-  bottom: -2px;
-  max-width: 58%;
+  right: 18px;
+  bottom: 2px;
+  max-width: 48%;
   overflow: hidden;
-  color: color-mix(in srgb, var(--region-accent) 8%, transparent);
-  font-size: clamp(62px, 6.8vw, 112px);
+  color: color-mix(in srgb, var(--region-accent) 7%, transparent);
+  font-size: clamp(62px, 6vw, 108px);
   line-height: 0.82;
   white-space: nowrap;
 }
 
 .games-page--redesign .region-archive-v2__meta {
-  min-width: 150px;
-  padding-right: 4px;
+  min-width: 160px;
+  padding-right: 6px;
 }
 
-.games-page--redesign .region-game-grid-v2 {
-  width: 100%;
-  gap: 18px;
-  grid-template-columns: none;
-}
-
+/*
+  A four-slot archive shelf is the desktop baseline. A region with fewer
+  records simply leaves unused slots empty instead of stretching its cards.
+  This keeps Kanto, Johto, Unova, Kalos, Hisui and Paldea visually comparable.
+*/
+.games-page--redesign .region-game-grid-v2,
+.games-page--redesign .region-game-grid-v2--count-1,
+.games-page--redesign .region-game-grid-v2--count-2,
+.games-page--redesign .region-game-grid-v2--count-3,
 .games-page--redesign .region-game-grid-v2--count-4 {
+  display: grid;
+  width: min(100%, 1500px);
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  align-items: stretch;
 }
 
-.games-page--redesign .region-game-grid-v2--count-3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.games-page--redesign .region-game-grid-v2--count-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.games-page--redesign .region-game-grid-v2--count-1 {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-.games-page--redesign .game-archive-card {
+.games-page--redesign .game-archive-card,
+.games-page--redesign .region-game-grid-v2--count-1 .game-archive-card,
+.games-page--redesign .region-game-grid-v2--count-2 .game-archive-card,
+.games-page--redesign .region-game-grid-v2--count-3 .game-archive-card {
+  display: flex;
   min-width: 0;
-  min-height: 390px;
+  height: 406px;
+  min-height: 406px;
+  flex-direction: column;
   background:
-    radial-gradient(circle at 50% 28%, color-mix(in srgb, var(--game-accent) 11%, transparent), transparent 38%),
+    radial-gradient(circle at 50% 27%, color-mix(in srgb, var(--game-accent) 10%, transparent), transparent 38%),
     linear-gradient(180deg, #faf8f2 0%, #f7f5ef 100%);
 }
 
-.games-page--redesign .game-archive-card__topline {
+.games-page--redesign .game-archive-card__topline,
+.games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__topline {
+  display: flex;
+  min-height: 45px;
+  grid-column: auto;
+  grid-row: auto;
+  align-items: flex-start;
   padding: 18px 20px 0;
 }
 
-.games-page--redesign .game-archive-card__visual {
-  min-height: 176px;
-  padding: 16px 28px 10px;
+/* One fixed visual stage for every logo/fallback. */
+.games-page--redesign .game-archive-card__visual,
+.games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__visual,
+.games-page--redesign .region-game-grid-v2--count-2 .game-archive-card__visual,
+.games-page--redesign .region-game-grid-v2--count-3 .game-archive-card__visual {
+  display: grid;
+  height: 164px;
+  min-height: 164px;
+  grid-column: auto;
+  grid-row: auto;
+  place-items: center;
+  padding: 10px 24px 8px;
+  border-right: 0;
 }
 
-.games-page--redesign .game-logo {
-  min-height: 148px;
+.games-page--redesign .game-logo,
+.games-page--redesign .region-game-grid-v2--count-1 .game-logo,
+.games-page--redesign .region-game-grid-v2--count-2 .game-logo,
+.games-page--redesign .region-game-grid-v2--count-3 .game-logo {
+  display: grid;
+  width: 100%;
+  height: 138px;
+  min-height: 138px;
+  place-items: center;
 }
 
 .games-page--redesign .game-logo__images {
-  gap: 18px;
+  display: flex;
+  width: 100%;
+  height: 132px;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
 }
 
-.games-page--redesign .game-logo__images img {
-  max-width: min(82%, 270px);
-  max-height: 142px;
-}
-
-.games-page--redesign .game-logo__images--pair img {
-  max-width: calc(50% - 12px);
-  max-height: 116px;
-}
-
+.games-page--redesign .game-logo__images img,
+.games-page--redesign .region-game-grid-v2--count-1 .game-logo__images img,
+.games-page--redesign .region-game-grid-v2--count-2 .game-logo__images img,
+.games-page--redesign .region-game-grid-v2--count-3 .game-logo__images img,
 .games-page--redesign .game-logo__image--box-front {
   width: auto;
-  max-width: 180px;
-  max-height: 164px;
+  max-width: min(82%, 270px);
+  height: auto;
+  max-height: 122px;
+  object-fit: contain;
 }
 
+.games-page--redesign .game-logo__images--pair {
+  gap: 14px;
+}
+
+.games-page--redesign .game-logo__images--pair img,
+.games-page--redesign .region-game-grid-v2--count-1 .game-logo__images--pair img,
+.games-page--redesign .region-game-grid-v2--count-2 .game-logo__images--pair img,
+.games-page--redesign .region-game-grid-v2--count-3 .game-logo__images--pair img,
 .games-page--redesign .game-logo__images--pair .game-logo__image--box-front {
-  max-width: calc(44% - 8px);
-  max-height: 150px;
+  width: auto;
+  max-width: calc(48% - 8px);
+  max-height: 108px;
+  object-fit: contain;
 }
 
-.games-page--redesign .game-archive-card__copy {
-  padding: 0 20px 18px;
+.games-page--redesign .game-logo__fallback {
+  width: 100%;
+  height: 132px;
+  min-height: 132px;
 }
 
-.games-page--redesign .game-archive-card__copy h3 {
-  font-size: clamp(22px, 1.55vw, 29px);
+.games-page--redesign .game-logo__fallback span {
+  font-size: clamp(38px, 3vw, 56px);
 }
 
-.games-page--redesign .game-archive-card__copy p {
+/* Copy gets the same reserved block even when the title wraps. */
+.games-page--redesign .game-archive-card__copy,
+.games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__copy {
+  display: block;
+  min-height: 91px;
+  grid-column: auto;
+  grid-row: auto;
+  padding: 4px 20px 16px;
+}
+
+.games-page--redesign .game-archive-card__copy h3,
+.games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__copy h3 {
+  max-width: none;
+  margin: 0;
+  font-size: clamp(21px, 1.4vw, 27px);
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+}
+
+.games-page--redesign .game-archive-card__copy p,
+.games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__copy p {
   margin-top: 7px;
   font-size: 10px;
 }
 
 .games-page--redesign .game-archive-card__meta,
-.games-page--redesign .game-archive-card__footer {
-  padding-inline: 20px;
-}
-
-/* Regions with two or three archives should feel intentional, not incomplete. */
-.games-page--redesign .region-game-grid-v2--count-2 .game-archive-card,
-.games-page--redesign .region-game-grid-v2--count-3 .game-archive-card {
-  min-height: 410px;
-}
-
-.games-page--redesign .region-game-grid-v2--count-2 .game-archive-card__visual,
-.games-page--redesign .region-game-grid-v2--count-3 .game-archive-card__visual {
-  min-height: 196px;
-}
-
-.games-page--redesign .region-game-grid-v2--count-2 .game-logo,
-.games-page--redesign .region-game-grid-v2--count-3 .game-logo {
-  min-height: 166px;
-}
-
-.games-page--redesign .region-game-grid-v2--count-2 .game-logo__images img,
-.games-page--redesign .region-game-grid-v2--count-3 .game-logo__images img {
-  max-height: 154px;
-}
-
-.games-page--redesign .region-game-grid-v2--count-2 .game-logo__images--pair img,
-.games-page--redesign .region-game-grid-v2--count-3 .game-logo__images--pair img {
-  max-height: 128px;
-}
-
-/* A region with one archive becomes a featured horizontal record. */
-.games-page--redesign .region-game-grid-v2--count-1 .game-archive-card {
-  display: grid;
-  min-height: 330px;
-  grid-template-columns: minmax(360px, 0.95fr) minmax(0, 1.05fr);
-  grid-template-rows: auto minmax(0, 1fr) auto auto;
-  background:
-    radial-gradient(circle at 24% 50%, color-mix(in srgb, var(--game-accent) 14%, transparent), transparent 34%),
-    linear-gradient(100deg, #faf8f2 0%, #f7f5ef 64%, color-mix(in srgb, var(--game-accent) 5%, #f7f5ef) 100%);
-}
-
-.games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__visual {
-  grid-column: 1;
-  grid-row: 1 / 5;
-  min-height: 328px;
-  padding: 34px 54px;
-  border-right: 1px solid #dedbd3;
-}
-
-.games-page--redesign .region-game-grid-v2--count-1 .game-logo {
-  min-height: 250px;
-}
-
-.games-page--redesign .region-game-grid-v2--count-1 .game-logo__images img {
-  max-width: min(84%, 380px);
-  max-height: 210px;
-}
-
-.games-page--redesign .region-game-grid-v2--count-1 .game-logo__images--pair img {
-  max-width: calc(48% - 12px);
-  max-height: 170px;
-}
-
-.games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__topline {
-  grid-column: 2;
-  grid-row: 1;
-  padding: 28px 32px 0;
-}
-
-.games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__copy {
-  display: flex;
-  grid-column: 2;
-  grid-row: 2;
-  flex-direction: column;
-  justify-content: center;
-  padding: 26px 32px;
-}
-
-.games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__copy h3 {
-  max-width: 720px;
-  font-size: clamp(36px, 4vw, 62px);
-  letter-spacing: -0.055em;
-  line-height: 0.94;
-}
-
-.games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__copy p {
-  margin-top: 12px;
-  font-size: 12px;
-}
-
 .games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__meta {
-  grid-column: 2;
-  grid-row: 3;
-  padding: 15px 32px;
+  display: flex;
+  min-height: 43px;
+  grid-column: auto;
+  grid-row: auto;
+  align-items: center;
+  margin-top: auto;
+  padding: 12px 20px;
 }
 
+.games-page--redesign .game-archive-card__footer,
 .games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__footer {
-  grid-column: 2;
-  grid-row: 4;
-  padding: 17px 32px 18px;
+  display: flex;
+  min-height: 47px;
+  grid-column: auto;
+  grid-row: auto;
+  align-items: center;
+  padding: 13px 20px 14px;
 }
 
-/* The toolbar should look like a toolbar when it sticks, never like it is floating through cards. */
+/* The toolbar must always read as a separate layer, never as part of a card. */
 .games-page--redesign .region-quick-nav::after {
   position: absolute;
   right: 0;
@@ -244,39 +223,40 @@
   content: "";
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1380px) {
+  .games-page--redesign .region-game-grid-v2,
+  .games-page--redesign .region-game-grid-v2--count-1,
+  .games-page--redesign .region-game-grid-v2--count-2,
+  .games-page--redesign .region-game-grid-v2--count-3,
   .games-page--redesign .region-game-grid-v2--count-4 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .games-page--redesign .region-game-grid-v2--count-3 {
+    width: min(100%, 1120px);
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .games-page--redesign .region-game-grid-v2--count-1 .game-archive-card {
-    grid-template-columns: minmax(310px, 0.85fr) minmax(0, 1.15fr);
   }
 }
 
-@media (max-width: 980px) {
-  .games-page--redesign .region-game-grid-v2--count-4,
+@media (max-width: 1040px) {
+  .games-page--redesign .region-game-grid-v2,
+  .games-page--redesign .region-game-grid-v2--count-1,
+  .games-page--redesign .region-game-grid-v2--count-2,
   .games-page--redesign .region-game-grid-v2--count-3,
-  .games-page--redesign .region-game-grid-v2--count-2 {
+  .games-page--redesign .region-game-grid-v2--count-4 {
+    width: 100%;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .games-page--redesign .region-game-grid-v2--count-1 .game-archive-card {
-    grid-template-columns: minmax(270px, 0.8fr) minmax(0, 1.2fr);
-  }
-
-  .games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__visual {
-    padding-inline: 30px;
+  .games-page--redesign .game-archive-card,
+  .games-page--redesign .region-game-grid-v2--count-1 .game-archive-card,
+  .games-page--redesign .region-game-grid-v2--count-2 .game-archive-card,
+  .games-page--redesign .region-game-grid-v2--count-3 .game-archive-card {
+    height: 398px;
+    min-height: 398px;
   }
 }
 
 @media (max-width: 720px) {
   .games-page--redesign .region-quick-nav {
     top: 0;
+    min-height: 44px;
     padding-inline: 18px;
   }
 
@@ -298,41 +278,44 @@
     display: none;
   }
 
-  .games-page--redesign .region-game-grid-v2--count-4,
-  .games-page--redesign .region-game-grid-v2--count-3,
+  .games-page--redesign .region-game-grid-v2,
+  .games-page--redesign .region-game-grid-v2--count-1,
   .games-page--redesign .region-game-grid-v2--count-2,
-  .games-page--redesign .region-game-grid-v2--count-1 {
+  .games-page--redesign .region-game-grid-v2--count-3,
+  .games-page--redesign .region-game-grid-v2--count-4 {
     grid-template-columns: 1fr;
   }
 
-  .games-page--redesign .region-game-grid-v2--count-1 .game-archive-card {
-    display: flex;
-    min-height: 390px;
+  .games-page--redesign .game-archive-card,
+  .games-page--redesign .region-game-grid-v2--count-1 .game-archive-card,
+  .games-page--redesign .region-game-grid-v2--count-2 .game-archive-card,
+  .games-page--redesign .region-game-grid-v2--count-3 .game-archive-card {
+    height: auto;
+    min-height: 386px;
   }
 
+  .games-page--redesign .game-archive-card__visual,
   .games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__visual {
-    min-height: 190px;
-    padding: 20px 28px 8px;
-    border-right: 0;
+    height: 158px;
+    min-height: 158px;
+    padding-inline: 24px;
   }
 
+  .games-page--redesign .game-logo,
   .games-page--redesign .region-game-grid-v2--count-1 .game-logo {
-    min-height: 160px;
+    height: 132px;
+    min-height: 132px;
   }
 
-  .games-page--redesign .region-game-grid-v2--count-1 .game-logo__images img {
-    max-height: 150px;
+  .games-page--redesign .game-logo__images,
+  .games-page--redesign .game-logo__fallback {
+    height: 126px;
+    min-height: 126px;
   }
 
-  .games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__topline,
-  .games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__copy,
-  .games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__meta,
-  .games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__footer {
-    padding-inline: 20px;
-  }
-
+  .games-page--redesign .game-archive-card__copy h3,
   .games-page--redesign .region-game-grid-v2--count-1 .game-archive-card__copy h3 {
-    font-size: 28px;
+    font-size: 25px;
   }
 }
 

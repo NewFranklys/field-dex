@@ -26,6 +26,7 @@ export default function GameLogo({ visual, label, compact = false }) {
             failed.has(index) ? null : (
               <img
                 key={`${logo.src}-${index}`}
+                className={logo.isBoxFront ? "game-logo__image game-logo__image--box-front" : "game-logo__image"}
                 src={logo.src}
                 alt={logo.label || label}
                 loading="lazy"

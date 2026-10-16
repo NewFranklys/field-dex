@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Artwork from "../components/Artwork";
 import ResourceState from "../components/ResourceState";
@@ -20,7 +20,6 @@ function levelText(entry, t) {
 export default function GamePage() {
   const { gameSlug } = useParams();
   const game = getGameGroupBySlug(gameSlug);
-  const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
   const { t, i18n } = useTranslation("games");
   const pokemonQuery = params.get("pokemon") || "";
@@ -135,7 +134,11 @@ export default function GamePage() {
           </div>
         </section>
       ) : loading || error ? (
-        <ResourceState loading={loading} error={error} retry={error?.status === 404 ? null : retry} />
+        <ResourceState
+          loading={loading}
+          error={error}
+          retry={error?.status === 404 ? null : retry}
+        />
       ) : record ? (
         <>
           <section className="game-species-record">
@@ -146,13 +149,20 @@ export default function GamePage() {
             <div className="game-species-copy">
               <span>{t("speciesContext")}</span>
               <h2>{record.pokemon.name}</h2>
-              <p>{t("speciesContextBody", { game: game.shortLabel, version: record.version.label })}</p>
+              <p>
+                {t("speciesContextBody", {
+                  game: game.shortLabel,
+                  version: record.version.label,
+                })}
+              </p>
               <div className="game-context-status">
                 {record.introducedHere && <span>{t("originRecord")}</span>}
                 {record.hasVersionData && <span>{t("versionData")}</span>}
                 {!record.hasVersionData && <span>{t("contextOnly")}</span>}
               </div>
-              <Link to={`/pokemon/${record.pokemon.number}`}>{t("openSpeciesRecord")} →</Link>
+              <Link to={`/pokemon/${record.pokemon.number}`}>
+                {t("openSpeciesRecord")} →
+              </Link>
             </div>
           </section>
 
@@ -162,28 +172,46 @@ export default function GamePage() {
                 <span>02</span>
                 <div>
                   <h2>{t("encounters.title")}</h2>
-                  <small>{t("encounters.subtitle", { version: record.version.label })}</small>
+                  <small>
+                    {t("encounters.subtitle", {
+                      version: record.version.label,
+                    })}
+                  </small>
                 </div>
               </header>
               {record.encounters.length > 0 ? (
                 <div className="encounter-list">
                   {record.encounters.map((encounter) => (
-                    <div className="encounter-row" key={encounter.locationSlug || encounter.location}>
+                    <div
+                      className="encounter-row"
+                      key={encounter.locationSlug || encounter.location}
+                    >
                       <div>
                         <strong>{encounter.location}</strong>
                         {encounter.maxChance != null && (
-                          <small>{t("encounters.maxChance", { chance: encounter.maxChance })}</small>
+                          <small>
+                            {t("encounters.maxChance", {
+                              chance: encounter.maxChance,
+                            })}
+                          </small>
                         )}
                       </div>
                       <div className="encounter-methods">
                         {encounter.details.map((detail, index) => (
-                          <span key={`${detail.method}-${detail.minLevel}-${index}`}>
+                          <span
+                            key={`${detail.method}-${detail.minLevel}-${index}`}
+                          >
                             <strong>{detail.methodLabel}</strong>
                             <small>
                               {detail.minLevel != null
                                 ? detail.minLevel === detail.maxLevel
-                                  ? t("encounters.level", { level: detail.minLevel })
-                                  : t("encounters.levelRange", { min: detail.minLevel, max: detail.maxLevel })
+                                  ? t("encounters.level", {
+                                      level: detail.minLevel,
+                                    })
+                                  : t("encounters.levelRange", {
+                                      min: detail.minLevel,
+                                      max: detail.maxLevel,
+                                    })
                                 : t("encounters.levelUnknown")}
                             </small>
                           </span>
@@ -205,7 +233,9 @@ export default function GamePage() {
                 <span>03</span>
                 <div>
                   <h2>{t("learnset.title")}</h2>
-                  <small>{t("learnset.subtitle", { game: game.shortLabel })}</small>
+                  <small>
+                    {t("learnset.subtitle", { game: game.shortLabel })}
+                  </small>
                 </div>
               </header>
               {record.levelUpMoves.length > 0 ? (

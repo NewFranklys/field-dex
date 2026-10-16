@@ -2,6 +2,8 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import en from "./locales/en";
 import ptBR from "./locales/pt-BR";
+import gamesEn from "./locales/games.en";
+import gamesPtBR from "./locales/games.pt-BR";
 import presentationEn from "./locales/presentation.en";
 import presentationPtBR from "./locales/presentation.pt-BR";
 
@@ -25,16 +27,46 @@ function syncDocumentLanguage(locale) {
   }
 }
 
+function withGameResearch(base, feature, presentation) {
+  return {
+    ...base,
+    common: {
+      ...base.common,
+      ...feature.common,
+      nav: { ...base.common.nav, ...feature.common.nav },
+      currentModule: {
+        ...base.common.currentModule,
+        ...feature.common.currentModule,
+      },
+      titles: { ...base.common.titles, ...feature.common.titles },
+    },
+    record: {
+      ...base.record,
+      ...feature.record,
+    },
+    games: feature.games,
+    presentation,
+  };
+}
+
 void i18n.use(initReactI18next).init({
   resources: {
-    en: { ...en, presentation: presentationEn },
-    "pt-BR": { ...ptBR, presentation: presentationPtBR },
+    en: withGameResearch(en, gamesEn, presentationEn),
+    "pt-BR": withGameResearch(ptBR, gamesPtBR, presentationPtBR),
   },
   lng: storedLocale(),
   fallbackLng: DEFAULT_LOCALE,
   supportedLngs: SUPPORTED_LOCALES,
   defaultNS: "common",
-  ns: ["common", "home", "pokedex", "typesPage", "record", "presentation"],
+  ns: [
+    "common",
+    "home",
+    "pokedex",
+    "typesPage",
+    "record",
+    "games",
+    "presentation",
+  ],
   interpolation: {
     escapeValue: false,
   },

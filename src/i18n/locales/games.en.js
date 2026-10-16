@@ -34,6 +34,13 @@ export default {
     openRecord: "Open record",
     quickNavAria: "Quick region navigation",
     quickNavAll: "Top",
+    dossier: {
+      aria: "Regional dossier for {{region}}",
+      title: "Regional index",
+      body: "Editorial overview of the {{region}} archive, grouping generations, platforms and formats without collapsing each game's version-aware context.",
+      platforms: "Platforms",
+      formats: "Formats",
+    },
     filters: {
       aria: "Game archive filters",
       search: "Search games",

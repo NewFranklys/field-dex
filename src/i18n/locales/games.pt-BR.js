@@ -34,6 +34,13 @@ export default {
     openRecord: "Abrir registro",
     quickNavAria: "Navegação rápida por região",
     quickNavAll: "Topo",
+    dossier: {
+      aria: "Dossiê regional de {{region}}",
+      title: "Índice regional",
+      body: "Visão editorial do arquivo de {{region}}, reunindo gerações, plataformas e formatos sem misturar os contextos específicos de cada jogo.",
+      platforms: "Plataformas",
+      formats: "Formatos",
+    },
     filters: {
       aria: "Filtros dos arquivos de jogos",
       search: "Buscar jogo",

@@ -22,7 +22,23 @@ it("frames FIELD DEX as the platform rather than the Kanto archive", () => {
   expect(screen.getByRole("link", { name: "Home" })).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "Pokédex" })).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "Types" })).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "Games" })).toBeInTheDocument();
 
   expect(screen.queryByText(/Kanto/i)).not.toBeInTheDocument();
   expect(screen.queryByText(/001—151/)).not.toBeInTheDocument();
+});
+
+it("identifies game research as a separate product module", () => {
+  render(
+    <MemoryRouter initialEntries={["/games/crystal"]}>
+      <ProductShell>
+        <main>Game page</main>
+      </ProductShell>
+    </MemoryRouter>,
+  );
+
+  expect(screen.getByLabelText("Current public module")).toHaveTextContent(
+    "Game Research",
+  );
+  expect(screen.getByRole("link", { name: "Games" })).toHaveClass("active");
 });

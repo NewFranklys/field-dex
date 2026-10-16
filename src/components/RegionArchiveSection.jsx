@@ -11,13 +11,14 @@ export default function RegionArchiveSection({ region, games, index }) {
   const { t } = useTranslation("games");
   const visual = getRegionVisual(region.slug);
   const generations = generationList(games);
+  const layoutCount = Math.min(games.length, 4);
 
   if (games.length === 0) return null;
 
   return (
     <section
       id={`region-${region.slug}`}
-      className="region-archive-v2"
+      className={`region-archive-v2 region-archive-v2--count-${layoutCount}`}
       style={{ "--region-accent": visual.accent }}
     >
       <header className="region-archive-v2__header">
@@ -36,7 +37,7 @@ export default function RegionArchiveSection({ region, games, index }) {
           {region.label}
         </span>
       </header>
-      <div className="region-game-grid-v2">
+      <div className={`region-game-grid-v2 region-game-grid-v2--count-${layoutCount}`}>
         {games.map((game) => (
           <GameArchiveCard key={game.slug} game={game} />
         ))}

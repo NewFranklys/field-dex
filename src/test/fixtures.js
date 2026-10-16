@@ -41,6 +41,33 @@ export const index = {
     url: `${base}pokemon/${id}/`,
   })),
 };
+
+function versionGroupsForId(id) {
+  if (id <= 151)
+    return ["red-blue", "yellow", "firered-leafgreen", "lets-go-pikachu-lets-go-eevee"];
+  if (id <= 251)
+    return ["gold-silver", "crystal", "heartgold-soulsilver"];
+  if (id <= 386)
+    return ["ruby-sapphire", "emerald", "omega-ruby-alpha-sapphire"];
+  if (id <= 493)
+    return ["diamond-pearl", "platinum", "brilliant-diamond-and-shining-pearl"];
+  if (id <= 649) return ["black-white", "black-2-white-2"];
+  if (id <= 721) return ["x-y"];
+  if (id <= 807) return ["sun-moon", "ultra-sun-ultra-moon"];
+  if (id <= 809) return ["lets-go-pikachu-lets-go-eevee"];
+  if (id <= 898) return ["sword-shield"];
+  if (id <= 905) return ["legends-arceus"];
+  return ["scarlet-violet"];
+}
+
+function moveDetails(id, level = 1) {
+  return versionGroupsForId(id).map((name) => ({
+    level_learned_at: level,
+    move_learn_method: { name: "level-up" },
+    version_group: { name },
+  }));
+}
+
 export const pokemon = (id = 25) => ({
   id,
   name: names[id],
@@ -62,6 +89,20 @@ export const pokemon = (id = 25) => ({
     "special-defense",
     "speed",
   ].map((name) => ({ stat: { name }, base_stat: 55 })),
+  moves: [
+    {
+      move: { name: "tackle" },
+      version_group_details: moveDetails(id, 1),
+    },
+    ...(id === 152
+      ? [
+          {
+            move: { name: "razor-leaf" },
+            version_group_details: moveDetails(id, 8),
+          },
+        ]
+      : []),
+  ],
   cries: { latest: "https://example.test/cry.ogg" },
   sprites: {
     other: {
@@ -127,6 +168,44 @@ export const typeData = (name) => ({
     no_damage_to: [],
   },
 });
+
+export const encounters = (id) =>
+  id === 152
+    ? [
+        {
+          location_area: { name: "route-29-area" },
+          version_details: [
+            {
+              version: { name: "crystal" },
+              max_chance: 30,
+              encounter_details: [
+                {
+                  method: { name: "walk" },
+                  min_level: 2,
+                  max_level: 3,
+                  chance: 30,
+                  condition_values: [],
+                },
+              ],
+            },
+            {
+              version: { name: "gold" },
+              max_chance: 20,
+              encounter_details: [
+                {
+                  method: { name: "walk" },
+                  min_level: 2,
+                  max_level: 2,
+                  chance: 20,
+                  condition_values: [],
+                },
+              ],
+            },
+          ],
+        },
+      ]
+    : [];
+
 export const response = (data, status = 200) => ({
   ok: status >= 200 && status < 300,
   status,
@@ -135,6 +214,8 @@ export const response = (data, status = 200) => ({
 export function apiFixture(url) {
   const path = String(url).replace(base, "").replace(/\/$/, "");
   if (path.startsWith("pokemon?")) return response(index);
+  const encounterMatch = path.match(/^pokemon\/(\d+)\/encounters$/);
+  if (encounterMatch) return response(encounters(Number(encounterMatch[1])));
   if (path.startsWith("type/")) {
     const name = path.split("/")[1];
     if (pokemonTypes.some((t) => t.slug === name))

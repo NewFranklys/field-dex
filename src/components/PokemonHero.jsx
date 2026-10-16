@@ -9,6 +9,7 @@ import TypeIcon from "./TypeIcon";
 import HabitatGlyph from "./HabitatGlyph";
 import SizeComparison from "./SizeComparison";
 import SpriteArchive from "./SpriteArchive";
+import GameRecords from "./GameRecords";
 
 function PokemonHero({ pokemon, onSelectPokemon }) {
   const { t, i18n } = useTranslation(["record", "common"]);
@@ -275,6 +276,8 @@ function PokemonHero({ pokemon, onSelectPokemon }) {
           pokemonName={pokemon.name}
         />
       </div>
+
+      <GameRecords pokemon={pokemon} />
 
       <nav className="record-navigation" aria-label={t("record:adjacentAria")}>
         {pokemon.navigation.previous ? (

@@ -7,10 +7,14 @@ import Home from "./pages/Home";
 import PokemonPage from "./pages/PokemonPage";
 import Pokedex from "./pages/Pokedex";
 import Types from "./pages/Types";
+import Games from "./pages/Games";
+import GamePage from "./pages/GamePage";
 import "./App.css";
 
 function titleKey(pathname) {
   if (pathname.startsWith("/pokemon/")) return "titles.record";
+  if (pathname.startsWith("/games/")) return "titles.game";
+  if (pathname === "/games") return "titles.games";
   if (pathname === "/types") return "titles.types";
   if (pathname === "/pokedex") return "titles.pokedex";
   if (pathname === "/") return "titles.home";
@@ -34,6 +38,8 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/pokedex" element={<Pokedex />} />
           <Route path="/types" element={<Types />} />
+          <Route path="/games" element={<Games />} />
+          <Route path="/games/:gameSlug" element={<GamePage />} />
           <Route path="/pokemon/:pokemonQuery" element={<PokemonPage />} />
           <Route
             path="*"

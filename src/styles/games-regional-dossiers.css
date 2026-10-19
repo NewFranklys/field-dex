@@ -10,7 +10,7 @@
   position: relative;
   isolation: isolate;
   margin-inline: -40px;
-  padding: 44px 40px 54px;
+  padding: 44px 40px 24px;
   overflow: hidden;
   background:
     radial-gradient(circle at 92% 12%, color-mix(in srgb, var(--region-accent) 6%, transparent), transparent 27%),
@@ -251,7 +251,7 @@
 @media (max-width: 720px) {
   .games-page--redesign .region-archive-v2 {
     margin-inline: -18px;
-    padding: 34px 18px 44px;
+    padding: 34px 18px 24px;
   }
 
   .games-page--redesign .region-archive-v2::before {

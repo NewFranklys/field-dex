@@ -22,7 +22,6 @@ export default function RegionArchiveSection({ region, games, index }) {
   const platforms = platformList(games);
   const kinds = kindList(games);
   const layoutCount = Math.min(games.length, 4);
-  const dossierSpan = Math.max(0, 4 - layoutCount);
 
   if (games.length === 0) return null;
 
@@ -53,56 +52,39 @@ export default function RegionArchiveSection({ region, games, index }) {
         {games.map((game) => (
           <GameArchiveCard key={game.slug} game={game} />
         ))}
+      </div>
 
-        {dossierSpan > 0 && (
-          <aside
-            className={`region-dossier region-dossier--span-${dossierSpan}`}
-            aria-label={t("dossier.aria", { region: region.label })}
-          >
-            <div className="region-dossier__heading">
-              <span>{t("dossier.title")}</span>
-              <strong>
-                {String(index + 1).padStart(2, "0")} / {region.label.toUpperCase()}
-              </strong>
-            </div>
+      <div className="region-context-strip" aria-label={t("dossier.aria", { region: region.label })}>
+        <div className="region-context-strip__identity">
+          <span>{t("dossier.title")}</span>
+          <strong>{String(index + 1).padStart(2, "0")} / {region.label.toUpperCase()}</strong>
+        </div>
 
-            <p className="region-dossier__body">
-              {t("dossier.body", { region: region.label, count: games.length })}
-            </p>
+        <div className="region-context-strip__facts">
+          <span>
+            <small>{t("generations")}</small>
+            <strong>{generations.map((generation) => `GEN ${generation}`).join(" · ")}</strong>
+          </span>
+          <span>
+            <small>{t("dossier.platforms")}</small>
+            <strong>{platforms.join(" · ")}</strong>
+          </span>
+          <span>
+            <small>{t("dossier.formats")}</small>
+            <strong>{kinds.map((kind) => t(`filters.kinds.${kind}`)).join(" · ")}</strong>
+          </span>
+        </div>
 
-            <div className="region-dossier__facts">
-              <div>
-                <span>{t("generations")}</span>
-                <strong>{generations.map((generation) => `GEN ${generation}`).join(" · ")}</strong>
-              </div>
-              <div>
-                <span>{t("dossier.platforms")}</span>
-                <strong>{platforms.join(" · ")}</strong>
-              </div>
-              <div>
-                <span>{t("dossier.formats")}</span>
-                <strong>{kinds.map((kind) => t(`filters.kinds.${kind}`)).join(" · ")}</strong>
-              </div>
-            </div>
-
-            <div className="region-dossier__timeline" aria-hidden="true">
-              {games.map((game) => {
-                const generation = getGameGeneration(game);
-                const gameVisual = getGameVisual(game.slug);
-                return (
-                  <span key={game.slug} style={{ "--dossier-game-accent": gameVisual.accent }}>
-                    <small>{generation ? `GEN ${generation.roman}` : "GEN —"}</small>
-                    <strong>{gameVisual.mark}</strong>
-                  </span>
-                );
-              })}
-            </div>
-
-            <span className="region-dossier__ghost" aria-hidden="true">
-              {region.label.slice(0, 2).toUpperCase()}
-            </span>
-          </aside>
-        )}
+        <div className="region-context-strip__marks" aria-hidden="true">
+          {games.map((game) => {
+            const gameVisual = getGameVisual(game.slug);
+            return (
+              <span key={game.slug} style={{ "--strip-accent": gameVisual.accent }}>
+                {gameVisual.mark}
+              </span>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

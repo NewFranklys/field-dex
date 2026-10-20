@@ -1,10 +1,23 @@
-const LOGO_ROOT = "https://raw.githubusercontent.com/projeffboy/my-pokemon-team/f9daa66855d12768d3070d28bac8c9eb1798fe0f/src/images/game-logos";
+const LOGO_COMMIT = "7ea6cdc12a8e979428b6835d97ded65c3f82f1b4";
+const LOGO_ROOT = `https://raw.githubusercontent.com/Cosmi4002/pokeshinytracker/${LOGO_COMMIT}/public/img/game-logos`;
+const BOX_ROOT = "https://img.pokemondb.net/boxes";
+
+const logoFileAliases = {
+  letsgopikachu: "lgp",
+  letsgoeevee: "lge",
+  legendsarceus: "pla",
+};
 
 function logo(file, label, options = {}) {
+  const resolvedFile = logoFileAliases[file] || file;
+  const isBoxFront = Boolean(options.isBoxFront);
+
   return {
     label,
-    src: `${LOGO_ROOT}/${file}.png`,
-    source: "https://github.com/projeffboy/my-pokemon-team/blob/f9daa66855d12768d3070d28bac8c9eb1798fe0f/src/images/game-logos/game-logos-sources.md",
+    src: isBoxFront ? `${BOX_ROOT}/${file}.jpg` : `${LOGO_ROOT}/${resolvedFile}.png`,
+    source: isBoxFront
+      ? "https://pokemondb.net/"
+      : `https://github.com/Cosmi4002/pokeshinytracker/tree/${LOGO_COMMIT}/public/img/game-logos`,
     ...options,
   };
 }

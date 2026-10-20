@@ -8,6 +8,12 @@ export default function GameArchiveCard({ game }) {
   const { t } = useTranslation("games");
   const generation = getGameGeneration(game);
   const visual = getGameVisual(game.slug);
+  const archiveStamp = [
+    visual.releaseYear,
+    generation ? `GEN ${generation.roman}` : "GEN —",
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
     <Link
@@ -16,7 +22,7 @@ export default function GameArchiveCard({ game }) {
       style={{ "--game-accent": visual.accent }}
     >
       <div className="game-archive-card__topline">
-        <span>{generation ? `GEN ${generation.roman}` : "GEN —"}</span>
+        <span>{archiveStamp}</span>
         <span>{t(`filters.kinds.${visual.kind}`)}</span>
       </div>
 

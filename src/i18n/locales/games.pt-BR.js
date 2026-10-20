@@ -34,6 +34,16 @@ export default {
     openRecord: "Abrir registro",
     quickNavAria: "Navegação rápida por região",
     quickNavAll: "Topo",
+    timeline: {
+      aria: "Linha do tempo das gerações de jogos",
+      eyebrow: "Cronologia do arquivo",
+      range: "1996 — 2022",
+    },
+    results: {
+      eyebrow: "Pesquisa ativa / Arquivo cruzado",
+      title: "Resultados do Arquivo",
+      summary: "{{count}} registros · {{regions}} regiões representadas",
+    },
     dossier: {
       aria: "Dossiê regional de {{region}}",
       title: "Índice regional",
@@ -44,12 +54,14 @@ export default {
     filters: {
       aria: "Filtros dos arquivos de jogos",
       search: "Buscar jogo",
-      searchPlaceholder: "Nome, região ou plataforma",
+      searchPlaceholder: "Nome, região, plataforma ou ano",
       generation: "Geração",
       kind: "Tipo de jogo",
       all: "Todos",
       showing: "Exibindo",
       of: "de {{total}}",
+      active: "Filtros ativos",
+      activeAria: "Filtros ativos da pesquisa",
       emptyTitle: "Nenhum arquivo corresponde aos filtros",
       emptyBody: "Tente outra combinação de busca, geração ou tipo de jogo.",
       clear: "Limpar filtros",

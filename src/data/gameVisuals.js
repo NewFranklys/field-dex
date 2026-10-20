@@ -178,6 +178,30 @@ export const gameVisuals = {
   },
 };
 
+export const gameReleaseYears = {
+  "red-blue": 1996,
+  yellow: 1998,
+  "gold-silver": 1999,
+  crystal: 2000,
+  "ruby-sapphire": 2002,
+  emerald: 2004,
+  "firered-leafgreen": 2004,
+  "diamond-pearl": 2006,
+  platinum: 2008,
+  "heartgold-soulsilver": 2009,
+  "black-white": 2010,
+  "black-2-white-2": 2012,
+  "x-y": 2013,
+  "omega-ruby-alpha-sapphire": 2014,
+  "sun-moon": 2016,
+  "ultra-sun-ultra-moon": 2017,
+  "lets-go-pikachu-lets-go-eevee": 2018,
+  "sword-shield": 2019,
+  "brilliant-diamond-and-shining-pearl": 2021,
+  "legends-arceus": 2022,
+  "scarlet-violet": 2022,
+};
+
 export const regionVisuals = {
   kanto: { accent: "#c9634e" },
   johto: { accent: "#aa8a43" },
@@ -192,11 +216,21 @@ export const regionVisuals = {
 };
 
 export function getGameVisual(slug) {
-  return gameVisuals[slug] || {
-    platform: "Unknown platform",
-    kind: "mainline",
-    mark: slug?.slice(0, 2).toUpperCase() || "FD",
-    accent: "#747067",
+  const visual = gameVisuals[slug];
+
+  if (!visual) {
+    return {
+      platform: "Unknown platform",
+      kind: "mainline",
+      mark: slug?.slice(0, 2).toUpperCase() || "FD",
+      accent: "#747067",
+      releaseYear: null,
+    };
+  }
+
+  return {
+    ...visual,
+    releaseYear: gameReleaseYears[slug] || null,
   };
 }
 

@@ -34,6 +34,16 @@ export default {
     openRecord: "Open record",
     quickNavAria: "Quick region navigation",
     quickNavAll: "Top",
+    timeline: {
+      aria: "Game generation timeline",
+      eyebrow: "Archive chronology",
+      range: "1996 — 2022",
+    },
+    results: {
+      eyebrow: "Active research / Cross archive",
+      title: "Archive Results",
+      summary: "{{count}} records · {{regions}} regions represented",
+    },
     dossier: {
       aria: "Regional dossier for {{region}}",
       title: "Regional index",
@@ -44,12 +54,14 @@ export default {
     filters: {
       aria: "Game archive filters",
       search: "Search games",
-      searchPlaceholder: "Name, region or platform",
+      searchPlaceholder: "Name, region, platform or year",
       generation: "Generation",
       kind: "Game type",
       all: "All",
       showing: "Showing",
       of: "of {{total}}",
+      active: "Active filters",
+      activeAria: "Active research filters",
       emptyTitle: "No archives match these filters",
       emptyBody: "Try another search, generation or game-type combination.",
       clear: "Clear filters",

@@ -29,6 +29,26 @@ export default function Games() {
     [],
   );
 
+  const generationTimeline = useMemo(
+    () =>
+      generationOptions
+        .filter((slug) => slug !== "all")
+        .map((slug) => {
+          const generationData = getGameGeneration({ generation: slug });
+          const games = gameGroups.filter((game) => game.generation === slug);
+          const years = games
+            .map((game) => getGameVisual(game.slug).releaseYear)
+            .filter(Boolean);
+
+          return {
+            slug,
+            roman: generationData?.roman || slug,
+            year: years.length ? Math.min(...years) : null,
+          };
+        }),
+    [generationOptions],
+  );
+
   const visibleGames = useMemo(() => {
     const query = search.trim().toLowerCase();
     return gameGroups.filter((game) => {
@@ -41,7 +61,10 @@ export default function Games() {
           game.regionLabel,
           game.dexLabel,
           visual.platform,
-        ].some((value) => value.toLowerCase().includes(query));
+          visual.releaseYear?.toString(),
+        ]
+          .filter(Boolean)
+          .some((value) => value.toLowerCase().includes(query));
       const matchesGeneration = generation === "all" || game.generation === generation;
       const matchesKind = kind === "all" || visual.kind === kind;
       return matchesSearch && matchesGeneration && matchesKind;
@@ -58,7 +81,14 @@ export default function Games() {
   );
 
   const generationCount = new Set(gameGroups.map((game) => game.generation)).size;
+  const visibleRegionCount = new Set(visibleGames.map((game) => game.region)).size;
   const hasActiveFilters = search.trim().length > 0 || generation !== "all" || kind !== "all";
+
+  const clearFilters = () => {
+    setSearch("");
+    setGeneration("all");
+    setKind("all");
+  };
 
   const cardTransition = prefersReducedMotion
     ? { duration: 0 }
@@ -148,11 +178,70 @@ export default function Games() {
         </div>
       </section>
 
+      <section className="games-era-timeline" aria-label={t("timeline.aria")}>
+        <div className="games-era-timeline__intro">
+          <span>{t("timeline.eyebrow")}</span>
+          <strong>{t("timeline.range")}</strong>
+        </div>
+        <div className="games-era-timeline__track">
+          {generationTimeline.map((item) => (
+            <button
+              key={item.slug}
+              type="button"
+              className="games-era-timeline__stop"
+              aria-pressed={generation === item.slug}
+              onClick={() => setGeneration((current) => (current === item.slug ? "all" : item.slug))}
+            >
+              <span>{item.year || "—"}</span>
+              <strong>GEN {item.roman}</strong>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      {hasActiveFilters && (
+        <section className="games-active-filters" aria-label={t("filters.activeAria")}>
+          <span className="games-active-filters__label">{t("filters.active")}</span>
+          <div className="games-active-filters__chips">
+            {search.trim() && (
+              <button type="button" onClick={() => setSearch("")}>
+                “{search.trim()}” <span aria-hidden="true">×</span>
+              </button>
+            )}
+            {generation !== "all" && (
+              <button type="button" onClick={() => setGeneration("all")}>
+                GEN {getGameGeneration({ generation })?.roman || generation} <span aria-hidden="true">×</span>
+              </button>
+            )}
+            {kind !== "all" && (
+              <button type="button" onClick={() => setKind("all")}>
+                {t(`filters.kinds.${kind}`)} <span aria-hidden="true">×</span>
+              </button>
+            )}
+          </div>
+          <button type="button" className="games-active-filters__clear" onClick={clearFilters}>
+            {t("filters.clear")}
+          </button>
+        </section>
+      )}
+
       {!hasActiveFilters && <RegionQuickNav regions={visibleRegions} />}
 
       {visibleGames.length > 0 ? (
         hasActiveFilters ? (
           <section className="games-filtered-directory" aria-label={t("filters.showing")}>
+            <header className="games-results-header">
+              <div>
+                <span>{t("results.eyebrow")}</span>
+                <h2>{t("results.title")}</h2>
+              </div>
+              <p>
+                {t("results.summary", {
+                  count: visibleGames.length,
+                  regions: visibleRegionCount,
+                })}
+              </p>
+            </header>
             <div className="games-filtered-grid">
               {visibleGames.map((game, index) => (
                 <motion.div
@@ -197,14 +286,7 @@ export default function Games() {
             <span>00</span>
             <h2>{t("filters.emptyTitle")}</h2>
             <p>{t("filters.emptyBody")}</p>
-            <button
-              type="button"
-              onClick={() => {
-                setSearch("");
-                setGeneration("all");
-                setKind("all");
-              }}
-            >
+            <button type="button" onClick={clearFilters}>
               {t("filters.clear")}
             </button>
           </div>

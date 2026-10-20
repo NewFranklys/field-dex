@@ -35,45 +35,39 @@ export default function RegionArchiveSection({ region, games, index }) {
         <span className="region-archive-v2__index">
           {String(index + 1).padStart(2, "0")}
         </span>
+
         <div className="region-archive-v2__title">
           <small>{t("regionRecord")}</small>
           <h2>{region.label}</h2>
+
+          <div
+            className="region-archive-v2__summary"
+            aria-label={t("dossier.aria", { region: region.label })}
+          >
+            <span>
+              <small>{t("generations")}</small>
+              <strong>{generations.map((generation) => `GEN ${generation}`).join(" · ")}</strong>
+            </span>
+            <span>
+              <small>{t("dossier.platforms")}</small>
+              <strong>{platforms.join(" · ")}</strong>
+            </span>
+            <span>
+              <small>{t("dossier.formats")}</small>
+              <strong>{kinds.map((kind) => t(`filters.kinds.${kind}`)).join(" · ")}</strong>
+            </span>
+          </div>
         </div>
+
         <div className="region-archive-v2__meta">
-          <span>{generations.map((generation) => `GEN ${generation}`).join(" · ")}</span>
           <strong>{t("archiveCount", { count: games.length })}</strong>
         </div>
-        <span className="region-archive-v2__watermark" aria-hidden="true">
-          {region.label}
-        </span>
       </header>
 
       <div className={`region-game-grid-v2 region-game-grid-v2--count-${layoutCount}`}>
         {games.map((game) => (
           <GameArchiveCard key={game.slug} game={game} />
         ))}
-      </div>
-
-      <div className="region-context-strip" aria-label={t("dossier.aria", { region: region.label })}>
-        <div className="region-context-strip__identity">
-          <span>{t("dossier.title")}</span>
-          <strong>{String(index + 1).padStart(2, "0")} / {region.label.toUpperCase()}</strong>
-        </div>
-
-        <div className="region-context-strip__facts">
-          <span>
-            <small>{t("generations")}</small>
-            <strong>{generations.map((generation) => `GEN ${generation}`).join(" · ")}</strong>
-          </span>
-          <span>
-            <small>{t("dossier.platforms")}</small>
-            <strong>{platforms.join(" · ")}</strong>
-          </span>
-          <span>
-            <small>{t("dossier.formats")}</small>
-            <strong>{kinds.map((kind) => t(`filters.kinds.${kind}`)).join(" · ")}</strong>
-          </span>
-        </div>
       </div>
     </section>
   );

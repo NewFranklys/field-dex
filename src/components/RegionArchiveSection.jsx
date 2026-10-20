@@ -74,17 +74,6 @@ export default function RegionArchiveSection({ region, games, index }) {
             <strong>{kinds.map((kind) => t(`filters.kinds.${kind}`)).join(" · ")}</strong>
           </span>
         </div>
-
-        <div className="region-context-strip__marks" aria-hidden="true">
-          {games.map((game) => {
-            const gameVisual = getGameVisual(game.slug);
-            return (
-              <span key={game.slug} style={{ "--strip-accent": gameVisual.accent }}>
-                {gameVisual.mark}
-              </span>
-            );
-          })}
-        </div>
       </div>
     </section>
   );

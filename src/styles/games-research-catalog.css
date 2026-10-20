@@ -1,0 +1,364 @@
+/*
+  FIELD DEX — GAME RESEARCH CATALOG
+
+  Final composition layer for the game archive. The cards remain regular,
+  while chronology, active filters and result context make the page read like
+  a historical research catalog instead of a generic filterable dashboard.
+*/
+
+.games-page--redesign {
+  --research-ink: #171717;
+  --research-paper: #f6f4ee;
+  --research-line: #d7d3ca;
+  --research-faint: #aaa69d;
+}
+
+.games-page--redesign .games-hero-v2 {
+  min-height: 286px;
+  padding-top: 42px;
+  padding-bottom: 30px;
+}
+
+.games-page--redesign .games-hero-v2__copy h1 {
+  margin-top: 10px;
+  font-size: clamp(58px, 5.7vw, 84px);
+}
+
+.games-page--redesign .games-hero-v2__meta {
+  align-self: end;
+  background: rgb(255 255 255 / 12%);
+}
+
+.games-page--redesign .games-controls {
+  position: relative;
+  gap: 28px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background:
+    linear-gradient(90deg, rgb(255 255 255 / 12%), transparent 45%),
+    var(--research-paper);
+}
+
+.games-page--redesign .games-controls::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: #1b1b1b;
+  content: "";
+  opacity: 0.82;
+}
+
+.games-page--redesign .games-search-field input {
+  font-size: 12px;
+}
+
+.games-page--redesign .games-filter-result strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.games-era-timeline {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  min-height: 88px;
+  border-bottom: 1px solid var(--research-line);
+  background: #f2f0e9;
+}
+
+.games-era-timeline__intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  padding: 18px 24px 18px 40px;
+  border-right: 1px solid var(--research-line);
+}
+
+.games-era-timeline__intro span,
+.games-active-filters__label,
+.games-results-header span {
+  color: #89857c;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.games-era-timeline__intro strong {
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+}
+
+.games-era-timeline__track {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(9, minmax(76px, 1fr));
+  overflow-x: auto;
+  padding: 0 40px;
+  scrollbar-width: none;
+}
+
+.games-era-timeline__track::-webkit-scrollbar {
+  display: none;
+}
+
+.games-era-timeline__track::before {
+  position: absolute;
+  right: 40px;
+  bottom: 31px;
+  left: 40px;
+  height: 1px;
+  background: #c8c4bb;
+  content: "";
+}
+
+.games-era-timeline__stop {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-width: 76px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 22px;
+  padding: 13px 12px 12px;
+  border: 0;
+  background: transparent;
+  color: #69655e;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.games-era-timeline__stop::after {
+  position: absolute;
+  bottom: 27px;
+  left: 12px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid #f2f0e9;
+  border-radius: 50%;
+  background: #9c988f;
+  box-shadow: 0 0 0 1px #bdb9b0;
+  content: "";
+  transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.games-era-timeline__stop span {
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+
+.games-era-timeline__stop strong {
+  color: #34322e;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
+.games-era-timeline__stop:hover::after,
+.games-era-timeline__stop:focus-visible::after,
+.games-era-timeline__stop[aria-pressed="true"]::after {
+  background: #171717;
+  box-shadow: 0 0 0 1px #171717;
+  transform: scale(1.22);
+}
+
+.games-era-timeline__stop[aria-pressed="true"] span,
+.games-era-timeline__stop[aria-pressed="true"] strong {
+  color: #111;
+}
+
+.games-era-timeline__stop:focus-visible {
+  outline: 1px solid #262626;
+  outline-offset: -4px;
+}
+
+.games-active-filters {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  min-height: 54px;
+  padding: 8px 40px;
+  border-bottom: 1px solid var(--research-line);
+  background: #ebe8e0;
+}
+
+.games-active-filters__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.games-active-filters__chips button,
+.games-active-filters__clear {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+
+.games-active-filters__chips button {
+  padding: 6px 9px;
+  border: 1px solid #cac6bc;
+  border-radius: 999px;
+  color: #302e2a;
+  font-size: 9px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+}
+
+.games-active-filters__chips button:hover,
+.games-active-filters__chips button:focus-visible {
+  border-color: #5e5a53;
+  background: #f7f5ef;
+}
+
+.games-active-filters__chips button span {
+  margin-left: 6px;
+  color: #88837a;
+}
+
+.games-active-filters__clear {
+  padding: 7px 0;
+  color: #5f5b54;
+  font-size: 8px;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-transform: uppercase;
+}
+
+.games-page--redesign .games-filtered-directory {
+  padding-top: 0;
+}
+
+.games-results-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 30px;
+  align-items: end;
+  width: min(100%, 1500px);
+  padding: 34px 0 24px;
+}
+
+.games-results-header h2 {
+  margin: 7px 0 0;
+  font-size: clamp(30px, 3vw, 44px);
+  font-weight: 620;
+  letter-spacing: -0.045em;
+}
+
+.games-results-header p {
+  margin: 0 0 5px;
+  color: #77736a;
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.games-page--redesign .game-archive-card {
+  isolation: isolate;
+}
+
+.games-page--redesign .game-archive-card__topline span:first-child {
+  color: #716d65;
+  font-variant-numeric: tabular-nums;
+}
+
+.games-page--redesign .game-archive-card__copy h3 {
+  transition: color 180ms ease;
+}
+
+.games-page--redesign .game-archive-card:hover .game-archive-card__copy h3,
+.games-page--redesign .game-archive-card:focus-visible .game-archive-card__copy h3 {
+  color: color-mix(in srgb, var(--game-accent) 68%, #171717);
+}
+
+.games-page--redesign .game-archive-card__meta {
+  transition: background 180ms ease;
+}
+
+.games-page--redesign .game-archive-card:hover .game-archive-card__meta,
+.games-page--redesign .game-archive-card:focus-visible .game-archive-card__meta {
+  background: color-mix(in srgb, var(--game-accent) 4%, transparent);
+}
+
+@media (max-width: 1100px) {
+  .games-era-timeline {
+    grid-template-columns: 150px minmax(0, 1fr);
+  }
+
+  .games-era-timeline__intro {
+    padding-left: 28px;
+  }
+
+  .games-era-timeline__track {
+    padding-inline: 28px;
+  }
+
+  .games-era-timeline__track::before {
+    right: 28px;
+    left: 28px;
+  }
+
+  .games-active-filters {
+    padding-inline: 28px;
+  }
+}
+
+@media (max-width: 760px) {
+  .games-page--redesign .games-hero-v2 {
+    min-height: 0;
+  }
+
+  .games-era-timeline {
+    grid-template-columns: 1fr;
+  }
+
+  .games-era-timeline__intro {
+    padding: 14px 18px 10px;
+    border-right: 0;
+    border-bottom: 1px solid var(--research-line);
+  }
+
+  .games-era-timeline__track {
+    grid-template-columns: repeat(9, 82px);
+    padding-inline: 18px;
+  }
+
+  .games-era-timeline__track::before {
+    right: 18px;
+    left: 18px;
+  }
+
+  .games-active-filters {
+    grid-template-columns: 1fr auto;
+    gap: 8px 12px;
+    padding: 10px 18px;
+  }
+
+  .games-active-filters__label {
+    grid-column: 1 / -1;
+  }
+
+  .games-results-header {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding-top: 26px;
+  }
+
+  .games-results-header p {
+    margin: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .games-era-timeline__stop::after,
+  .games-page--redesign .game-archive-card__copy h3,
+  .games-page--redesign .game-archive-card__meta {
+    transition: none;
+  }
+}

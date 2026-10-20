@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { useTranslation } from "react-i18next";
 import GameArchiveCard from "../components/GameArchiveCard";
 import RegionArchiveSection from "../components/RegionArchiveSection";
@@ -154,30 +154,23 @@ export default function Games() {
         hasActiveFilters ? (
           <section className="games-filtered-directory" aria-label={t("filters.showing")}>
             <div className="games-filtered-grid">
-              <AnimatePresence mode="popLayout">
-                {visibleGames.map((game, index) => (
-                  <motion.div
-                    key={game.slug}
-                    layout
-                    className="games-filtered-card"
-                    initial={
-                      prefersReducedMotion
-                        ? false
-                        : { opacity: 0, y: 18, scale: 0.985 }
-                    }
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={
-                      prefersReducedMotion
-                        ? { opacity: 0 }
-                        : { opacity: 0, y: -10, scale: 0.985 }
-                    }
-                    transition={cardTransition}
-                    style={{ zIndex: visibleGames.length - index }}
-                  >
-                    <GameArchiveCard game={game} />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+              {visibleGames.map((game, index) => (
+                <motion.div
+                  key={game.slug}
+                  layout
+                  className="games-filtered-card"
+                  initial={
+                    prefersReducedMotion
+                      ? false
+                      : { opacity: 0, y: 18, scale: 0.985 }
+                  }
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={cardTransition}
+                  style={{ zIndex: visibleGames.length - index }}
+                >
+                  <GameArchiveCard game={game} />
+                </motion.div>
+              ))}
             </div>
           </section>
         ) : (

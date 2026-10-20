@@ -1,0 +1,72 @@
+/*
+  FIELD DEX — FILTERED GAME RESULTS
+
+  When a search/filter is active, region shelves stop being the primary
+  structure. Matching game records collapse into one continuous archive grid
+  so sparse results do not create large vertical gaps between regions.
+*/
+
+.games-page--redesign .games-filtered-directory {
+  padding: 34px 40px 84px;
+}
+
+.games-page--redesign .games-filtered-grid {
+  display: grid;
+  width: min(100%, 1500px);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  align-items: stretch;
+}
+
+.games-page--redesign .games-filtered-card {
+  min-width: 0;
+}
+
+.games-page--redesign .games-filtered-card .game-archive-card {
+  width: 100%;
+  height: 406px;
+  min-height: 406px;
+}
+
+@media (max-width: 1380px) {
+  .games-page--redesign .games-filtered-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1040px) {
+  .games-page--redesign .games-filtered-directory {
+    padding-inline: 28px;
+  }
+
+  .games-page--redesign .games-filtered-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .games-page--redesign .games-filtered-card .game-archive-card {
+    height: 398px;
+    min-height: 398px;
+  }
+}
+
+@media (max-width: 720px) {
+  .games-page--redesign .games-filtered-directory {
+    padding: 24px 18px 64px;
+  }
+
+  .games-page--redesign .games-filtered-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .games-page--redesign .games-filtered-card .game-archive-card {
+    height: auto;
+    min-height: 386px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .games-page--redesign .games-filtered-card {
+    transform: none !important;
+  }
+}

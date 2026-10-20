@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useTranslation } from "react-i18next";
+import GameArchiveCard from "../components/GameArchiveCard";
 import RegionArchiveSection from "../components/RegionArchiveSection";
 import RegionQuickNav from "../components/RegionQuickNav";
 import {
@@ -14,6 +16,7 @@ const kindOptions = ["all", "mainline", "enhanced", "remake", "sequel", "legends
 
 export default function Games() {
   const { t } = useTranslation("games");
+  const prefersReducedMotion = useReducedMotion();
   const [search, setSearch] = useState("");
   const [generation, setGeneration] = useState("all");
   const [kind, setKind] = useState("all");
@@ -55,6 +58,16 @@ export default function Games() {
   );
 
   const generationCount = new Set(gameGroups.map((game) => game.generation)).size;
+  const hasActiveFilters = search.trim().length > 0 || generation !== "all" || kind !== "all";
+
+  const cardTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : {
+        layout: { type: "spring", stiffness: 380, damping: 34, mass: 0.8 },
+        opacity: { duration: 0.18 },
+        y: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
+        scale: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
+      };
 
   return (
     <main id="main-content" tabIndex={-1} className="games-page games-page--redesign">
@@ -135,25 +148,58 @@ export default function Games() {
         </div>
       </section>
 
-      <RegionQuickNav regions={visibleRegions} />
+      {!hasActiveFilters && <RegionQuickNav regions={visibleRegions} />}
 
-      <section className="region-directory-v2" aria-label={t("regionAria")}>
-        {visibleRegions.length > 0 ? (
-          visibleRegions.map((region, regionIndex) => {
-            const games = region.gameGroups
-              .filter((slug) => visibleSlugs.has(slug))
-              .map(getGameGroupBySlug)
-              .filter(Boolean);
-            return (
-              <RegionArchiveSection
-                key={region.slug}
-                region={region}
-                games={games}
-                index={regionIndex}
-              />
-            );
-          })
+      {visibleGames.length > 0 ? (
+        hasActiveFilters ? (
+          <section className="games-filtered-directory" aria-label={t("filters.showing")}>
+            <div className="games-filtered-grid">
+              <AnimatePresence mode="popLayout">
+                {visibleGames.map((game, index) => (
+                  <motion.div
+                    key={game.slug}
+                    layout
+                    className="games-filtered-card"
+                    initial={
+                      prefersReducedMotion
+                        ? false
+                        : { opacity: 0, y: 18, scale: 0.985 }
+                    }
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={
+                      prefersReducedMotion
+                        ? { opacity: 0 }
+                        : { opacity: 0, y: -10, scale: 0.985 }
+                    }
+                    transition={cardTransition}
+                    style={{ zIndex: visibleGames.length - index }}
+                  >
+                    <GameArchiveCard game={game} />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          </section>
         ) : (
+          <section className="region-directory-v2" aria-label={t("regionAria")}>
+            {visibleRegions.map((region, regionIndex) => {
+              const games = region.gameGroups
+                .filter((slug) => visibleSlugs.has(slug))
+                .map(getGameGroupBySlug)
+                .filter(Boolean);
+              return (
+                <RegionArchiveSection
+                  key={region.slug}
+                  region={region}
+                  games={games}
+                  index={regionIndex}
+                />
+              );
+            })}
+          </section>
+        )
+      ) : (
+        <section className="region-directory-v2" aria-label={t("regionAria")}>
           <div className="games-empty-filter">
             <span>00</span>
             <h2>{t("filters.emptyTitle")}</h2>
@@ -169,8 +215,8 @@ export default function Games() {
               {t("filters.clear")}
             </button>
           </div>
-        )}
-      </section>
+        </section>
+      )}
     </main>
   );
 }
